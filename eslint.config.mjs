@@ -28,7 +28,7 @@ export default [
   },
   // NextJS
   {
-    ignores: [".next/", ".src/components/ui/", "tailwind.config.ts"],
+    ignores: [".next/", "./src/components/ui/*", "tailwind.config.ts"],
   },
   ...fixupConfigRules(compat.extends("plugin:@next/next/core-web-vitals")),
   // Rules config
@@ -54,6 +54,6 @@ export default [
   },
   // Ignore files
   {
-    ignores: ["tailwind.config.js", "next.config.js", "*.js"],
+    ignores: ["tailwind.config.js", "next.config.ts", "*.js"],
   },
 ];
