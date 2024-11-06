@@ -21,19 +21,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { SignInFormScheme } from "./sign-in-form.schema";
-import { signInAction } from "./sign-in.action";
+import { SignUpFormScheme } from "./sign-up-form.schema";
+import { signInAction } from "./sign-up.action";
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     signInAction,
-    zodResolver(SignInFormScheme),
+    zodResolver(SignUpFormScheme),
     {
       formProps: {
         mode: "onChange",
         values: {
           email: "",
           password: "",
+          confirmPassword: "",
         },
       },
     },
@@ -98,21 +99,33 @@ export default function SignInForm() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-2">
+                      <FormLabel htmlFor="confirmPassword">
+                        Confirm Password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="confirmPassword"
+                          type="password"
+                          placeholder="******"
+                          autoComplete="new-password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button type="submit" className="w-full">
-                  {action.isPending ? "Logging in..." : "Login"}
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Login with Google
+                  {action.isPending ? "Signing up..." : "Sign up"}
                 </Button>
               </div>
             </form>
           </Form>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="underline">
-              Sign up
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </div>
