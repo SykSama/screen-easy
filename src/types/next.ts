@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { ReactNode } from "react";
 
 /**
@@ -18,7 +17,7 @@ import type { ReactNode } from "react";
  */
 export type PageParams<T extends Record<string, string> = {}> = {
   params: Promise<T>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 /**

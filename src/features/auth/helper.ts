@@ -1,8 +1,4 @@
-export class AuthError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
+export class AuthError extends Error {}
 
 // export const auth = async (): Promise<User | null> => {
 //   const supabase = await createClient();

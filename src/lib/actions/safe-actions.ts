@@ -1,11 +1,7 @@
 import { AuthError } from "@/features/auth/helper";
 import { createSafeActionClient } from "next-safe-action";
 
-export class ActionError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
+export class ActionError extends Error {}
 
 type handleServerError = (e: Error) => string;
 
