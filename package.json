@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "supabase:gen": "supabase gen types --lang=typescript --local > src/types/database.generated.types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
