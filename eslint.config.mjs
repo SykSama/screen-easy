@@ -143,6 +143,7 @@ export default [
       "eslint.config.mjs",
       "**/worker.js",
       "src/components/ui/",
+      "src/types/database.generated.types.ts",
     ],
   },
 ];

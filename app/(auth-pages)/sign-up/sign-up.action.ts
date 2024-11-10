@@ -6,7 +6,7 @@ import { returnValidationErrors } from "next-safe-action";
 import { redirect } from "next/navigation";
 import { SignUpFormScheme } from "./sign-up-form.schema";
 
-export const signInAction = action
+export const signUpAction = action
   .schema(SignUpFormScheme)
   .action(async ({ parsedInput: { email, password } }) => {
     const supabase = await createClient();

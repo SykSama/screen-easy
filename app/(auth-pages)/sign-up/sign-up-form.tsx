@@ -22,11 +22,11 @@ import Link from "next/link";
 
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { SignUpFormScheme } from "./sign-up-form.schema";
-import { signInAction } from "./sign-up.action";
+import { signUpAction } from "./sign-up.action";
 
 export default function SignUpForm() {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
-    signInAction,
+    signUpAction,
     zodResolver(SignUpFormScheme),
     {
       formProps: {
@@ -44,9 +44,9 @@ export default function SignUpForm() {
     <div className="flex size-full min-h-[50vh] flex-col items-center justify-center px-4">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Register</CardTitle>
           <CardDescription>
-            Enter your email and password to login to your account.
+            Enter your email and password to register an account.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -120,6 +120,9 @@ export default function SignUpForm() {
                     </FormItem>
                   )}
                 />
+                {form.formState.errors.root && (
+                  <div>{form.formState.errors.root.message}</div>
+                )}
                 <Button type="submit" className="w-full">
                   {action.isPending ? "Signing up..." : "Sign up"}
                 </Button>
