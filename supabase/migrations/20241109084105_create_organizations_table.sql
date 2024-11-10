@@ -13,10 +13,15 @@ create unique index "organizations_slug_idx" on public.organizations("slug");
 
 alter table public.organizations enable row level security;
 
-create policy "Organizations can be created by authenticated users."
-  on organizations for insert
-  to authenticated
-  with check ( true );
+create policy "Enable insert for authenticated users only"
+on public.organizations
+for insert to authenticated
+with check (true);
+
+create policy "Enable select for authenticated users only"
+on public.organizations
+for select to authenticated
+using (true);
 
 create trigger update_updated_at
 before update on public.organizations

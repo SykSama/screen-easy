@@ -17,12 +17,15 @@ export const auth = async (): Promise<{
   return { user, supabase };
 };
 
-export const requiredAuth = async () => {
-  const { user } = await auth();
+export const requiredAuth = async (): Promise<{
+  user: User;
+  supabase: SupabaseClient<Database>;
+}> => {
+  const { user, supabase } = await auth();
 
   if (!user) {
     throw new AuthError("You must be authenticated to access this resource.");
   }
 
-  return user;
+  return { user, supabase };
 };
