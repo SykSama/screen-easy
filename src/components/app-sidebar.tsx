@@ -25,6 +25,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import type { OrgSwitcherProps } from "./org-switcher";
 import { OrgSwitcher } from "./org-switcher";
 
 const data = {
@@ -169,11 +170,14 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export type AppSidebarProps = React.ComponentProps<typeof Sidebar> &
+  OrgSwitcherProps;
+
+export function AppSidebar({ orgs, ...props }: AppSidebarProps) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
-        <OrgSwitcher orgs={data.teams} />
+        <OrgSwitcher orgs={orgs} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

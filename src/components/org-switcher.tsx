@@ -17,16 +17,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
-export function OrgSwitcher({
-  orgs,
-}: {
+export type OrgSwitcherProps = {
   orgs: {
     name: string;
-    logo: React.ElementType;
+    logo: React.ReactNode;
     plan: string;
   }[];
-}) {
+};
+
+export function OrgSwitcher({ orgs }: OrgSwitcherProps) {
   const [activeOrg, setActiveOrg] = React.useState(orgs[0]);
 
   return (
@@ -39,7 +40,7 @@ export function OrgSwitcher({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <activeOrg.logo className="size-4" />
+                {activeOrg.logo}
               </div>
               <span className="truncate font-semibold">{activeOrg.name}</span>
               <ChevronsUpDown className="ml-auto" />
@@ -61,7 +62,7 @@ export function OrgSwitcher({
                 className="cursor-pointer gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <org.logo className="size-4 shrink-0" />
+                  {org.logo}
                 </div>
                 {org.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
@@ -72,9 +73,12 @@ export function OrgSwitcher({
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">
+              <Link
+                className="font-medium text-muted-foreground"
+                href="/orgs/new"
+              >
                 Add organization
-              </div>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
