@@ -1,8 +1,6 @@
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { Button } from "@/components/ui/button";
 import { GeistSans } from "geist/font/sans";
 
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -22,28 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className={cn("min-h-screen flex flex-col", GeistSans.variable)}>
         <Providers>
-          <main className="flex min-h-screen">
-            <div className="flex w-full flex-1 flex-col items-center">
-              <nav className="flex h-16 w-full justify-center border-b border-b-foreground/10">
-                <div className="flex w-full max-w-5xl items-end justify-end space-x-2 p-3 px-5 text-sm">
-                  <Button asChild>
-                    <Link href="/sign-in">Sign In</Link>
-                  </Button>
-                  <Button asChild>
-                    <Link href="/sign-up">Sign Up</Link>
-                  </Button>
-                </div>
-              </nav>
-              {children}
-
-              <footer className="mx-auto flex w-full items-center justify-center gap-8 border-t py-16 text-center text-xs">
-                <ThemeSwitcher />
-              </footer>
-            </div>
-          </main>
+          {children}
+          <footer className="bg-alternative mt-auto">This is the footer</footer>
         </Providers>
       </body>
     </html>
