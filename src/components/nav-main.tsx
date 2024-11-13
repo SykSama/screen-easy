@@ -19,9 +19,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
-export function NavMain({
-  items,
-}: {
+export type NavMainProps = {
   items: {
     title: string;
     url: string;
@@ -32,7 +30,9 @@ export function NavMain({
       url: string;
     }[];
   }[];
-}) {
+};
+
+export function NavMain({ items }: NavMainProps) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Projects</SidebarGroupLabel>

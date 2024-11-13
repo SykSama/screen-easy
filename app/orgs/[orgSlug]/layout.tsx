@@ -23,9 +23,11 @@ export default async function RouteLayout(
     avatar: "/avatars/shadcn.jpg",
   };
 
+  const { orgSlug } = await props.params;
+
   return (
     <SidebarProvider>
-      <AppSidebar orgs={sidebarOrgs} user={sidebarUser} />
+      <AppSidebar orgs={sidebarOrgs} user={sidebarUser} orgSlug={orgSlug} />
       <SidebarInset>{props.children}</SidebarInset>
     </SidebarProvider>
   );

@@ -1,13 +1,16 @@
 "use client";
 
 import {
+  ChartArea,
+  CreditCard,
+  File,
   Home,
   Image,
   LifeBuoy,
   ScreenShare,
   Send,
   Settings,
-  UserPlus,
+  User,
 } from "lucide-react";
 import * as React from "react";
 
@@ -31,129 +34,47 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: Home,
+      isActive: true,
     },
     {
       title: "Screens",
       url: "/screens",
       icon: ScreenShare,
+      isActive: false,
     },
     {
       title: "Images",
       url: "/images",
       icon: Image,
+      isActive: true,
     },
-    // {
-    //   title: "Playground",
-    //   url: "#",
-    //   icon: SquareTerminal,
-    //   isActive: true,
-    //   items: [
-    //     {
-    //       title: "History",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Starred",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Settings",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: Bot,
-    //   items: [
-    //     {
-    //       title: "Genesis",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Explorer",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
   projects: [
     {
-      name: "Invite members",
-      url: "/orgs/invite",
-      icon: UserPlus,
-    },
-    {
-      name: "Settings",
-      url: "/orgs/settings",
+      name: "General",
+      url: "/orgs/general",
       icon: Settings,
     },
-    // {
-    //   name: "Design Engineering",
-    //   url: "#",
-    //   icon: Frame,
-    // },
-    // {
-    //   name: "Sales & Marketing",
-    //   url: "#",
-    //   icon: PieChart,
-    // },
-    // {
-    //   name: "Travel",
-    //   url: "#",
-    //   icon: Map,
-    // },
+    {
+      name: "Team",
+      url: "/orgs/team",
+      icon: User,
+    },
+    {
+      name: "Billing",
+      url: "/orgs/billing",
+      icon: CreditCard,
+    },
+    {
+      name: "Usage",
+      url: "/orgs/usage",
+      icon: ChartArea,
+    },
+    {
+      name: "Invoices",
+      url: "/orgs/invoices",
+      icon: File,
+    },
   ],
   navSecondary: [
     {
@@ -171,16 +92,40 @@ const data = {
 
 export type AppSidebarProps = React.ComponentProps<typeof Sidebar> &
   OrgSwitcherProps &
-  NavUserProps;
+  NavUserProps & {
+    orgSlug: string;
+  };
 
-export function AppSidebar({ orgs, user, ...props }: AppSidebarProps) {
+export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
         <OrgSwitcher orgs={orgs} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={[
+            {
+              title: "Dashboard",
+              url: `/orgs/${orgSlug}/dashboard`,
+              icon: Home,
+              isActive:
+                window.location.pathname === `/orgs/${orgSlug}/dashboard`,
+            },
+            {
+              title: "Screens",
+              url: `/orgs/${orgSlug}/screens`,
+              icon: ScreenShare,
+              isActive: window.location.pathname === `/orgs/${orgSlug}/screens`,
+            },
+            {
+              title: "Images",
+              url: `/orgs/${orgSlug}/images`,
+              icon: Image,
+              isActive: window.location.pathname === `/orgs/${orgSlug}/images`,
+            },
+          ]}
+        />
         <NavProjects projects={data.projects} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
