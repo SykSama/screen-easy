@@ -22,10 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn("min-h-screen flex flex-col", GeistSans.variable)}>
-        <Providers>
-          {children}
-          <footer className="bg-alternative mt-auto">This is the footer</footer>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
