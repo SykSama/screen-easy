@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
+import { Icons } from "@/components/ui/icons";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { Chrome } from "lucide-react";
 import { SignUpFormScheme } from "./sign-up-form.schema";
 import { signUpAction } from "./sign-up.action";
 
@@ -44,7 +44,7 @@ export default function SignUpForm() {
           variant="outline"
           className="w-full border-gray-700 bg-transparent text-white hover:bg-gray-800"
         >
-          <Chrome className="mr-2 size-4" />
+          <Icons.google className="mr-2 size-4" />
           Continue with Google
         </Button>
         <div className="relative">
