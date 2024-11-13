@@ -17,9 +17,15 @@ export default async function RouteLayout(
     plan: org.membership_roles.name,
   }));
 
+  const sidebarUser = {
+    name: user.email?.split("@")[0] ?? "",
+    email: user.email ?? "",
+    avatar: "/avatars/shadcn.jpg",
+  };
+
   return (
     <SidebarProvider>
-      <AppSidebar orgs={sidebarOrgs} />
+      <AppSidebar orgs={sidebarOrgs} user={sidebarUser} />
       {props.children}
     </SidebarProvider>
   );

@@ -1,10 +1,8 @@
 "use client";
 
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
   Frame,
   LifeBuoy,
   Map,
@@ -18,6 +16,7 @@ import * as React from "react";
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
+import type { NavUserProps } from "@/components/nav-user";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -29,29 +28,6 @@ import type { OrgSwitcherProps } from "./org-switcher";
 import { OrgSwitcher } from "./org-switcher";
 
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: Command,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Playground",
@@ -171,9 +147,10 @@ const data = {
 };
 
 export type AppSidebarProps = React.ComponentProps<typeof Sidebar> &
-  OrgSwitcherProps;
+  OrgSwitcherProps &
+  NavUserProps;
 
-export function AppSidebar({ orgs, ...props }: AppSidebarProps) {
+export function AppSidebar({ orgs, user, ...props }: AppSidebarProps) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -185,7 +162,7 @@ export function AppSidebar({ orgs, ...props }: AppSidebarProps) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );
