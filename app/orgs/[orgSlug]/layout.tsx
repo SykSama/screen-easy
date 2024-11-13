@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { requiredAuth } from "@/features/auth/helper";
 import { getProfileOrgsQuery } from "@/query/orgs/get-users-orgs.query";
 import type { LayoutParams } from "@/types/next";
@@ -26,7 +26,7 @@ export default async function RouteLayout(
   return (
     <SidebarProvider>
       <AppSidebar orgs={sidebarOrgs} user={sidebarUser} />
-      {props.children}
+      <SidebarInset>{props.children}</SidebarInset>
     </SidebarProvider>
   );
 }
