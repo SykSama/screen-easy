@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { requiredAuth } from "@/features/auth/helper";
+import { logger } from "@/lib/logger";
 import { getProfileOrgsQuery } from "@/query/orgs/get-users-orgs.query";
 import type { LayoutParams } from "@/types/next";
 import { Command } from "lucide-react";
@@ -15,6 +16,13 @@ export default async function RouteLayout(
 
   const { orgSlug } = await props.params;
 
+  const orgWithRoles = orgs.find((org) => org.organizations.slug === orgSlug);
+
+  if (!orgWithRoles) {
+    logger.error("Unauthorized");
+    throw new Error("Unauthorized");
+  }
+
   const sidebarOrgs = orgs.map((org) => ({
     name: org.organizations.name,
     logo: <Command className="size-4 shrink-0" />,
@@ -28,8 +36,6 @@ export default async function RouteLayout(
     email: user.email ?? "",
     avatar: "/avatars/shadcn.jpg",
   };
-
-  console.log("Rendering layout");
 
   return (
     <SidebarProvider>
