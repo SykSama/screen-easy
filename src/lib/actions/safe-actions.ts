@@ -1,26 +1,38 @@
-import { AuthError } from "@/features/auth/helper";
-import { createSafeActionClient } from "next-safe-action";
+import {
+  createSafeActionClient,
+  DEFAULT_SERVER_ERROR_MESSAGE,
+} from "next-safe-action";
+import { z } from "zod";
+import { logger } from "../logger";
 
 export class ActionError extends Error {}
 
-type handleServerError = (e: Error) => string;
-
-const handleServerError: handleServerError = (e) => {
-  if (e instanceof ActionError) {
-    // logger.info("[DEV] - Action Error", e.message);
-    return e.message;
-  }
-
-  if (e instanceof AuthError) {
-    // logger.info("[DEV] - Auth Error", e.message);
-    return e.message;
-  }
-
-  // logger.info("[DEV] - Unknown Error", e);
-
-  return "An unexpected error occurred.";
-};
+const log = logger.child({
+  module: "action",
+});
 
 export const action = createSafeActionClient({
-  handleServerError,
+  defineMetadataSchema: () => {
+    return z.object({
+      actionName: z.string().optional(),
+    });
+  },
+  handleServerError: (e, { ctx, metadata }) => {
+    log.error(
+      {
+        message: e.message,
+        cause: e.cause?.toString(),
+        actionName: metadata.actionName,
+        ctx: ctx,
+      },
+      "Action server error occurred",
+    );
+
+    if (e instanceof ActionError) {
+      console.log("e.cause", e.cause);
+      return e.message;
+    }
+
+    return DEFAULT_SERVER_ERROR_MESSAGE;
+  },
 });

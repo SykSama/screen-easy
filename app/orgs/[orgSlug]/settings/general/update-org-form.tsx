@@ -40,7 +40,11 @@ export const UpdateOrgForm = ({ initialData }: GeneralSettingsFormProps) => {
           toast.info("Organization updated successfully");
         },
         onError: (args) => {
-          toast.error(args.error.serverError ?? "Error updating organization");
+          if (!args.error.serverError) {
+            return;
+          }
+
+          toast.error(args.error.serverError);
         },
       },
     },

@@ -1,10 +1,11 @@
 "use server";
 
-import { requiredAuth } from "@/features/auth/helper";
-import { action } from "@/lib/actions/safe-actions";
+import { action, ActionError } from "@/lib/actions/safe-actions";
 import { logger } from "@/lib/logger";
-import { returnValidationErrors } from "next-safe-action";
+import { updateOrganizationQuery } from "@/query/orgs/update-org.query";
+import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+
 import {
   DeleteOrgSchema,
   GeneralSettingsFormSchema,
@@ -16,34 +17,26 @@ const log = logger.child({
 
 export const updateOrgSettingsAction = action
   .schema(GeneralSettingsFormSchema)
+  .metadata({ actionName: "updateOrgSettingsAction" })
   .action(async ({ parsedInput: { name, orgId } }) => {
-    const { supabase } = await requiredAuth();
+    try {
+      const org = await updateOrganizationQuery({
+        id: orgId,
+        organization: { name },
+      });
 
-    log.info(`Updating organization ${name} with id ${orgId}`);
-
-    const { data: org, error } = await supabase
-      .from("organizations")
-      .update({ name })
-      .eq("id", orgId)
-      .select()
-      .single();
-
-    if (error) {
-      log.error("Error updating organization", error);
-      returnValidationErrors(GeneralSettingsFormSchema, {
-        _errors: ["Unexpected error occurred while updating organization"],
+      revalidatePath(`/orgs/${org.slug}`);
+    } catch (error) {
+      throw new ActionError("Error updating organization", {
+        cause: error,
       });
     }
-
-    revalidatePath(`/orgs/${org.slug}`);
-
-    return { success: "Organization updated successfully" };
   });
 
 export const deleteOrgAction = action
   .schema(DeleteOrgSchema)
   .action(async ({ parsedInput: { orgId } }) => {
-    const { supabase } = await requiredAuth();
+    const supabase = await createClient();
 
     const { error } = await supabase
       .from("organizations")
