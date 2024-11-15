@@ -8,6 +8,7 @@ type MembershipWithOrganizationAndRole = Tables<"organization_memberships"> & {
   membership_roles: Tables<"membership_roles">;
 };
 
+//TODO: For now, i don't care about the performance, but this query should be cached when called in the layout `orgs/[orgSlug]/layout.tsx`
 export const getProfileOrgsQuery = async (
   profileId: string,
 ): Promise<MembershipWithOrganizationAndRole[]> => {

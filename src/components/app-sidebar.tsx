@@ -109,20 +109,16 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
               title: "Dashboard",
               url: `/orgs/${orgSlug}/dashboard`,
               icon: Home,
-              isActive:
-                window.location.pathname === `/orgs/${orgSlug}/dashboard`,
             },
             {
               title: "Screens",
               url: `/orgs/${orgSlug}/screens`,
               icon: ScreenShare,
-              isActive: window.location.pathname === `/orgs/${orgSlug}/screens`,
             },
             {
               title: "Images",
               url: `/orgs/${orgSlug}/images`,
               icon: Image,
-              isActive: window.location.pathname === `/orgs/${orgSlug}/images`,
             },
           ]}
         />

@@ -9,12 +9,18 @@ export default async function RouteLayout(
   props: LayoutParams<{ orgSlug: string }>,
 ) {
   const { user } = await requiredAuth();
+
+  //TODO: For now, i don't care about the performance, but this query should be cached
   const orgs = await getProfileOrgsQuery(user.id);
+
+  const { orgSlug } = await props.params;
 
   const sidebarOrgs = orgs.map((org) => ({
     name: org.organizations.name,
     logo: <Command className="size-4 shrink-0" />,
     plan: org.membership_roles.name,
+    slug: org.organizations.slug,
+    isActive: org.organizations.slug === orgSlug,
   }));
 
   const sidebarUser = {
@@ -23,7 +29,7 @@ export default async function RouteLayout(
     avatar: "/avatars/shadcn.jpg",
   };
 
-  const { orgSlug } = await props.params;
+  console.log("Rendering layout");
 
   return (
     <SidebarProvider>

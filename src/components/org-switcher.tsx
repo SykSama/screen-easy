@@ -24,11 +24,13 @@ export type OrgSwitcherProps = {
     name: string;
     logo: React.ReactNode;
     plan: string;
+    slug: string;
+    isActive: boolean;
   }[];
 };
 
 export function OrgSwitcher({ orgs }: OrgSwitcherProps) {
-  const [activeOrg, setActiveOrg] = React.useState(orgs[0]);
+  const activeOrg = orgs.find((org) => org.isActive) ?? orgs[0];
 
   return (
     <SidebarMenu>
@@ -56,17 +58,18 @@ export function OrgSwitcher({ orgs }: OrgSwitcherProps) {
               Organizations
             </DropdownMenuLabel>
             {orgs.map((org, index) => (
-              <DropdownMenuItem
-                key={org.name}
-                onClick={() => setActiveOrg(org)}
-                className="cursor-pointer gap-2 p-2"
-              >
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  {org.logo}
-                </div>
-                {org.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-              </DropdownMenuItem>
+              <Link href={`/orgs/${org.slug}`} key={org.slug}>
+                <DropdownMenuItem
+                  key={org.name}
+                  className="cursor-pointer gap-2 p-2"
+                >
+                  <div className="flex size-6 items-center justify-center rounded-sm border">
+                    {org.logo}
+                  </div>
+                  {org.name}
+                  <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer gap-2 p-2">
