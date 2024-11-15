@@ -10,20 +10,20 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-export function NavProjects({
-  projects,
-}: {
-  projects: {
+export type NavOrgSettingsProps = {
+  settings: {
     name: string;
     url: string;
     icon: LucideIcon;
   }[];
-}) {
+};
+
+export const NavOrgSettings = ({ settings }: NavOrgSettingsProps) => {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Settings</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {settings.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
@@ -36,4 +36,4 @@ export function NavProjects({
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};

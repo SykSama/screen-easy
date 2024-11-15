@@ -25,15 +25,18 @@ export const NavBreadcrumb = ({ breadcrumbs }: NavBreadcrumbProps) => {
           <BreadcrumbList>
             {breadcrumbs.map((item, index) => (
               <>
-                <BreadcrumbItem className="hidden md:block" key={index}>
-                  <BreadcrumbLink key={index} href={item.url}>
+                <BreadcrumbItem
+                  key={`bitem-${index}`}
+                  className="hidden md:block"
+                >
+                  <BreadcrumbLink key={`blink-${index}`} href={item.url}>
                     {item.name}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {index !== breadcrumbs.length - 1 && (
                   <BreadcrumbSeparator
                     className="hidden md:block"
-                    key={index}
+                    key={`bseparator-${index}`}
                   />
                 )}
               </>

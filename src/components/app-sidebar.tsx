@@ -15,7 +15,7 @@ import {
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
+
 import { NavSecondary } from "@/components/nav-secondary";
 import type { NavUserProps } from "@/components/nav-user";
 import { NavUser } from "@/components/nav-user";
@@ -25,30 +25,11 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import { NavOrgSettings } from "./nav-org-settings";
 import type { OrgSwitcherProps } from "./org-switcher";
 import { OrgSwitcher } from "./org-switcher";
 
 const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: Home,
-      isActive: true,
-    },
-    {
-      title: "Screens",
-      url: "/screens",
-      icon: ScreenShare,
-      isActive: false,
-    },
-    {
-      title: "Images",
-      url: "/images",
-      icon: Image,
-      isActive: true,
-    },
-  ],
   projects: [
     {
       name: "General",
@@ -97,6 +78,34 @@ export type AppSidebarProps = React.ComponentProps<typeof Sidebar> &
   };
 
 export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
+  const settings = [
+    {
+      name: "General",
+      url: `/orgs/${orgSlug}/settings/general`,
+      icon: Settings,
+    },
+    {
+      name: "Team",
+      url: `/orgs/${orgSlug}/settings/team`,
+      icon: User,
+    },
+    {
+      name: "Billing",
+      url: `/orgs/${orgSlug}/settings/billing`,
+      icon: CreditCard,
+    },
+    // {
+    //   name: "Usage",
+    //   url: `/orgs/${orgSlug}/settings/usage`,
+    //   icon: ChartArea,
+    // },
+    {
+      name: "Invoices",
+      url: `/orgs/${orgSlug}/settings/invoices`,
+      icon: File,
+    },
+  ];
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -122,7 +131,7 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
             },
           ]}
         />
-        <NavProjects projects={data.projects} />
+        <NavOrgSettings settings={settings} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
