@@ -2,13 +2,19 @@
 
 import { requiredAuth } from "@/features/auth/helper";
 import { action } from "@/lib/actions/safe-actions";
+
+import { logger } from "@/lib/logger";
 import { returnValidationErrors } from "next-safe-action";
 import { redirect } from "next/navigation";
 import { NewOrgFormSchema } from "./new-org-form.schema";
 
+const log = logger.child({
+  module: "createOrgAction",
+});
+
 export const createOrgAction = action
   .schema(NewOrgFormSchema)
-  .action(async ({ parsedInput: { name, email, slug } }) => {
+  .action(async ({ parsedInput: { name, email, planId } }) => {
     const { user, supabase } = await requiredAuth();
 
     const { data: org, error: orgError } = await supabase
@@ -16,21 +22,13 @@ export const createOrgAction = action
       .insert({
         name,
         email,
-        slug,
+        plan_id: planId,
       })
       .select()
       .single();
 
     if (orgError) {
-      console.error("Error creating organization", orgError);
-
-      if (orgError.code === "23505") {
-        returnValidationErrors(NewOrgFormSchema, {
-          slug: {
-            _errors: ["This slug is already taken"],
-          },
-        });
-      }
+      log.error("Error creating organization", orgError);
       returnValidationErrors(NewOrgFormSchema, {
         _errors: ["Unexpected error occurred while creating organization"],
       });
@@ -41,16 +39,17 @@ export const createOrgAction = action
       .insert({
         organization_id: org.id,
         profile_id: user.id,
-        role_id: "owner",
+        role_id: "OWNER",
       });
 
     if (membershipError) {
-      console.error("Error creating organization membership", membershipError);
-
+      log.error(`Error creating organization membership ${membershipError}`, {
+        error: membershipError,
+      });
       returnValidationErrors(NewOrgFormSchema, {
         _errors: ["Failed to setup organization permissions"],
       });
     }
 
-    return redirect(`/orgs/${slug}`);
+    return redirect(`/orgs/${org.slug}`);
   });

@@ -17,12 +17,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { Tables } from "@/types/database.generated.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { NewOrgFormSchema } from "./new-org-form.schema";
 import { createOrgAction } from "./new-org.action";
 
-export const NewOrgForm = () => {
+type NewOrgFormProps = {
+  userEmail: string;
+  defaultOrgName: string;
+  plans: Tables<"organization_plans">[];
+};
+
+export const NewOrgForm = ({
+  userEmail,
+  defaultOrgName,
+  plans,
+}: NewOrgFormProps) => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     createOrgAction,
     zodResolver(NewOrgFormSchema),
@@ -30,9 +48,9 @@ export const NewOrgForm = () => {
       formProps: {
         mode: "onChange",
         values: {
-          name: "",
-          email: "",
-          slug: "",
+          name: defaultOrgName,
+          email: userEmail,
+          planId: "FREE",
         },
       },
     },
@@ -58,7 +76,7 @@ export const NewOrgForm = () => {
                     <FormItem className="grid gap-2">
                       <FormLabel htmlFor="name">Organization Name</FormLabel>
                       <FormControl>
-                        <Input id="name" placeholder="Acme Corp" {...field} />
+                        <Input id="name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -71,12 +89,7 @@ export const NewOrgForm = () => {
                     <FormItem className="grid gap-2">
                       <FormLabel htmlFor="email">Contact Email</FormLabel>
                       <FormControl>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="contact@acme.com"
-                          {...field}
-                        />
+                        <Input id="email" type="email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -84,18 +97,27 @@ export const NewOrgForm = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="slug"
+                  name="planId"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
-                      <FormLabel htmlFor="slug">Organization URL</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center">
-                          <span className="mr-2 text-sm text-muted-foreground">
-                            orgs/
-                          </span>
-                          <Input id="slug" placeholder="acme" {...field} />
-                        </div>
-                      </FormControl>
+                      <FormLabel>Plan</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a plan" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {plans.map((plan) => (
+                            <SelectItem key={plan.id} value={plan.id}>
+                              {plan.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

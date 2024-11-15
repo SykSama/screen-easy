@@ -80,24 +80,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "organization_memberships_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "profiles_organizations_roles"
-            referencedColumns: ["organization_id"]
-          },
-          {
             foreignKeyName: "organization_memberships_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "organization_memberships_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles_organizations_roles"
             referencedColumns: ["id"]
           },
           {
@@ -146,7 +132,7 @@ export type Database = {
           id?: string
           name: string
           plan_id?: string
-          slug: string
+          slug?: string
           updated_at?: string
         }
         Update: {
@@ -188,20 +174,16 @@ export type Database = {
       }
     }
     Views: {
-      profiles_organizations_roles: {
-        Row: {
-          created_at: string | null
-          id: string | null
-          organization_id: string | null
-          organization_slug: string | null
-          role_name: string | null
-          updated_at: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      nanoid: {
+        Args: {
+          size?: number
+          alphabet?: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

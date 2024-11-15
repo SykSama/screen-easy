@@ -1,11 +1,17 @@
 import { requiredAuth } from "@/features/auth/helper";
 import { NewOrgForm } from "./new-org-form";
+import { generateDefaultOrgName, getOrganizationPlans } from "./new-org.utils";
 
 export default async function NewOrgPage() {
-  //TODO: Add default param in organization
-  //TODO: Add filter in sync with url
-  //TODO: better UI
+  const { user } = await requiredAuth();
+  const plans = await getOrganizationPlans();
+  const defaultOrgName = generateDefaultOrgName(user.email ?? "");
 
-  await requiredAuth();
-  return <NewOrgForm />;
+  return (
+    <NewOrgForm
+      userEmail={user.email ?? ""}
+      defaultOrgName={defaultOrgName}
+      plans={plans}
+    />
+  );
 }
