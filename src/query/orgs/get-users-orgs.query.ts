@@ -1,7 +1,12 @@
 "use server";
 
+import { logger } from "@/lib/logger";
 import type { Tables } from "@/types/database.generated.types";
 import { createClient } from "@/utils/supabase/server";
+
+const log = logger.child({
+  module: "getProfileOrgsQuery",
+});
 
 type MembershipWithOrganizationAndRole = Tables<"organization_memberships"> & {
   organizations: Tables<"organizations">;
@@ -24,7 +29,7 @@ export const getProfileOrgsQuery = async (
 
     return data ?? [];
   } catch (err) {
-    console.error(err);
+    log.error(err);
     throw err;
   }
 };
