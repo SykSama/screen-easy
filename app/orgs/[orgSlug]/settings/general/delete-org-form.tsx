@@ -19,21 +19,12 @@ import { useRouter } from "next/navigation";
 import { DeleteOrgSchema } from "./general-settings-form.schema";
 import { deleteOrgAction } from "./general-settings.action";
 
-type DeleteOrgFormProps = {
-  orgId: string;
-};
-
-export const DeleteOrgForm = ({ orgId }: DeleteOrgFormProps) => {
+export const DeleteOrgForm = () => {
   const router = useRouter();
   const { action, handleSubmitWithAction } = useHookFormAction(
     deleteOrgAction,
     zodResolver(DeleteOrgSchema),
     {
-      formProps: {
-        values: {
-          orgId: orgId,
-        },
-      },
       actionProps: {
         onSuccess: () => {
           router.push("/orgs/new");

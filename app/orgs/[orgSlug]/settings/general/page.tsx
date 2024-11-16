@@ -4,7 +4,7 @@ import type { PageParams } from "@/types/next";
 import { DeleteOrgForm } from "./delete-org-form";
 import { UpdateOrgForm } from "./update-org-form";
 
-export default async function RoutePage({
+export default async function GeneralSettingsPage({
   params,
 }: PageParams<{ orgSlug: string }>) {
   const { orgSlug } = await params;
@@ -22,7 +22,7 @@ export default async function RoutePage({
         <h1 className="text-2xl font-bold">{org.name} settings</h1>
         <div className="flex flex-col gap-6">
           <UpdateOrgForm initialData={org} />
-          <DeleteOrgForm orgId={org.id} />
+          <DeleteOrgForm />
         </div>
       </div>
     </>

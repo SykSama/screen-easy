@@ -32,7 +32,6 @@ export const UpdateOrgForm = ({ initialData }: GeneralSettingsFormProps) => {
         values: {
           name: initialData.name,
           slug: initialData.slug,
-          orgId: initialData.id,
         },
       },
       actionProps: {

@@ -1,52 +1,30 @@
 "use server";
 
-import { action, ActionError } from "@/lib/actions/safe-actions";
-import { logger } from "@/lib/logger";
+import { orgAction } from "@/lib/actions/safe-actions";
 import { updateOrganizationQuery } from "@/query/orgs/update-org.query";
-import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
+import { deleteOrganizationQuery } from "@/query/orgs/delete-org.query";
 import {
   DeleteOrgSchema,
   GeneralSettingsFormSchema,
 } from "./general-settings-form.schema";
 
-const log = logger.child({
-  module: "updateOrgSettingsAction",
-});
-
-export const updateOrgSettingsAction = action
+export const updateOrgSettingsAction = orgAction
   .schema(GeneralSettingsFormSchema)
-  .metadata({ actionName: "updateOrgSettingsAction" })
-  .action(async ({ parsedInput: { name, orgId } }) => {
-    try {
-      const org = await updateOrganizationQuery({
-        id: orgId,
-        organization: { name },
-      });
+  .metadata({ actionName: "updateOrgSettingsAction", roles: ["OWNER"] })
+  .action(async ({ parsedInput: { name }, ctx: { org } }) => {
+    const updatedOrg = await updateOrganizationQuery({
+      id: org.id,
+      organization: { name },
+    });
 
-      revalidatePath(`/orgs/${org.slug}`);
-    } catch (error) {
-      throw new ActionError("Error updating organization", {
-        cause: error,
-      });
-    }
+    revalidatePath(`/orgs/${updatedOrg.slug}`);
   });
 
-export const deleteOrgAction = action
+export const deleteOrgAction = orgAction
   .schema(DeleteOrgSchema)
-  .action(async ({ parsedInput: { orgId } }) => {
-    const supabase = await createClient();
-
-    const { error } = await supabase
-      .from("organizations")
-      .delete()
-      .eq("id", orgId);
-
-    if (error) {
-      log.error("Error deleting organization", error);
-      throw new Error("Failed to delete organization");
-    }
-
-    return { success: true };
+  .metadata({ actionName: "deleteOrgAction", roles: ["OWNER"] })
+  .action(async ({ ctx: { org } }) => {
+    await deleteOrganizationQuery({ id: org.id });
   });
