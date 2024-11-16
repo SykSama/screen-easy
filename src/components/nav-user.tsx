@@ -18,6 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export type NavUserProps = {
   user: {
@@ -64,13 +65,15 @@ export function NavUser({ user }: NavUserProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircle />
-                My Account
-              </DropdownMenuItem>
+              <Link href="/account/me">
+                <DropdownMenuItem className="cursor-pointer">
+                  <UserCircle />
+                  My Account
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>

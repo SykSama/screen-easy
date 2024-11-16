@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ChartArea,
   CreditCard,
   File,
   Home,
@@ -30,33 +29,6 @@ import type { OrgSwitcherProps } from "./org-switcher";
 import { OrgSwitcher } from "./org-switcher";
 
 const data = {
-  projects: [
-    {
-      name: "General",
-      url: "/orgs/general",
-      icon: Settings,
-    },
-    {
-      name: "Team",
-      url: "/orgs/team",
-      icon: User,
-    },
-    {
-      name: "Billing",
-      url: "/orgs/billing",
-      icon: CreditCard,
-    },
-    {
-      name: "Usage",
-      url: "/orgs/usage",
-      icon: ChartArea,
-    },
-    {
-      name: "Invoices",
-      url: "/orgs/invoices",
-      icon: File,
-    },
-  ],
   navSecondary: [
     {
       title: "Support",
