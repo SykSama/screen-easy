@@ -86,7 +86,7 @@ const authMiddleware = createMiddleware().define(async ({ next }) => {
   return next({ ctx: { user } });
 });
 
-export const authActionClient = action.use(authMiddleware);
+export const authAction = action.use(authMiddleware);
 
 // TODO: This middleware should be removed from orgAction to avoid the double call to select org
 const orgContextMiddleware = createMiddleware().define(async ({ next }) => {
