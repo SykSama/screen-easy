@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Icons } from "@/components/ui/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { useRouter } from "next/navigation";
@@ -71,7 +72,12 @@ export const DeleteOrgForm = () => {
                     className="bg-destructive hover:bg-destructive/90"
                     disabled={action.isPending}
                   >
-                    {action.isPending ? "Deleting..." : "Delete"}
+                    <>
+                      {action.isPending && (
+                        <Icons.spinner className="mr-2 size-4 animate-spin" />
+                      )}
+                      Delete
+                    </>
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

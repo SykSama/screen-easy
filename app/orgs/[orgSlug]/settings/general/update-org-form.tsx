@@ -1,5 +1,6 @@
 "use client";
 
+import { LoadingButton } from "@/components/loading-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -108,9 +109,9 @@ export const UpdateOrgForm = ({ initialData }: GeneralSettingsFormProps) => {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={action.isPending}>
-                {action.isPending ? "Saving..." : "Save"}
-              </Button>
+              <LoadingButton type="submit" isLoading={action.isPending}>
+                Save
+              </LoadingButton>
             </div>
           </form>
         </Form>
