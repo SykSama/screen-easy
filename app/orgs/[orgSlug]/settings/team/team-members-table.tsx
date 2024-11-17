@@ -13,14 +13,16 @@ import {
 } from "@/components/ui/table";
 
 import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
+import type { Tables } from "@/types/database.generated.types";
 import { Trash2Icon } from "lucide-react";
 import { RoleSelector } from "./role-selector";
 
 type TeamMembersTableProps = {
   members: MembersFromOrganization[];
+  roles: Tables<"membership_roles">[];
 };
 
-export const TeamMembersTable = ({ members }: TeamMembersTableProps) => {
+export const TeamMembersTable = ({ members, roles }: TeamMembersTableProps) => {
   return (
     <Card>
       <CardContent className="p-0">
@@ -55,7 +57,7 @@ export const TeamMembersTable = ({ members }: TeamMembersTableProps) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <RoleSelector member={member} />
+                  <RoleSelector member={member} roles={roles} />
                 </TableCell>
                 <TableCell>
                   <Button

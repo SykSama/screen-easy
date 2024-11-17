@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getMembershipRolesQuery } from "@/query/orgs/get-membership-roles.query";
 import { getOrgMembersQuery } from "@/query/orgs/get-org-members.query";
 import { getOrgQuery } from "@/query/orgs/get-org.query";
 import { TeamMembersTable } from "./team-members-table";
@@ -11,6 +12,7 @@ export type PageContentProps = {
 export const PageContent = async ({ orgSlug }: PageContentProps) => {
   const org = await getOrgQuery(orgSlug);
   const members = await getOrgMembersQuery(org.id);
+  const roles = await getMembershipRolesQuery();
 
   return (
     <>
@@ -26,7 +28,7 @@ export const PageContent = async ({ orgSlug }: PageContentProps) => {
           <Button size="xs">Invite member</Button>
         </div>
       </div>
-      <TeamMembersTable members={members} />
+      <TeamMembersTable members={members} roles={roles} />
     </>
   );
 };

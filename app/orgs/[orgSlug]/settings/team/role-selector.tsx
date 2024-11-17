@@ -1,6 +1,7 @@
 "use client";
 
 import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
+import type { Tables } from "@/types/database.generated.types";
 
 import {
   Select,
@@ -10,19 +11,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useOptimisticAction } from "next-safe-action/hooks";
-
 import { toast } from "sonner";
 import { updateRoleAction } from "./role.action";
 
 export type RoleSelectorProps = {
   member: MembersFromOrganization;
+  roles: Tables<"membership_roles">[];
 };
 
-export const RoleSelector = ({ member }: RoleSelectorProps) => {
+export const RoleSelector = ({ member, roles }: RoleSelectorProps) => {
   const {
     execute: updateRole,
     optimisticState,
     reset,
+    status,
   } = useOptimisticAction(updateRoleAction, {
     currentState: member.membership_roles.id,
     updateFn: (_, input) => input.roleId,
@@ -39,6 +41,8 @@ export const RoleSelector = ({ member }: RoleSelectorProps) => {
     return updateRole({ userId, roleId });
   };
 
+  const isLoading = status === "executing";
+
   return (
     <Select
       defaultValue={member.membership_roles.id}
@@ -46,14 +50,17 @@ export const RoleSelector = ({ member }: RoleSelectorProps) => {
       onValueChange={async (value) =>
         handleRoleChange(member.profiles.id, value)
       }
+      disabled={isLoading}
     >
       <SelectTrigger className="h-8 w-[100px]">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="OWNER">Owner</SelectItem>
-        <SelectItem value="ADMIN">Admin</SelectItem>
-        <SelectItem value="MEMBER">Member</SelectItem>
+        {roles.map((role) => (
+          <SelectItem key={role.id} value={role.id}>
+            {role.name}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
