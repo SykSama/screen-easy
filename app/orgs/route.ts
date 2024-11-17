@@ -17,6 +17,6 @@ export const GET = async () => {
   }
 
   return NextResponse.redirect(
-    new URL(`/orgs/${orgs[0].organizations.slug}`, getServerUrl()),
+    new URL(`/orgs/${orgs[0].organizations.slug}/dashboard`, getServerUrl()),
   );
 };

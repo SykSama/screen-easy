@@ -7,7 +7,7 @@ import type { LayoutParams } from "@/types/next";
 import { Command } from "lucide-react";
 
 export default async function RouteLayout(
-  props: LayoutParams<{ orgSlug: string }>,
+  props: LayoutParams<{ orgSlug: string }> & { breadcrumb: React.ReactNode },
 ) {
   const { user } = await requiredAuth();
 
@@ -40,7 +40,10 @@ export default async function RouteLayout(
   return (
     <SidebarProvider>
       <AppSidebar orgs={sidebarOrgs} user={sidebarUser} orgSlug={orgSlug} />
-      <SidebarInset>{props.children}</SidebarInset>
+      <SidebarInset>
+        {props.breadcrumb}
+        {props.children}
+      </SidebarInset>
     </SidebarProvider>
   );
 }
