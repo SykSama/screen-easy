@@ -1,5 +1,6 @@
 create table public.profiles (
     id uuid not null references auth.users on delete cascade,
+    email text not null,
     created_at timestamp with time zone not null default now(),
     updated_at timestamp with time zone not null default now(),
     primary key (id)
@@ -20,13 +21,30 @@ create policy "Users can update their own profiles."
   using ( auth.uid() = id );
 
 -- Function to handle new user and create profiles
-create function public.handle_new_user()
+create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
 security definer set search_path = ''
 as $$
 begin
-  insert into public.profiles (id) values (new.id);
+  insert into public.profiles (id, email)
+  values (new.id, new.email);
+
+  return new;
+end;
+$$;
+
+-- Function to handle update user and update profiles
+create or replace function public.handle_update_user()
+returns trigger
+language plpgsql
+security definer set search_path = ''
+as $$
+begin
+  update public.profiles
+  set email = new.email
+  where id = new.id;
+
   return new;
 end;
 $$;
@@ -36,6 +54,12 @@ create trigger on_auth_user_created
 after insert on auth.users
 for each row
 execute function public.handle_new_user();
+
+-- Trigger to handle update user and update profile
+create trigger on_auth_user_updated
+after update on auth.users
+for each row
+execute function public.handle_update_user();
 
 create trigger update_updated_at
 before update on public.profiles

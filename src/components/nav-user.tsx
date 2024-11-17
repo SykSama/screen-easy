@@ -88,7 +88,7 @@ export const AvatarComponent = ({ user }: NavUserProps) => {
   return (
     <Avatar className="size-8 rounded-lg">
       <AvatarImage src={user.avatar} alt={user.name} />
-      <AvatarFallback className="rounded-lg">
+      <AvatarFallback className="rounded-lg bg-background">
         {user.name.slice(0, 2).toUpperCase()}
       </AvatarFallback>
     </Avatar>

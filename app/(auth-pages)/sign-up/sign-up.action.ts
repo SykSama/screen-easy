@@ -8,6 +8,9 @@ import { SignUpFormScheme } from "./sign-up-form.schema";
 
 export const signUpAction = action
   .schema(SignUpFormScheme)
+  .metadata({
+    actionName: "sign-up",
+  })
   .action(async ({ parsedInput: { email, password } }) => {
     const supabase = await createClient();
 

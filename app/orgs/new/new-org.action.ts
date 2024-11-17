@@ -14,6 +14,9 @@ const log = logger.child({
 
 export const createOrgAction = action
   .schema(NewOrgFormSchema)
+  .metadata({
+    actionName: "create-org",
+  })
   .action(async ({ parsedInput: { name, email, planId } }) => {
     const { user, supabase } = await requiredAuth();
 
