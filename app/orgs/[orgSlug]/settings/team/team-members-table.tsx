@@ -12,17 +12,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Badge } from "@/components/ui/badge";
 import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
 import type { Tables } from "@/types/database.generated.types";
+import type { User } from "@supabase/supabase-js";
 import { Trash2Icon } from "lucide-react";
 import { RoleSelector } from "./role-selector";
 
 type TeamMembersTableProps = {
   members: MembersFromOrganization[];
   roles: Tables<"membership_roles">[];
+  user: User;
 };
 
-export const TeamMembersTable = ({ members, roles }: TeamMembersTableProps) => {
+export const TeamMembersTable = ({
+  members,
+  roles,
+  user,
+}: TeamMembersTableProps) => {
   return (
     <Card>
       <CardContent className="p-0">
@@ -37,7 +44,7 @@ export const TeamMembersTable = ({ members, roles }: TeamMembersTableProps) => {
           <TableBody>
             {members.map((member) => (
               <TableRow key={member.profiles.id}>
-                <TableCell className="flex items-center gap-3">
+                <TableCell className="flex items-center gap-2 align-middle">
                   <AvatarComponent
                     user={{
                       name: member.profiles.email.split("@")[0] ?? "",
@@ -45,16 +52,11 @@ export const TeamMembersTable = ({ members, roles }: TeamMembersTableProps) => {
                       avatar: "/avatars/shadcn.jpg",
                     }}
                   />
-                  <div className="flex items-center gap-3">
-                    <div className="flex flex-col">
-                      <span className="text-sm">{member.profiles.email}</span>
-                      {member.profiles.id === "you" && (
-                        <span className="text-xs text-muted-foreground">
-                          You
-                        </span>
-                      )}
-                    </div>
-                  </div>
+
+                  <span className="text-sm">{member.profiles.email}</span>
+                  {member.profiles.id === user.id && (
+                    <Badge variant="outline">You</Badge>
+                  )}
                 </TableCell>
                 <TableCell>
                   <RoleSelector member={member} roles={roles} />
