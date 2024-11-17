@@ -4,6 +4,7 @@ import { requiredAuth } from "@/features/auth/helper";
 import { getMembershipRolesQuery } from "@/query/orgs/get-membership-roles.query";
 import { getOrgMembersQuery } from "@/query/orgs/get-org-members.query";
 import { getOrgQuery } from "@/query/orgs/get-org.query";
+import Link from "next/link";
 import { TeamMembersTable } from "./team-members-table";
 
 export type PageContentProps = {
@@ -27,7 +28,11 @@ export const PageContent = async ({ orgSlug }: PageContentProps) => {
           <Button variant="outline-destructive" size="xs">
             Leave organization
           </Button>
-          <Button size="xs">Invite member</Button>
+          <Button asChild size={"xs"}>
+            <Link href={`/orgs/${orgSlug}/settings/team/invite`}>
+              Invite a member
+            </Link>
+          </Button>
         </div>
       </div>
       <TeamMembersTable members={members} roles={roles} user={user} />
