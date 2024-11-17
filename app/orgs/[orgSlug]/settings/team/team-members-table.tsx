@@ -4,13 +4,6 @@ import { AvatarComponent } from "@/components/nav-user";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
@@ -18,8 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
 import { Trash2Icon } from "lucide-react";
+import { RoleSelector } from "./role-selector";
 
 type TeamMembersTableProps = {
   members: MembersFromOrganization[];
@@ -43,7 +38,7 @@ export const TeamMembersTable = ({ members }: TeamMembersTableProps) => {
                 <TableCell className="flex items-center gap-3">
                   <AvatarComponent
                     user={{
-                      name: member.profiles.email?.split("@")[0] ?? "",
+                      name: member.profiles.email.split("@")[0] ?? "",
                       email: member.profiles.email,
                       avatar: "/avatars/shadcn.jpg",
                     }}
@@ -60,16 +55,7 @@ export const TeamMembersTable = ({ members }: TeamMembersTableProps) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Select defaultValue={member.membership_roles.id}>
-                    <SelectTrigger className="h-8 w-[100px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="OWNER">Owner</SelectItem>
-                      <SelectItem value="ADMIN">Admin</SelectItem>
-                      <SelectItem value="MEMBER">Member</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <RoleSelector member={member} />
                 </TableCell>
                 <TableCell>
                   <Button

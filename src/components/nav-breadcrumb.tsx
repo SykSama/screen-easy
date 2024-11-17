@@ -21,25 +21,17 @@ export const NavBreadcrumb = ({ breadcrumbs }: NavBreadcrumbProps) => {
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
+        <Breadcrumb separator={<BreadcrumbSeparator />}>
+          <BreadcrumbList key="breadcrumb-list">
             {breadcrumbs.map((item, index) => (
-              <>
-                <BreadcrumbItem
-                  key={`bitem-${index}`}
-                  className="hidden md:block"
-                >
-                  <BreadcrumbLink key={`blink-${index}`} href={item.url}>
-                    {item.name}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                {index !== breadcrumbs.length - 1 && (
-                  <BreadcrumbSeparator
-                    className="hidden md:block"
-                    key={`bseparator-${index}`}
-                  />
-                )}
-              </>
+              <BreadcrumbItem
+                key={`bitem-${index}`}
+                className="hidden md:block"
+              >
+                <BreadcrumbLink key={`blink-${index}`} href={item.url}>
+                  {item.name}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
             ))}
           </BreadcrumbList>
         </Breadcrumb>
