@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h2>
+      You have been invited to join {{ .OrganizationName }} on {{ .AppName }}.
+    </h2>
+    <a
+      href="{{ .SiteURL }}/auth/authenticate?token_hash={{ .TokenHash }}&type=invite&redirect_to={{ .RedirectTo }}"
+      >Accept the invite
+    </a>
+  </body>
+</html>

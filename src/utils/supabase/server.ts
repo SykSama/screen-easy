@@ -3,6 +3,22 @@ import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
+export const createAdminClient = async (): Promise<
+  SupabaseClient<Database>
+> => {
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return [];
+        },
+      },
+    },
+  );
+};
+
 export const createClient = async (): Promise<SupabaseClient<Database>> => {
   const cookieStore = await cookies();
 

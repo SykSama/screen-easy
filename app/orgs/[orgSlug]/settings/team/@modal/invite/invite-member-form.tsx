@@ -37,6 +37,12 @@ export const InviteMemberForm = ({
     inviteMemberAction,
     zodResolver(InviteMemberSchema),
     {
+      formProps: {
+        defaultValues: {
+          email: "",
+          roleId: roles[0].id,
+        },
+      },
       actionProps: {
         onSuccess: () => {
           toast.success("Invitation sent successfully");
