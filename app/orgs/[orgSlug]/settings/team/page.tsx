@@ -2,6 +2,8 @@ import type { PageParams } from "@/types/next";
 import { Suspense } from "react";
 import { PageContent } from "./page-content";
 
+// TODO: remove a person from organization
+// TODO: Leav organization
 export default async function TeamSettingsPage({
   params,
 }: PageParams<{ orgSlug: string }>) {
