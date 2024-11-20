@@ -2,9 +2,7 @@
 
 import {
   CreditCard,
-  File,
   Home,
-  Image,
   LifeBuoy,
   ScreenShare,
   Send,
@@ -66,16 +64,6 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
       url: `/orgs/${orgSlug}/settings/billing`,
       icon: CreditCard,
     },
-    // {
-    //   name: "Usage",
-    //   url: `/orgs/${orgSlug}/settings/usage`,
-    //   icon: ChartArea,
-    // },
-    {
-      name: "Invoices",
-      url: `/orgs/${orgSlug}/settings/invoices`,
-      icon: File,
-    },
   ];
 
   return (
@@ -92,14 +80,9 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
               icon: Home,
             },
             {
-              title: "Screens",
-              url: `/orgs/${orgSlug}/screens`,
+              title: "Workflows",
+              url: `/orgs/${orgSlug}/workflows`,
               icon: ScreenShare,
-            },
-            {
-              title: "Images",
-              url: `/orgs/${orgSlug}/images`,
-              icon: Image,
             },
           ]}
         />
