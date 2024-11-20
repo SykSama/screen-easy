@@ -1,16 +1,7 @@
 "use client";
 
 import { AvatarComponent } from "@/components/nav-user";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -20,16 +11,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { LoadingButton } from "@/components/loading-button";
 import { Badge } from "@/components/ui/badge";
 import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
 import type { Tables } from "@/types/database.generated.types";
 import type { User } from "@supabase/supabase-js";
-import { Trash2Icon } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
-import { toast } from "sonner";
-import { removeMemberAction } from "./remove-member.action";
-import { RoleSelector } from "./role-selector";
+import { RemoveMemberButton } from "./_components/remove-member/remove-member-button";
+import { RoleSelector } from "./_components/update-role/role-selector";
 
 type TeamMembersTableProps = {
   members: MembersFromOrganization[];
@@ -42,28 +29,6 @@ export const TeamMembersTable = ({
   roles,
   user,
 }: TeamMembersTableProps) => {
-  const { executeAsync, isPending } = useAction(removeMemberAction);
-
-  const handleRemoveMember = async (memberId: string) => {
-    const result = await executeAsync({ memberId });
-
-    if (!result) {
-      return;
-    }
-
-    if (result.serverError) {
-      toast.error(result.serverError);
-      return;
-    }
-
-    if (result.validationErrors) {
-      toast.error(result.validationErrors.memberId?._errors?.join(" "));
-      return;
-    }
-
-    toast.success("Member removed successfully");
-  };
-
   return (
     <Card>
       <CardContent className="p-0">
@@ -86,7 +51,6 @@ export const TeamMembersTable = ({
                       avatar: "/avatars/shadcn.jpg",
                     }}
                   />
-
                   <span className="text-sm">{member.profiles.email}</span>
                   {member.profiles.id === user.id && (
                     <Badge variant="outline">You</Badge>
@@ -96,39 +60,10 @@ export const TeamMembersTable = ({
                   <RoleSelector member={member} roles={roles} />
                 </TableCell>
                 <TableCell>
-                  {member.profiles.id !== user.id && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                        >
-                          <Trash2Icon className="size-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Remove member</DialogTitle>
-                          <DialogDescription>
-                            Are you sure you want to remove this member from the
-                            organization? This action cannot be undone.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="flex justify-end gap-2">
-                          <LoadingButton
-                            isLoading={isPending}
-                            variant="destructive"
-                            onClick={async () =>
-                              handleRemoveMember(member.profiles.id)
-                            }
-                          >
-                            Remove
-                          </LoadingButton>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
+                  <RemoveMemberButton
+                    memberId={member.profiles.id}
+                    isCurrentUser={member.profiles.id === user.id}
+                  />
                 </TableCell>
               </TableRow>
             ))}

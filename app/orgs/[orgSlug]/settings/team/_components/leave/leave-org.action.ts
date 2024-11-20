@@ -3,9 +3,9 @@
 import { orgAction } from "@/lib/actions/safe-actions";
 import { deleteOrganizationMembership } from "@/query/organization-memberships/delete-organization-memberships.query";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { isLastOwner } from "./is-last-owner";
-import { redirect } from "next/navigation";
 
 const LeaveOrgSchema = z.object({});
 

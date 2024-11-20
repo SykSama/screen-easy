@@ -5,7 +5,13 @@ import { orgAction } from "@/lib/actions/safe-actions";
 import { revalidatePath } from "next/cache";
 
 import { updateMemberRoleQuery } from "@/query/orgs/update-member-role.query";
-import { RoleSchema } from "./role.schema";
+
+import { z } from "zod";
+
+const RoleSchema = z.object({
+  userId: z.string(),
+  roleId: z.string(),
+});
 
 export const updateRoleAction = orgAction
   .schema(RoleSchema)
