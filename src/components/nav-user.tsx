@@ -84,6 +84,7 @@ export function NavUser({ user }: NavUserProps) {
   );
 }
 
+//TODO: utiliser des vrais data un jour
 export const AvatarComponent = ({ user }: NavUserProps) => {
   return (
     <Avatar className="size-8 rounded-lg">

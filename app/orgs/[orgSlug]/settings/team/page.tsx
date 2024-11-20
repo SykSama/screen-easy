@@ -2,8 +2,7 @@ import type { PageParams } from "@/types/next";
 import { Suspense } from "react";
 import { PageContent } from "./page-content";
 
-// TODO: remove a person from organization
-// TODO: Leav organization
+// TODO: Leave organization
 // TODO: Filters
 export default async function TeamSettingsPage({
   params,

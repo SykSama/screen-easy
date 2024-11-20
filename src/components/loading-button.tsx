@@ -1,12 +1,11 @@
 "use client";
 
+import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/ui/icons";
-import * as React from "react";
+import { Icons } from "./ui/icons";
 
-type LoadingButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type LoadingButtonProps = ButtonProps & {
   isLoading?: boolean;
-  children: React.ReactNode;
 };
 
 export const LoadingButton = ({
