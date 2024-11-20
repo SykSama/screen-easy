@@ -1,7 +1,8 @@
 import { requiredAuth } from "@/features/auth/helper";
+import { ResetPasswordForm } from "./reset-password-form";
 
-export default async function SetPasswordRoutePage() {
-  const { user } = await requiredAuth();
+export default async function ResetPasswordPage() {
+  await requiredAuth();
 
-  return <div>{JSON.stringify(user)}</div>;
+  return <ResetPasswordForm />;
 }
