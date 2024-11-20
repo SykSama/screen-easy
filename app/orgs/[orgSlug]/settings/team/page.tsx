@@ -2,7 +2,6 @@ import type { PageParams } from "@/types/next";
 import { Suspense } from "react";
 import { PageContent } from "./page-content";
 
-// TODO: Leave organization
 // TODO: Filters
 export default async function TeamSettingsPage({
   params,

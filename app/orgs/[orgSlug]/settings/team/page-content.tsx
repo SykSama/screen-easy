@@ -5,6 +5,7 @@ import { getMembershipRolesQuery } from "@/query/orgs/get-membership-roles.query
 import { getOrgMembersQuery } from "@/query/orgs/get-org-members.query";
 import { getOrgQuery } from "@/query/orgs/get-org.query";
 import Link from "next/link";
+import { LeaveOrganizationButton } from "./leave-org-button";
 import { TeamMembersTable } from "./team-members-table";
 
 export type PageContentProps = {
@@ -25,9 +26,7 @@ export const PageContent = async ({ orgSlug }: PageContentProps) => {
           className="h-8 w-[200px] bg-transparent"
         />
         <div className="flex gap-2">
-          <Button variant="outline-destructive" size="xs">
-            Leave organization
-          </Button>
+          <LeaveOrganizationButton />
           <Button asChild size={"xs"}>
             <Link href={`/orgs/${orgSlug}/settings/team/invite`}>
               Invite a member

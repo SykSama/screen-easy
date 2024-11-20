@@ -42,10 +42,14 @@ export const TeamMembersTable = ({
   roles,
   user,
 }: TeamMembersTableProps) => {
-  const { execute, result, isPending } = useAction(removeMemberAction);
+  const { executeAsync, isPending } = useAction(removeMemberAction);
 
-  const handleRemoveMember = (memberId: string) => {
-    execute({ memberId });
+  const handleRemoveMember = async (memberId: string) => {
+    const result = await executeAsync({ memberId });
+
+    if (!result) {
+      return;
+    }
 
     if (result.serverError) {
       toast.error(result.serverError);
@@ -115,7 +119,7 @@ export const TeamMembersTable = ({
                           <LoadingButton
                             isLoading={isPending}
                             variant="destructive"
-                            onClick={() =>
+                            onClick={async () =>
                               handleRemoveMember(member.profiles.id)
                             }
                           >

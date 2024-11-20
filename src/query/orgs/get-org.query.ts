@@ -38,7 +38,7 @@ export const isUserAuthorized = async ({
     throw new UnauthorizedError();
   }
 
-  return true;
+  return { role: data.role_id };
 };
 
 export const getOrgQuery = async (

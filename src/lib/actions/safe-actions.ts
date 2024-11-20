@@ -145,13 +145,13 @@ export const orgAction = createSafeActionClient({
   .use(orgContextMiddleware)
   .use(async ({ next, ctx: { org, user }, metadata: { roles } }) => {
     try {
-      await isUserAuthorized({
+      const { role: userOrgRole } = await isUserAuthorized({
         userId: user.id,
         orgId: org.id,
         roles,
       });
 
-      return next();
+      return next({ ctx: { userOrgRole } });
     } catch {
       throw new UnauthorizedError();
     }
