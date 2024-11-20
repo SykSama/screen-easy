@@ -17,30 +17,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { Tables } from "@/types/database.generated.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { toast } from "sonner";
 import { NewOrgFormSchema } from "./new-org-form.schema";
 import { createOrgAction } from "./new-org.action";
 
 type NewOrgFormProps = {
   userEmail: string;
   defaultOrgName: string;
-  plans: Tables<"organization_plans">[];
 };
 
-export const NewOrgForm = ({
-  userEmail,
-  defaultOrgName,
-  plans,
-}: NewOrgFormProps) => {
+export const NewOrgForm = ({ userEmail, defaultOrgName }: NewOrgFormProps) => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     createOrgAction,
     zodResolver(NewOrgFormSchema),
@@ -50,7 +38,15 @@ export const NewOrgForm = ({
         values: {
           name: defaultOrgName,
           email: userEmail,
-          planId: "FREE",
+        },
+      },
+      actionProps: {
+        onError: (args) => {
+          if (!args.error.serverError) {
+            return;
+          }
+
+          toast.error(args.error.serverError, { position: "top-right" });
         },
       },
     },
@@ -91,33 +87,6 @@ export const NewOrgForm = ({
                       <FormControl>
                         <Input id="email" type="email" {...field} />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="planId"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-2">
-                      <FormLabel>Plan</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a plan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {plans.map((plan) => (
-                            <SelectItem key={plan.id} value={plan.id}>
-                              {plan.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

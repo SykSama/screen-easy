@@ -1,6 +1,9 @@
 create table public.organization_plans (
     id text primary key,
     name text not null,
+    stripe_product_id text not null unique,
+    stripe_monthly_price_id text not null unique,
+    stripe_yearly_price_id text not null unique,
     created_at timestamp with time zone not null default now(),
     updated_at timestamp with time zone not null default now()
 );

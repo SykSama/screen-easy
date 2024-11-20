@@ -2,9 +2,10 @@ create table public.organizations (
     id uuid primary key default uuid_generate_v4(),
     name text not null,
     slug char(20) not null unique default nanoid(20, 'abcdefghijklmnopqrstuvwxyz'),
-    plan_id text not null default 'FREE' references public.organization_plans(id),
     email text not null,
-    -- stripe_customer_id text,
+    plan_id text not null default 'FREE' references public.organization_plans(id),
+    stripe_subscription_id text not null unique,
+    stripe_customer_id text not null unique,
     created_at timestamp with time zone not null default current_timestamp,
     updated_at timestamp with time zone not null default current_timestamp
 );
