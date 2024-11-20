@@ -1,26 +1,28 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { requiredAuth } from "@/features/auth/helper";
-import { getMembershipRolesQuery } from "@/query/orgs/get-membership-roles.query";
-import { getOrgMembersQuery } from "@/query/orgs/get-org-members.query";
-import { getOrgQuery } from "@/query/orgs/get-org.query";
 import type { PageParams } from "@/types/next";
 
 import Link from "next/link";
 import { Suspense } from "react";
 import { LeaveOrganizationButton } from "./_components/leave/leave-org-button";
+import { SearchInput } from "./_components/search/search-input";
 import { TeamMembersTable } from "./team-members-table";
+import { TeamMembersTableSkeleton } from "./team-members-table-skeleton";
 
-// TODO: Filters
 export default async function TeamSettingsPage({
   params,
+  searchParams,
 }: PageParams<{ orgSlug: string }>) {
   const { orgSlug } = await params;
+  const { searchQuery } = await searchParams;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-8 pt-4">
       <Suspense fallback={<div>Loading...</div>}>
-        <PageContent orgSlug={orgSlug} />
+        <PageContent
+          orgSlug={orgSlug}
+          searchQuery={searchQuery as string | undefined}
+        />
       </Suspense>
     </div>
   );
@@ -28,21 +30,16 @@ export default async function TeamSettingsPage({
 
 export type PageContentProps = {
   orgSlug: string;
+  searchQuery?: string;
 };
 
-const PageContent = async ({ orgSlug }: PageContentProps) => {
+const PageContent = async ({ orgSlug, searchQuery }: PageContentProps) => {
   const { user } = await requiredAuth();
-  const org = await getOrgQuery(orgSlug);
-  const members = await getOrgMembersQuery(org.id);
-  const roles = await getMembershipRolesQuery();
 
   return (
     <>
       <div className="flex items-center justify-between gap-2">
-        <Input
-          placeholder="Filter members"
-          className="h-8 w-[200px] bg-transparent"
-        />
+        <SearchInput />
         <div className="flex gap-2">
           <LeaveOrganizationButton />
           <Button asChild size={"xs"}>
@@ -52,7 +49,14 @@ const PageContent = async ({ orgSlug }: PageContentProps) => {
           </Button>
         </div>
       </div>
-      <TeamMembersTable members={members} roles={roles} user={user} />
+
+      <Suspense fallback={<TeamMembersTableSkeleton />}>
+        <TeamMembersTable
+          user={user}
+          orgSlug={orgSlug}
+          searchQuery={searchQuery}
+        />
+      </Suspense>
     </>
   );
 };

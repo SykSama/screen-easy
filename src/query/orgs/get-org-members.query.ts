@@ -11,15 +11,22 @@ export type MembersFromOrganization = Pick<
 
 export const getOrgMembersQuery = async (
   id: string,
+  search?: string,
 ): Promise<MembersFromOrganization[]> => {
   const supabase = await createClient();
 
-  const { data: members } = await supabase
+  let query = supabase
     .from("organization_memberships")
     .select("organization_id, profiles!inner(*), membership_roles!inner(*)")
-    .eq("organization_id", id)
-    .returns<MembersFromOrganization[]>()
-    .throwOnError();
+    .eq("organization_id", id);
+
+  if (search) {
+    query = query.like("profiles.email", `%${search}%`);
+  }
+
+  query.returns<MembersFromOrganization[]>().throwOnError();
+
+  const { data: members } = await query;
 
   return members ?? [];
 };

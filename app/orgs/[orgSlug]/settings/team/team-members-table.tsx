@@ -1,5 +1,3 @@
-"use client";
-
 import { AvatarComponent } from "@/components/nav-user";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -12,23 +10,28 @@ import {
 } from "@/components/ui/table";
 
 import { Badge } from "@/components/ui/badge";
-import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
-import type { Tables } from "@/types/database.generated.types";
+import { getMembershipRolesQuery } from "@/query/orgs/get-membership-roles.query";
+import { getOrgMembersQuery } from "@/query/orgs/get-org-members.query";
+import { getOrgQuery } from "@/query/orgs/get-org.query";
 import type { User } from "@supabase/supabase-js";
 import { RemoveMemberButton } from "./_components/remove-member/remove-member-button";
 import { RoleSelector } from "./_components/update-role/role-selector";
 
 type TeamMembersTableProps = {
-  members: MembersFromOrganization[];
-  roles: Tables<"membership_roles">[];
   user: User;
+  orgSlug: string;
+  searchQuery?: string;
 };
 
-export const TeamMembersTable = ({
-  members,
-  roles,
+export const TeamMembersTable = async ({
   user,
+  orgSlug,
+  searchQuery,
 }: TeamMembersTableProps) => {
+  const org = await getOrgQuery(orgSlug);
+  const members = await getOrgMembersQuery(org.id, searchQuery);
+  const roles = await getMembershipRolesQuery();
+
   return (
     <Card>
       <CardContent className="p-0">
