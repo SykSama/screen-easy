@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
     STRIPE_SECRET_KEY: z.string().min(1),
-    // STRIPE_WEBHOOK_SECRET: z.string().optional(),
+    STRIPE_WEBHOOK_SECRET: z.string(),
     NODE_ENV: z.enum(["development", "production", "test"]),
   },
   /**

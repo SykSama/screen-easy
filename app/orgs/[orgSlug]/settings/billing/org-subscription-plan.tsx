@@ -1,11 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import {
+  formatDate,
+  numberOfDaysRemaining,
+  pourcentageOfDaysRemaining,
+} from "@/lib/format-date";
+import type { Tables } from "@/types/database.generated.types";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-// TODO: add actual subscription plan data
-export default function OrgSubscriptionPlan() {
+type OrgSubscriptionPlanProps = {
+  plan: Tables<"organization_plans">;
+  subscription: {
+    periodStart: Date;
+    periodEnd: Date;
+  };
+  customerPortal: string;
+};
+
+export default function OrgSubscriptionPlan({
+  plan,
+  subscription,
+  customerPortal,
+}: OrgSubscriptionPlanProps) {
   return (
     <Card>
       <CardContent>
@@ -33,16 +51,31 @@ export default function OrgSubscriptionPlan() {
               <p className="text-sm">
                 This organization is currently on the plan:
               </p>
-              <p className="text-2xl font-semibold text-emerald-500">FREE</p>
+              <p className="text-2xl font-semibold text-emerald-500">
+                {plan.name}
+              </p>
             </div>
-            <Button size="xs">Change subscription plan</Button>
+
+            <Button size="xs" asChild>
+              <Link href={customerPortal}>Change subscription plan</Link>
+            </Button>
             <div className="flex w-full flex-col">
               <div className="flex justify-between space-x-8 pb-1 align-baseline">
-                <p>Current billing cycle (Oct 25 - Nov 25)</p>
-                <p>4 days remaining</p>
+                <p>
+                  Current billing cycle ({formatDate(subscription.periodStart)}{" "}
+                  - {formatDate(subscription.periodEnd)})
+                </p>
+                <p>
+                  {numberOfDaysRemaining(subscription.periodEnd)} days remaining
+                </p>
               </div>
-              {/* TODO: Add progress bar */}
-              <Progress value={85} className="h-1 bg-slate-100" />
+              <Progress
+                value={pourcentageOfDaysRemaining(
+                  subscription.periodStart,
+                  subscription.periodEnd,
+                )}
+                className="h-1 bg-slate-100"
+              />
             </div>
           </div>
         </div>
