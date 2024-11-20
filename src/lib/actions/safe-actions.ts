@@ -17,6 +17,25 @@ import { logger } from "../logger";
 
 export class ActionError extends Error {}
 
+export class SupabaseError extends Error {
+  details: string;
+  hint: string;
+  code: string;
+
+  constructor(context: {
+    message: string;
+    details: string;
+    hint: string;
+    code: string;
+  }) {
+    super(context.message);
+    this.name = "PostgrestError";
+    this.details = context.details;
+    this.hint = context.hint;
+    this.code = context.code;
+  }
+}
+
 const log = logger.child({
   module: "ServerAction",
 });
@@ -34,6 +53,7 @@ type HandleServerError = (
   utils: HandleServerErrorUtils,
 ) => string;
 
+//PGRST116
 const handleServerError: HandleServerError = (e, { ctx, metadata }) => {
   log.error(
     {
@@ -47,6 +67,14 @@ const handleServerError: HandleServerError = (e, { ctx, metadata }) => {
   );
 
   if (e instanceof ActionError) {
+    return e.message;
+  }
+
+  if (e instanceof SupabaseError) {
+    if (e.code === "PGRST116") {
+      return "You are not authorized to update this resource.";
+    }
+
     return e.message;
   }
 

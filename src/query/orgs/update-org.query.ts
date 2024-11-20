@@ -1,5 +1,4 @@
-import { ActionError } from "@/lib/actions/safe-actions";
-import { OrganizationNotFoundError } from "@/lib/errors/errors";
+import { SupabaseError } from "@/lib/actions/safe-actions";
 import type { Tables, TablesUpdate } from "@/types/database.generated.types";
 import { createClient } from "@/utils/supabase/server";
 
@@ -14,20 +13,15 @@ export const updateOrganizationQuery = async ({
 }: UpdateOrganizationQueryProps): Promise<Tables<"organizations">> => {
   const supabase = await createClient();
 
-  const { data: updatedOrganization, count } = await supabase
+  const { data: updatedOrganization, error } = await supabase
     .from("organizations")
     .update(organization)
     .eq("id", id)
     .select()
-    .single()
-    .throwOnError();
+    .single();
 
-  if (count === 0) {
-    throw new ActionError("No rows updated");
-  }
-
-  if (!updatedOrganization) {
-    throw new OrganizationNotFoundError();
+  if (error) {
+    throw new SupabaseError(error);
   }
 
   return updatedOrganization;
