@@ -40,8 +40,9 @@ export const RenamingMethodSection = ({ form }: RenamingMethodSectionProps) => {
                     field.onChange(value)
                   }
                   defaultValue="manual"
+                  className="flex flex-col gap-3"
                 >
-                  <FormItem className="flex items-center space-x-2">
+                  <FormItem className="flex flex-row items-center space-x-2 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="manual" id="manual" />
                     </FormControl>
@@ -49,7 +50,7 @@ export const RenamingMethodSection = ({ form }: RenamingMethodSectionProps) => {
                       Manual Rename Template
                     </FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-2">
+                  <FormItem className="flex flex-row items-center space-x-2 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="ai" id="ai-renaming" />
                     </FormControl>
