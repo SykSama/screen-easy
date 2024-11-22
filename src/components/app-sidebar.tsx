@@ -4,9 +4,9 @@ import {
   CreditCard,
   Home,
   LifeBuoy,
-  ScreenShare,
   Send,
   Settings,
+  SplitIcon,
   User,
 } from "lucide-react";
 import * as React from "react";
@@ -80,9 +80,9 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
               icon: Home,
             },
             {
-              title: "Workflows",
-              url: `/orgs/${orgSlug}/workflows`,
-              icon: ScreenShare,
+              title: "Split PDF",
+              url: `/orgs/${orgSlug}/split-pdf`,
+              icon: SplitIcon,
             },
           ]}
         />
