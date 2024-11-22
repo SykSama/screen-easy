@@ -15,15 +15,17 @@ export const splitPdfAction = orgProfileAction
   .action(async ({ parsedInput: { files }, ctx: { organization } }) => {
     const supabase = await createClient();
 
-    const promises = files.map(async (file) => {
-      const { data, error } = await supabase.storage
-        .from(organization.slug)
-        .upload(file.name, file);
+    // const promises = files.map(async (file) => {
+    //   const { data, error } = await supabase.storage
+    //     .from(organization.slug)
+    //     .upload(file.name, file);
 
-      return { data, error };
-    });
+    //   return { data, error };
+    // });
 
-    const results = await Promise.all(promises);
+    // const results = await Promise.all(promises);
+
+    throw new Error("Not implemented");
 
     revalidatePath(`/orgs/${organization.slug}/split-pdf`);
   });

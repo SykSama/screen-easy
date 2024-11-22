@@ -1,20 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
 import { splitPdfAction } from "../new/split-pdf.action";
 import { SplitPdfSchema } from "../new/split-pdf.schema";
 
+import { LoadingButton } from "@/components/loading-button";
 import { Separator } from "@/components/ui/separator";
 import { RenamingMethodSection } from "./renaming-method-section";
 import { SplittingMethodSection } from "./splitting-method-section";
@@ -35,7 +28,9 @@ export const SplitPdfForm = () => {
       },
       actionProps: {
         onSuccess: () => {
-          toast.success("PDF split successfully");
+          toast.success("PDF files uploaded successfully", {
+            description: "Processing your files...",
+          });
         },
         onError: (args) => {
           if (args.error.serverError) {
@@ -58,7 +53,18 @@ export const SplitPdfForm = () => {
         <RenamingMethodSection form={form} />
         <Separator />
 
-        <FormField
+        <div className="mx-auto flex w-full max-w-[1200px] justify-end px-6 lg:px-14 xl:px-24 2xl:px-32">
+          <LoadingButton type="submit" size="lg" isLoading={action.isPending}>
+            Split PDF
+          </LoadingButton>
+        </div>
+      </form>
+    </Form>
+  );
+};
+
+{
+  /* <FormField
           control={form.control}
           name="saveAsZip"
           render={({ field }) => (
@@ -73,12 +79,5 @@ export const SplitPdfForm = () => {
               <FormLabel htmlFor="save-zip">Save as ZIP</FormLabel>
             </FormItem>
           )}
-        />
-
-        <Button type="submit" className="w-full" disabled={action.isPending}>
-          {action.isPending ? "Processing..." : "Split PDF"}
-        </Button>
-      </form>
-    </Form>
-  );
-};
+        /> */
+}
