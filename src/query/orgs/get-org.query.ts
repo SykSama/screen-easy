@@ -12,24 +12,30 @@ const log = logger.child({
   module: "getOrgQuery",
 });
 
-type IsUserAuthorizedParams = {
+type GetOrganizationProfileRoleParams = {
   userId: string;
-  orgId: string;
+  organizationSlug: string;
   roles: OrganizationMembershipRole[];
 };
 
-export const isUserAuthorized = async ({
+export const getOrganizationProfileRole = async ({
   userId,
-  orgId,
+  organizationSlug,
   roles,
-}: IsUserAuthorizedParams) => {
+}: GetOrganizationProfileRoleParams): Promise<{
+  organization: Tables<"organizations">;
+  profile: Tables<"profiles">;
+  role: Tables<"membership_roles">;
+}> => {
   const supabase = await createClient();
 
   const { data } = await supabase
     .from("organization_memberships")
-    .select("*")
+    .select(
+      "*, organizations!inner(*), membership_roles!inner(*), profiles!inner(*)",
+    )
     .eq("profile_id", userId)
-    .eq("organization_id", orgId)
+    .eq("organizations.slug", organizationSlug)
     .in("role_id", roles)
     .limit(1)
     .single();
@@ -38,7 +44,11 @@ export const isUserAuthorized = async ({
     throw new UnauthorizedError();
   }
 
-  return { role: data.role_id };
+  return {
+    organization: data.organizations,
+    profile: data.profiles,
+    role: data.membership_roles,
+  };
 };
 
 export const getOrgQuery = async (

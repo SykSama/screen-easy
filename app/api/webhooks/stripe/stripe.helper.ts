@@ -1,5 +1,5 @@
 import { stripe } from "@/lib/stripe";
-import { createAdminClient } from "@/utils/supabase/server";
+import { supabaseAdmin } from "@/utils/supabase/admin";
 import type Stripe from "stripe";
 
 export async function findOrganizationFromCustomer(
@@ -15,9 +15,7 @@ export async function findOrganizationFromCustomer(
     throw new Error("Invalid customer");
   }
 
-  const supabase = await createAdminClient();
-
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("organizations")
     .select("*")
     .eq("stripe_customer_id", stripeCustomerId)
@@ -51,9 +49,7 @@ export const getPlanFromLineItem = async (
 
   const product = await stripe.products.retrieve(productOrAnything as string);
 
-  const supabase = await createAdminClient();
-
-  const { data } = await supabase
+  const { data } = await supabaseAdmin
     .from("organization_plans")
     .select("id")
     .eq("stripe_product_id", product.id)
@@ -65,9 +61,7 @@ export const getPlanFromLineItem = async (
 };
 
 export const upgradeUserToPlan = async (orgId: string, plan: string) => {
-  const supabase = await createAdminClient();
-
-  await supabase
+  await supabaseAdmin
     .from("organizations")
     .update({
       plan_id: plan,
@@ -77,9 +71,7 @@ export const upgradeUserToPlan = async (orgId: string, plan: string) => {
 };
 
 export const downgradeUserFromPlan = async (orgId: string) => {
-  const supabase = await createAdminClient();
-
-  await supabase
+  await supabaseAdmin
     .from("organizations")
     .update({
       plan_id: "FREE",

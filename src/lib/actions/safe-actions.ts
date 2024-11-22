@@ -1,7 +1,6 @@
 import {
-  getOrgQuery,
+  getOrganizationProfileRole,
   getOrgSlugFromUrl,
-  isUserAuthorized,
 } from "@/query/orgs/get-org.query";
 import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
 import { createClient } from "@/utils/supabase/server";
@@ -116,21 +115,7 @@ const authMiddleware = createMiddleware().define(async ({ next }) => {
 
 export const authAction = action.use(authMiddleware);
 
-// TODO: This middleware should be removed from orgAction to avoid the double call to select org
-const orgContextMiddleware = createMiddleware().define(async ({ next }) => {
-  const orgSlug = await getOrgSlugFromUrl();
-
-  if (!orgSlug) {
-    //TODO: notFound() or redirect to /orgs ?
-    notFound();
-  }
-
-  const org = await getOrgQuery(orgSlug);
-
-  return next({ ctx: { org } });
-});
-
-export const orgAction = createSafeActionClient({
+export const orgProfileAction = createSafeActionClient({
   defineMetadataSchema: () => {
     return z.object({
       actionName: z.string().optional(),
@@ -142,17 +127,18 @@ export const orgAction = createSafeActionClient({
   },
 })
   .use(authMiddleware)
-  .use(orgContextMiddleware)
-  .use(async ({ next, ctx: { org, user }, metadata: { roles } }) => {
-    try {
-      const { role: userOrgRole } = await isUserAuthorized({
-        userId: user.id,
-        orgId: org.id,
-        roles,
-      });
+  .use(async ({ next, ctx: { user }, metadata: { roles } }) => {
+    const orgSlug = await getOrgSlugFromUrl();
 
-      return next({ ctx: { userOrgRole } });
-    } catch {
-      throw new UnauthorizedError();
+    if (!orgSlug) {
+      notFound();
     }
+
+    const { organization, profile, role } = await getOrganizationProfileRole({
+      userId: user.id,
+      organizationSlug: orgSlug,
+      roles,
+    });
+
+    return next({ ctx: { organization, profile: { ...profile, role } } });
   });

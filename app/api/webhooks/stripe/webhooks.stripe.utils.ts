@@ -16,7 +16,7 @@ export async function constructStripeEvent(
     event = stripe.webhooks.constructEvent(
       body,
       stripeSignature ?? "",
-      env.STRIPE_WEBHOOK_SECRET ?? "",
+      env.STRIPE_WEBHOOK_SECRET,
     );
   } catch {
     logger.error("Request Failed - STRIPE_WEBHOOK_SECRET may be invalid");

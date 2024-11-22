@@ -1,7 +1,8 @@
 "use server";
 
-import { orgAction } from "@/lib/actions/safe-actions";
+import { orgProfileAction } from "@/lib/actions/safe-actions";
 import { deleteOrganizationMembership } from "@/query/organization-memberships/delete-organization-memberships.query";
+import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -9,25 +10,25 @@ import { isLastOwner } from "./is-last-owner";
 
 const LeaveOrgSchema = z.object({});
 
-export const leaveOrgAction = orgAction
+export const leaveOrgAction = orgProfileAction
   .schema(LeaveOrgSchema)
   .metadata({
     actionName: "leaveOrgAction",
-    roles: ["OWNER", "MEMBER", "ADMIN"],
+    roles: OrganizationMembershipRole.options,
   })
-  .action(async ({ ctx: { org, user, userOrgRole } }) => {
-    if (userOrgRole === "OWNER") {
+  .action(async ({ ctx: { organization, profile } }) => {
+    if (profile.role.id === "OWNER") {
       await isLastOwner({
-        orgId: org.id,
-        userId: user.id,
+        orgId: organization.id,
+        userId: profile.id,
       });
     }
 
     await deleteOrganizationMembership({
-      organizationId: org.id,
-      userId: user.id,
+      organizationId: organization.id,
+      userId: profile.id,
     });
 
-    revalidatePath(`/orgs/${org.slug}/settings/team`);
+    revalidatePath(`/orgs/${organization.slug}/settings/team`);
     redirect("/");
   });

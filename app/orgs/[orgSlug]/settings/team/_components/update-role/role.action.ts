@@ -1,6 +1,6 @@
 "use server";
 
-import { orgAction } from "@/lib/actions/safe-actions";
+import { orgProfileAction } from "@/lib/actions/safe-actions";
 
 import { revalidatePath } from "next/cache";
 
@@ -13,15 +13,15 @@ const RoleSchema = z.object({
   roleId: z.string(),
 });
 
-export const updateRoleAction = orgAction
+export const updateRoleAction = orgProfileAction
   .schema(RoleSchema)
   .metadata({ actionName: "updateRole", roles: ["OWNER", "ADMIN"] })
-  .action(async ({ parsedInput, ctx: { org } }) => {
+  .action(async ({ parsedInput, ctx: { organization } }) => {
     await updateMemberRoleQuery({
-      orgId: org.id,
+      orgId: organization.id,
       userId: parsedInput.userId,
       roleId: parsedInput.roleId,
     });
 
-    revalidatePath(`/orgs/${org.slug}/settings/team`);
+    revalidatePath(`/orgs/${organization.slug}/settings/team`);
   });

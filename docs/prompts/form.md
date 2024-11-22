@@ -53,25 +53,25 @@ export const updateQuery = async ({ id, data }: UpdateQueryProps) => {
 
 Create a server action using safe-actions:
 
-Only use orgAction if you need to access the org context and the path is related to the org. (e.g. /orgs/:orgSlug/settings)
+Only use orgProfileAction if you need to access the org context and the path is related to the org. (e.g. /orgs/:orgSlug/settings)
 
 ```typescript:form.action.ts
 "use server";
 
-import { orgAction } from "@/lib/actions/safe-actions";
+import { orgProfileAction } from "@/lib/actions/safe-actions";
 import { FormSchema } from "./form.schema";
 import { revalidatePath } from "next/cache";
 
-export const updateAction = orgAction
+export const updateAction = orgProfileAction
   .schema(FormSchema)
   .metadata({ actionName: "updateAction", roles: ["OWNER"] })
-  .action(async ({ parsedInput, ctx: { org } }) => {
+  .action(async ({ parsedInput, ctx: { organization, profile, user } }) => {
     const updated = await updateQuery({
-      id: org.id,
+      id: organization.id,
       data: parsedInput,
     });
 
-    revalidatePath(`/path/${updated.slug}`);
+    revalidatePath(`/orgs/${organization.slug}`);
   });
 ```
 
@@ -80,7 +80,7 @@ Else use authAction if the path is not related to the org and the action need to
 ```typescript:form.action.ts
 "use server";
 
-import { orgAction } from "@/lib/actions/safe-actions";
+import { authAction } from "@/lib/actions/safe-actions";
 import { FormSchema } from "./form.schema";
 import { revalidatePath } from "next/cache";
 
