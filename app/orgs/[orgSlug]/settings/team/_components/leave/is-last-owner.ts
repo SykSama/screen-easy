@@ -1,4 +1,4 @@
-import { ActionError } from "@/lib/actions/safe-actions";
+import { ActionError } from "@/lib/errors/errors";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/utils/supabase/server";
 

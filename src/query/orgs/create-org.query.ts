@@ -1,4 +1,4 @@
-import { ActionError } from "@/lib/actions/safe-actions";
+import { ActionError } from "@/lib/errors/errors";
 import type { Tables, TablesInsert } from "@/types/database.generated.types";
 import { createClient } from "@/utils/supabase/server";
 

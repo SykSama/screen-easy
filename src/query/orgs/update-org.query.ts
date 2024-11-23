@@ -1,4 +1,4 @@
-import { SupabaseError } from "@/lib/actions/safe-actions";
+import { SupabasePostgrestActionError } from "@/lib/errors/errors";
 import type { Tables, TablesUpdate } from "@/types/database.generated.types";
 import { createClient } from "@/utils/supabase/server";
 
@@ -21,7 +21,7 @@ export const updateOrganizationQuery = async ({
     .single();
 
   if (error) {
-    throw new SupabaseError(error);
+    throw new SupabasePostgrestActionError(error);
   }
 
   return updatedOrganization;

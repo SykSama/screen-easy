@@ -4,6 +4,7 @@ import {
 } from "@/query/orgs/get-org.query";
 import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
 import { createClient } from "@/utils/supabase/server";
+import { StorageApiError, StorageUnknownError } from "@supabase/storage-js";
 import {
   createMiddleware,
   createSafeActionClient,
@@ -11,29 +12,16 @@ import {
 } from "next-safe-action";
 import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
-import { OrganizationNotFoundError, UnauthorizedError } from "../errors/errors";
+import {
+  ActionError,
+  OrganizationNotFoundError,
+  SupabasePostgrestActionError,
+  SupabaseStorageActionError,
+  UnauthorizedError,
+} from "../errors/errors";
 import { logger } from "../logger";
 
-export class ActionError extends Error {}
-
-export class SupabaseError extends Error {
-  details: string;
-  hint: string;
-  code: string;
-
-  constructor(context: {
-    message: string;
-    details: string;
-    hint: string;
-    code: string;
-  }) {
-    super(context.message);
-    this.name = "PostgrestError";
-    this.details = context.details;
-    this.hint = context.hint;
-    this.code = context.code;
-  }
-}
+export class SupabaseStorageError extends Error {}
 
 const log = logger.child({
   module: "ServerAction",
@@ -52,15 +40,16 @@ type HandleServerError = (
   utils: HandleServerErrorUtils,
 ) => string;
 
-//PGRST116
 const handleServerError: HandleServerError = (e, { ctx, metadata }) => {
+  // the e is not displayed because it's an object
+  // how to display it
+
   log.error(
     {
-      message: e.message,
-      cause: e.cause?.toString(),
       actionName: metadata.actionName,
-      roles: metadata.roles,
-      ctx: ctx,
+      error: e,
+      // roles: metadata.roles,
+      // ctx: ctx,
     },
     "Action server error occurred",
   );
@@ -69,8 +58,20 @@ const handleServerError: HandleServerError = (e, { ctx, metadata }) => {
     return e.message;
   }
 
-  if (e instanceof SupabaseError) {
-    if (e.code === "PGRST116") {
+  if (e instanceof SupabaseStorageActionError) {
+    if (e.storageError instanceof StorageApiError) {
+      return e.storageError.message;
+    }
+
+    if (e.storageError instanceof StorageUnknownError) {
+      return e.storageError.message;
+    }
+
+    return e.message;
+  }
+
+  if (e instanceof SupabasePostgrestActionError) {
+    if (e.postgrestError.code === "PGRST116") {
       return "You are not authorized to update this resource.";
     }
 
