@@ -10,7 +10,6 @@ export const SplitPdfSchema = zfd
     manualRenameTemplate: z.string().optional(),
     aiRenamingCriteria: z.string().optional(),
     aiRenamingExample: z.string().optional(),
-    saveAsZip: z.boolean().default(false),
   })
   .refine(
     (data) => {
