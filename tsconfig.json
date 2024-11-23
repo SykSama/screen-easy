@@ -29,8 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/actions.ts.old",
-    "trigger.config.ts"
+    "app/actions.ts.old"
   ],
   "exclude": ["node_modules"]
 }
