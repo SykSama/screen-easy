@@ -1,4 +1,8 @@
-import { FormSection, FormSectionSide } from "@/components/form-section";
+import {
+  FormSection,
+  FormSectionHeader,
+  FormSectionSide,
+} from "@/components/form-section";
 import {
   FormControl,
   FormField,
@@ -17,12 +21,10 @@ export const UploadSection = ({ form }: UploadSectionProps) => {
   return (
     <FormSection>
       <FormSectionSide col={4}>
-        <div className="sticky top-12 space-y-2">
-          <p className="m-0 text-base text-foreground">PDF Upload</p>
-          <p className="text-foreground-light m-0 text-sm">
-            Upload the PDFs you want to split.
-          </p>
-        </div>
+        <FormSectionHeader
+          title="PDF upload"
+          description="Upload the PDFs you want to split."
+        />
       </FormSectionSide>
       <FormSectionSide col={8}>
         <FormField
