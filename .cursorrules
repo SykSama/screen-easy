@@ -33,13 +33,16 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 
 - Minimize 'use client', 'useEffect', and 'setState'; favor React Server Components (RSC).
 - Wrap client components in Suspense with fallback.
+- Wrap server components who loadin Suspense with fallback.
 - Use dynamic loading for non-critical components.
 - Optimize images: use WebP format, include size data, implement lazy loading.
 
 **Database Querying & Data Model Creation**
 
 - Use Supabase sdk for query database.
-- For data model, use database.generated.types.ts file.
+- For data model, use [database.generated.types.ts](./src/types/database.generated.types.ts) file.
+- Extract supabase query in it's own file in [queries](./src/query) directory.
+- Use the createClient() in [server.ts](./src/utils/supabase/server.ts) file when using RSC or server actions.
 
 **Key Conventions**
 
@@ -59,3 +62,7 @@ Always use this syntaxe : export const MyComponent = (props: Props) => {}
 **PostgresQL**
 
 Always use valid PostgresQL syntaxe with guillemets for table and columns name.
+
+** Form & Mutation **
+
+- Use Server Actions for form and mutation, with Next Safe Action, Zod for schema validation, and @next-safe-action/adapter-react-hook-form. You can find actions in [actions](./src/lib/actions) directory.
