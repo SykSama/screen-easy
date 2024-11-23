@@ -169,6 +169,151 @@ export type Database = {
           },
         ]
       }
+      pdf_batch_jobs: {
+        Row: {
+          completed_files: number
+          created_at: string
+          error_message: string | null
+          failed_files: number
+          id: string
+          job_type: Database["public"]["Enums"]["job_type"]
+          organization_id: string
+          profile_id: string
+          status: Database["public"]["Enums"]["job_status"]
+          total_files: number
+          updated_at: string
+        }
+        Insert: {
+          completed_files?: number
+          created_at?: string
+          error_message?: string | null
+          failed_files?: number
+          id?: string
+          job_type: Database["public"]["Enums"]["job_type"]
+          organization_id: string
+          profile_id: string
+          status?: Database["public"]["Enums"]["job_status"]
+          total_files: number
+          updated_at?: string
+        }
+        Update: {
+          completed_files?: number
+          created_at?: string
+          error_message?: string | null
+          failed_files?: number
+          id?: string
+          job_type?: Database["public"]["Enums"]["job_type"]
+          organization_id?: string
+          profile_id?: string
+          status?: Database["public"]["Enums"]["job_status"]
+          total_files?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_batch_jobs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pdf_batch_jobs_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pdf_job_results: {
+        Row: {
+          created_at: string
+          file_path: string
+          filename: string
+          id: string
+          job_id: string
+          metadata: Json | null
+          size_bytes: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          filename: string
+          id?: string
+          job_id: string
+          metadata?: Json | null
+          size_bytes: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          filename?: string
+          id?: string
+          job_id?: string
+          metadata?: Json | null
+          size_bytes?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_job_results_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "pdf_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pdf_jobs: {
+        Row: {
+          batch_id: string
+          created_at: string
+          error_message: string | null
+          id: string
+          original_file_path: string
+          original_filename: string
+          processing_config: Json
+          status: Database["public"]["Enums"]["job_status"]
+          trigger_run_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          batch_id: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          original_file_path: string
+          original_filename: string
+          processing_config: Json
+          status?: Database["public"]["Enums"]["job_status"]
+          trigger_run_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          batch_id?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          original_file_path?: string
+          original_filename?: string
+          processing_config?: Json
+          status?: Database["public"]["Enums"]["job_status"]
+          trigger_run_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_jobs_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "pdf_batch_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -204,7 +349,8 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      job_status: "pending" | "processing" | "completed" | "failed"
+      job_type: "split" | "fill-form"
     }
     CompositeTypes: {
       [_ in never]: never
