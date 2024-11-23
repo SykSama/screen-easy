@@ -41,15 +41,12 @@ type HandleServerError = (
 ) => string;
 
 const handleServerError: HandleServerError = (e, { ctx, metadata }) => {
-  // the e is not displayed because it's an object
-  // how to display it
-
   log.error(
     {
       actionName: metadata.actionName,
+      roles: metadata.roles,
       error: e,
-      // roles: metadata.roles,
-      // ctx: ctx,
+      ctx: ctx,
     },
     "Action server error occurred",
   );
