@@ -30,14 +30,16 @@ Create separate query files for database operations:
 
 ```typescript:query/feature/update.query.ts
 import { createClient } from "@/utils/supabase/server";
+import { Tables } from "@/types/database.generated.types";
 
 export type UpdateQueryProps = {
   id: string;
-  data: Record<string, unknown>;
+  data: Tables<"table_name">;
 };
 
 export const updateQuery = async ({ id, data }: UpdateQueryProps) => {
   const supabase = await createClient();
+
   const { data: result } = await supabase
     .from("table_name")
     .update(data)
@@ -45,6 +47,7 @@ export const updateQuery = async ({ id, data }: UpdateQueryProps) => {
     .select()
     .single()
     .throwOnError();
+
   return result;
 };
 ```

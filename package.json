@@ -6,7 +6,9 @@
     "start": "next start",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "supabase:gen": "supabase gen types --lang=typescript --local > src/types/database.generated.types.ts"
+    "supabase:gen": "pnpm supabase:gen:types && pnpm supabase:dump",
+    "supabase:gen:types": "supabase gen types --lang=typescript --local > src/types/database.generated.types.ts",
+    "supabase:dump": "supabase db dump --local --schema public -f ./supabase/db.dump.sql"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

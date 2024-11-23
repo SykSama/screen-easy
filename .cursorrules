@@ -43,6 +43,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 - For data model, use [database.generated.types.ts](./src/types/database.generated.types.ts) file.
 - Extract supabase query in it's own file in [queries](./src/query) directory.
 - Use the createClient() in [server.ts](./src/utils/supabase/server.ts) file when using RSC or server actions.
+- Use the database schema in [supabase/db.dump.sql](./supabase/db.dump.sql) file.
 
 **Key Conventions**
 
@@ -61,7 +62,8 @@ Always use this syntaxe : export const MyComponent = (props: Props) => {}
 
 **PostgresQL**
 
-Always use valid PostgresQL syntaxe with guillemets for table and columns name.
+- Always use valid PostgresQL syntaxe with guillemets for table and columns name.
+- Use the database schema in [supabase/db.dump.sql](./supabase/db.dump.sql) file.
 
 ** Form & Mutation **
 
