@@ -1,5 +1,5 @@
 import { SupabasePostgrestActionError } from "@/lib/errors/errors";
-import type { Tables, TablesInsert } from "@/types/database.generated.types";
+import type { Tables, TablesInsert } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 type CreateBatchJobInput = TablesInsert<"pdf_batch_jobs">;

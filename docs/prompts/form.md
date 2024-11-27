@@ -30,7 +30,7 @@ Create separate query files for database operations:
 
 ```typescript:query/feature/update.query.ts
 import { createClient } from "@/utils/supabase/server";
-import { Tables } from "@/types/database.generated.types";
+import { Tables } from "@/types/database.types";
 
 export type UpdateQueryProps = {
   id: string;

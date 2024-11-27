@@ -1,5 +1,5 @@
 import { ActionError } from "@/lib/errors/errors";
-import type { TablesInsert } from "@/types/database.generated.types";
+import type { TablesInsert } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export const createOrganizationMembershipsQuery = async (

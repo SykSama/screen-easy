@@ -1,4 +1,4 @@
-import type { Database } from "@/types/database.generated.types";
+import type { Database } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 

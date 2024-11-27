@@ -1,4 +1,4 @@
-import type { TablesInsert } from "@/types/database.generated.types";
+import type { TablesInsert } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export const createMembershipRolesQuery = async (

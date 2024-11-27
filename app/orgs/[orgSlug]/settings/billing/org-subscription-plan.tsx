@@ -6,7 +6,7 @@ import {
   numberOfDaysRemaining,
   pourcentageOfDaysRemaining,
 } from "@/lib/format-date";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import type { MembersFromOrganization } from "@/query/orgs/get-org-members.query";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 
 import {
   Select,

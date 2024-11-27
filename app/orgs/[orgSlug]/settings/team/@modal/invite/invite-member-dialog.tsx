@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { useRouter } from "next/navigation";
 import { InviteMemberForm } from "./invite-member-form";
 

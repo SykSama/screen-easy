@@ -1,7 +1,7 @@
 "use server";
 
 import { logger } from "@/lib/logger";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 const log = logger.child({

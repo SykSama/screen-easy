@@ -1,5 +1,5 @@
 import { env } from "@/lib/env";
-import type { Database } from "@/types/database.generated.types";
+import type { Database } from "@/types/database.types";
 import { createClient } from "@supabase/supabase-js";
 
 export const supabaseAdmin = createClient<Database>(

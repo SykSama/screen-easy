@@ -2,7 +2,7 @@
 
 import { UnauthorizedError } from "@/lib/errors/errors";
 import { logger } from "@/lib/logger";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";

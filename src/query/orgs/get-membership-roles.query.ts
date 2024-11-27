@@ -1,4 +1,4 @@
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export const getMembershipRolesQuery = async (): Promise<
