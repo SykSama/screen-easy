@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const splittingMethodSchema = z.discriminatedUnion("splittingMethod", [
+export const splittingMethodSchema = z.discriminatedUnion("splittingMethod", [
   z.object({ splittingMethod: z.literal("bookmarks") }),
   z.object({
     splittingMethod: z.literal("ai"),
@@ -8,7 +8,9 @@ const splittingMethodSchema = z.discriminatedUnion("splittingMethod", [
   }),
 ]);
 
-const renamingMethodSchema = z.discriminatedUnion("renamingMethod", [
+export type SplittingMethod = z.infer<typeof splittingMethodSchema>;
+
+export const renamingMethodSchema = z.discriminatedUnion("renamingMethod", [
   z.object({
     renamingMethod: z.literal("manual"),
     manualRenameTemplate: z.string().min(1),
@@ -19,6 +21,8 @@ const renamingMethodSchema = z.discriminatedUnion("renamingMethod", [
     aiRenamingExample: z.string().min(1),
   }),
 ]);
+
+export type RenamingMethod = z.infer<typeof renamingMethodSchema>;
 
 export const splittingProcessingConfigSchema = z
   .object({})

@@ -1,12 +1,15 @@
 "use server";
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
+import { ActionError } from "@/lib/errors/errors";
 import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
 import { createBatchJobQuery } from "@/query/pdf-batch-jobs/create-batch-job.query";
 import { createPdfJobsQuery } from "@/query/pdf-jobs/create-pdf-jobs.query";
 import { uploadFileQuery } from "@/query/storage/upload-file.query";
-import type { TablesInsert } from "@/types/database.generated.types";
+import type { TablesInsert } from "@/types/database.types";
+import { getServerUrl } from "@/utils/server-url";
 import { SplitPdfSchema } from "./split-pdf.schema";
+import { formatRenamingMethod, formatSplittingMethod } from "./utils";
 
 export const splitPdfAction = orgProfileAction
   .schema(SplitPdfSchema)
@@ -42,26 +45,39 @@ export const splitPdfAction = orgProfileAction
     const uploadedFiles = await Promise.all(uploadPromises);
 
     // Create PDF jobs
-    const jobs: TablesInsert<"pdf_jobs">[] = uploadedFiles.map((file) => ({
-      batch_id: batchJob.id,
-      original_filename: file.originalName,
-      original_file_path: file.storagePath,
-      status: "pending",
-      processing_config: {
-        method: parsedInput.splittingMethod,
-        renamingMethod: parsedInput.renamingMethod,
-        ...(parsedInput.splittingMethod === "ai" && {
-          aiCriteria: parsedInput.aiSplittingCriteria,
-        }),
-        ...(parsedInput.renamingMethod === "manual" && {
-          renameTemplate: parsedInput.manualRenameTemplate,
-        }),
-        ...(parsedInput.renamingMethod === "ai" && {
-          aiRenamingCriteria: parsedInput.aiRenamingCriteria,
-          aiRenamingExample: parsedInput.aiRenamingExample,
-        }),
-      },
-    }));
+    const jobs: TablesInsert<"pdf_jobs">[] = uploadedFiles.map(function (file) {
+      const splittingMethodJson = formatSplittingMethod({
+        ...parsedInput,
+      });
+
+      const renamingMethodJson = formatRenamingMethod({ ...parsedInput });
+
+      return {
+        batch_id: batchJob.id,
+        original_filename: file.originalName,
+        original_file_path: file.storagePath,
+        status: "pending",
+        processing_config: {
+          ...splittingMethodJson,
+          ...renamingMethodJson,
+        },
+      };
+    });
 
     const createdJobs = await createPdfJobsQuery(jobs);
+
+    const promises = createdJobs.map(async (job) => {
+      try {
+        await fetch(`${getServerUrl()}/api/jobs/split-pdf`, {
+          method: "POST",
+          body: JSON.stringify({ jobId: job.id }),
+        });
+      } catch (error) {
+        throw new ActionError("Something went wrong while starting the job", {
+          cause: error,
+        });
+      }
+    });
+
+    await Promise.all(promises);
   });
