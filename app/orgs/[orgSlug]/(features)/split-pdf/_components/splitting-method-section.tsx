@@ -70,6 +70,7 @@ export const SplittingMethodSection = ({
                         <FormField
                           control={form.control}
                           name="aiSplittingCriteria"
+                          defaultValue=""
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>AI Splitting Criteria</FormLabel>

@@ -85,6 +85,7 @@ export const RenamingMethodSection = ({ form }: RenamingMethodSectionProps) => {
                           <FormField
                             control={form.control}
                             name="aiRenamingCriteria"
+                            defaultValue=""
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>AI Renaming Criteria</FormLabel>
@@ -105,6 +106,7 @@ export const RenamingMethodSection = ({ form }: RenamingMethodSectionProps) => {
                           <FormField
                             control={form.control}
                             name="aiRenamingExample"
+                            defaultValue=""
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>AI Renaming Example</FormLabel>

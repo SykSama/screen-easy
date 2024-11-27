@@ -23,6 +23,7 @@ export const SplitPdfForm = () => {
           files: [],
           splittingMethod: "bookmarks",
           renamingMethod: "manual",
+          manualRenameTemplate: "",
         },
       },
       actionProps: {
