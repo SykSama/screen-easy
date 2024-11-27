@@ -1,13 +1,12 @@
 "use server";
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
-import { ActionError } from "@/lib/errors/errors";
 import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
 import { createBatchJobQuery } from "@/query/pdf-batch-jobs/create-batch-job.query";
 import { createPdfJobsQuery } from "@/query/pdf-jobs/create-pdf-jobs.query";
 import { uploadFileQuery } from "@/query/storage/upload-file.query";
 import type { TablesInsert } from "@/types/database.types";
-import { getServerUrl } from "@/utils/server-url";
+import { startSplitPdfJob } from "../utils";
 import { SplitPdfSchema } from "./split-pdf.schema";
 import { formatRenamingMethod, formatSplittingMethod } from "./utils";
 
@@ -66,18 +65,7 @@ export const splitPdfAction = orgProfileAction
 
     const createdJobs = await createPdfJobsQuery(jobs);
 
-    const promises = createdJobs.map(async (job) => {
-      try {
-        await fetch(`${getServerUrl()}/api/jobs/split-pdf`, {
-          method: "POST",
-          body: JSON.stringify({ jobId: job.id }),
-        });
-      } catch (error) {
-        throw new ActionError("Something went wrong while starting the job", {
-          cause: error,
-        });
-      }
-    });
+    const promises = createdJobs.map(async (job) => startSplitPdfJob(job.id));
 
     await Promise.all(promises);
   });

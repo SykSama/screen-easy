@@ -14,7 +14,7 @@ export const uploadFileQuery = async ({ file, path }: UploadFileInput) => {
     .upload(path, file, {
       contentType: file.type,
       cacheControl: "3600",
-      upsert: false,
+      upsert: true,
     });
 
   if (error) throw new SupabaseStorageActionError(error);

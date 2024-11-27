@@ -8,15 +8,11 @@ export const createPdfJobsQuery = async (
 ): Promise<Tables<"pdf_jobs">[]> => {
   const supabase = await createClient();
 
-  try {
-    const { data } = await supabase
-      .from("pdf_jobs")
-      .insert(jobs)
-      .select()
-      .throwOnError();
+  const { data, error } = await supabase.from("pdf_jobs").insert(jobs).select();
 
-    return data ?? [];
-  } catch (error) {
+  if (error) {
     throw new SupabasePostgrestActionError(error as PostgrestError);
   }
+
+  return data;
 };

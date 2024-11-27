@@ -1,6 +1,5 @@
 import type { StorageError } from "@supabase/storage-js";
 import type { PostgrestError } from "@supabase/supabase-js";
-import { DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-action";
 
 export class UnauthenticatedError extends Error {}
 
@@ -17,7 +16,7 @@ export class SupabaseStorageActionError extends ActionError {
   storageError: StorageError;
 
   constructor(storageError: StorageError) {
-    super(DEFAULT_SERVER_ERROR_MESSAGE);
+    super(storageError.message);
     this.name = "SupabaseStorageActionError";
     this.storageError = storageError;
   }

@@ -130,34 +130,57 @@ FOR SELECT USING (
   )
 );
 
+CREATE POLICY "Organization members can insert job results" ON pdf_job_results 
+FOR INSERT WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM pdf_jobs j
+    JOIN pdf_batch_jobs b ON b.id = j.batch_id
+    WHERE j.id = job_id 
+    AND b.organization_id IN (
+      SELECT organization_id FROM organization_memberships WHERE profile_id = auth.uid()
+    )
+  )
+);
+
+CREATE POLICY "Organization members can update their job results" ON pdf_job_results 
+FOR UPDATE USING (
+  EXISTS (
+    SELECT 1 FROM pdf_jobs j
+    JOIN pdf_batch_jobs b ON b.id = j.batch_id
+    WHERE j.id = job_id 
+    AND b.organization_id IN (
+      SELECT organization_id FROM organization_memberships WHERE profile_id = auth.uid()
+    )
+  )
+);
+
 -- Function to update batch status based on jobs status
 CREATE OR REPLACE FUNCTION public.update_batch_status()
 RETURNS TRIGGER AS $$
 BEGIN
-  -- Update completed/failed counts
   UPDATE pdf_batch_jobs
   SET 
     completed_files = (
       SELECT COUNT(*) FROM pdf_jobs 
-      WHERE batch_id = NEW.batch_id AND status = 'completed'
+      WHERE batch_id = NEW.batch_id AND status = 'completed'::job_status
     ),
     failed_files = (
       SELECT COUNT(*) FROM pdf_jobs 
-      WHERE batch_id = NEW.batch_id AND status = 'failed'
+      WHERE batch_id = NEW.batch_id AND status = 'failed'::job_status
     ),
     status = CASE
       WHEN (
         SELECT COUNT(*) FROM pdf_jobs 
-        WHERE batch_id = NEW.batch_id AND status IN ('pending', 'processing')
+        WHERE batch_id = NEW.batch_id AND status IN ('pending'::job_status, 'processing'::job_status)
       ) = 0 THEN
         CASE
           WHEN (
             SELECT COUNT(*) FROM pdf_jobs 
-            WHERE batch_id = NEW.batch_id AND status = 'failed'
-          ) > 0 THEN 'failed'
-          ELSE 'completed'
+            WHERE batch_id = NEW.batch_id AND status = 'failed'::job_status
+          ) > 0 THEN 'failed'::job_status
+          ELSE 'completed'::job_status
         END
-      ELSE 'processing'
+      ELSE 'processing'::job_status
     END,
     updated_at = now()
   WHERE id = NEW.batch_id;

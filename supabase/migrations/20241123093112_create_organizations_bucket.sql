@@ -24,3 +24,15 @@ WITH CHECK (
     WHERE profile_id = auth.uid()
   )
 );
+
+-- Storage bucket policy
+CREATE POLICY "Organization members can update files" ON storage.objects
+FOR UPDATE TO authenticated
+USING (
+  bucket_id = 'organizations' AND
+  (storage.foldername(name))[1] IN (
+    SELECT organization_id::text 
+    FROM organization_memberships 
+    WHERE profile_id = auth.uid()
+  )
+);
