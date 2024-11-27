@@ -104,23 +104,9 @@ async function processPdf(jobId: string) {
         error_message: error instanceof Error ? error.message : "Unknown error",
       },
     });
-  }
-}
 
-async function splitPdfByBookmarks(fileData: Blob): Promise<
-  {
-    filename: string;
-    file: Blob;
-    metadata: Record<string, string>;
-  }[]
-> {
-  return [
-    {
-      filename: "test.pdf",
-      file: fileData,
-      metadata: {},
-    },
-  ];
+    throw error;
+  }
 }
 
 async function splitPdfByAI(
@@ -134,4 +120,14 @@ async function splitPdfByAI(
   }[]
 > {
   throw new ActionError("Function not implemented.");
+}
+
+async function splitPdfByBookmarks(fileData: Blob): Promise<
+  {
+    filename: string;
+    file: Blob;
+    metadata: Record<string, string>;
+  }[]
+> {
+  throw new Error("Function not implemented.");
 }
