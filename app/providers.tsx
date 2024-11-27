@@ -19,8 +19,6 @@ export const Providers = ({ children }: PropsWithChildren) => {
     >
       <QueryClientProvider client={queryClient}>
         <Toaster
-          // className="bg-black"
-          duration={300000}
           position="top-right"
           closeButton={true}
           toastOptions={{
