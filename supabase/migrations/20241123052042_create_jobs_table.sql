@@ -28,7 +28,7 @@ CREATE TABLE "public"."pdf_batch_jobs" (
 
 CREATE TABLE "public"."pdf_jobs" (
   "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  "batch_id" uuid NOT NULL REFERENCES "pdf_batch_jobs"(id),
+  "batch_id" uuid NOT NULL REFERENCES "pdf_batch_jobs"(id) ON DELETE CASCADE,
   "trigger_run_id" text,
   "status" job_status NOT NULL DEFAULT 'pending',
   "original_filename" text NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE "public"."pdf_jobs" (
 
 CREATE TABLE "public"."pdf_job_results" (
   "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  "job_id" uuid NOT NULL REFERENCES "pdf_jobs"(id),
+  "job_id" uuid NOT NULL REFERENCES "pdf_jobs"(id) ON DELETE CASCADE,
   "filename" text NOT NULL,
   "file_path" text NOT NULL,
   "size_bytes" integer NOT NULL,
