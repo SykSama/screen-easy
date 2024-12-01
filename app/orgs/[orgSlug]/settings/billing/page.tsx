@@ -1,6 +1,6 @@
 import { stripe } from "@/lib/stripe";
-import { getPlanQuery } from "@/query/organization-plans/get-organization-plan.query";
-import { getOrgQuery } from "@/query/orgs/get-org.query";
+import { getPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
+import { getOrgQuery } from "@/queries/orgs/get-org.query";
 import type { PageParams } from "@/types/next";
 import { getServerUrl } from "@/utils/server-url";
 import { Suspense } from "react";

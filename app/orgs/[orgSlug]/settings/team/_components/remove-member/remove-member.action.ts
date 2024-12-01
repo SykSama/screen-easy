@@ -2,8 +2,8 @@
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
 import { ActionError } from "@/lib/errors/errors";
-import { deleteOrganizationMembership } from "@/query/organization-memberships/delete-organization-memberships.query";
-import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
+import { deleteOrganizationMembership } from "@/queries/organization-memberships/delete-organization-memberships.query";
+import { OrganizationMembershipRole } from "@/queries/orgs/orgs.type";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";

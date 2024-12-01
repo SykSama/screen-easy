@@ -1,10 +1,10 @@
 "use server";
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
-import { updateOrganizationQuery } from "@/query/orgs/update-org.query";
+import { updateOrganizationQuery } from "@/queries/orgs/update-org.query";
 import { revalidatePath } from "next/cache";
 
-import { deleteOrganizationQuery } from "@/query/orgs/delete-org.query";
+import { deleteOrganizationQuery } from "@/queries/orgs/delete-org.query";
 import {
   DeleteOrgSchema,
   GeneralSettingsFormSchema,

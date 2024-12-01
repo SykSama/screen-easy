@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/table";
 
 import { Badge } from "@/components/ui/badge";
-import { getMembershipRolesQuery } from "@/query/orgs/get-membership-roles.query";
-import { getOrgMembersQuery } from "@/query/orgs/get-org-members.query";
-import { getOrgQuery } from "@/query/orgs/get-org.query";
+import { getMembershipRolesQuery } from "@/queries/orgs/get-membership-roles.query";
+import { getOrgMembersQuery } from "@/queries/orgs/get-org-members.query";
+import { getOrgQuery } from "@/queries/orgs/get-org.query";
 import type { User } from "@supabase/supabase-js";
 import { RemoveMemberButton } from "./_components/remove-member/remove-member-button";
 import { RoleSelector } from "./_components/update-role/role-selector";

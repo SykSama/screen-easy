@@ -1,8 +1,8 @@
 "use server";
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
-import { deleteOrganizationMembership } from "@/query/organization-memberships/delete-organization-memberships.query";
-import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
+import { deleteOrganizationMembership } from "@/queries/organization-memberships/delete-organization-memberships.query";
+import { OrganizationMembershipRole } from "@/queries/orgs/orgs.type";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";

@@ -4,7 +4,7 @@ import { orgProfileAction } from "@/lib/actions/safe-actions";
 
 import { revalidatePath } from "next/cache";
 
-import { updateMemberRoleQuery } from "@/query/orgs/update-member-role.query";
+import { updateMemberRoleQuery } from "@/queries/orgs/update-member-role.query";
 
 import { z } from "zod";
 

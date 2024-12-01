@@ -2,7 +2,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { requiredAuth } from "@/features/auth/helper";
 import { logger } from "@/lib/logger";
-import { getProfileOrgsQuery } from "@/query/orgs/get-users-orgs.query";
+import { getProfileOrgsQuery } from "@/queries/orgs/get-users-orgs.query";
 import type { LayoutParams } from "@/types/next";
 import { Command } from "lucide-react";
 

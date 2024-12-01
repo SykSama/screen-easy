@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { getOrgQuery } from "@/query/orgs/get-org.query";
+import { getOrgQuery } from "@/queries/orgs/get-org.query";
 import type { PageParams } from "@/types/next";
 import { DeleteOrgForm } from "./delete-org-form";
 import { UpdateOrgForm } from "./update-org-form";

@@ -1,5 +1,5 @@
 import { auth } from "@/features/auth/helper";
-import { getProfileOrgsQuery } from "@/query/orgs/get-users-orgs.query";
+import { getProfileOrgsQuery } from "@/queries/orgs/get-users-orgs.query";
 import { getServerUrl } from "@/utils/server-url";
 import { NextResponse } from "next/server";
 

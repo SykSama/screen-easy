@@ -1,8 +1,8 @@
 import {
   getOrganizationProfileRole,
   getOrgSlugFromUrl,
-} from "@/query/orgs/get-org.query";
-import { OrganizationMembershipRole } from "@/query/orgs/orgs.type";
+} from "@/queries/orgs/get-org.query";
+import { OrganizationMembershipRole } from "@/queries/orgs/orgs.type";
 import { createClient } from "@/utils/supabase/server";
 import { StorageApiError, StorageUnknownError } from "@supabase/storage-js";
 import {

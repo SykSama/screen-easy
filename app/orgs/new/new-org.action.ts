@@ -3,9 +3,9 @@
 import { authAction } from "@/lib/actions/safe-actions";
 
 import { stripe } from "@/lib/stripe";
-import { createOrganizationMembershipsQuery } from "@/query/organization-memberships/create-organization-memberships.query";
-import { getPlanQuery } from "@/query/organization-plans/get-organization-plan.query";
-import { createOrgQuery } from "@/query/orgs/create-org.query";
+import { createOrganizationMembershipsQuery } from "@/queries/organization-memberships/create-organization-memberships.query";
+import { getPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
+import { createOrgQuery } from "@/queries/orgs/create-org.query";
 import { redirect } from "next/navigation";
 import { NewOrgFormSchema } from "./new-org-form.schema";
 
