@@ -1,4 +1,5 @@
 import { env } from "@/lib/env";
+import { logger } from "@/lib/logger";
 import type { Database } from "@/types/database.types";
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -24,6 +25,7 @@ export const createClient = async (): Promise<SupabaseClient<Database>> => {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
+            logger.error(error);
           }
         },
       },

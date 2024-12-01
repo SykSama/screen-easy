@@ -1,39 +1,35 @@
-import { NotFoundError } from "@/lib/errors/errors";
+import { SupabasePostgrestActionError } from "@/lib/errors/errors";
 import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
-export const getPlansQuery = async (): Promise<
+export const getOrganizationPlansQuery = async (): Promise<
   Tables<"organization_plans">[]
 > => {
   const supabase = await createClient();
 
-  const { data } = await supabase
-    .from("organization_plans")
-    .select("*")
-    .throwOnError();
+  const { data, error } = await supabase.from("organization_plans").select("*");
 
-  if (!data) {
-    return [];
+  if (error) {
+    throw new SupabasePostgrestActionError(error);
   }
 
   return data;
 };
 
-export const getPlanQuery = async (
+export const getOrganizationPlanQuery = async (
   id: string,
 ): Promise<Tables<"organization_plans">> => {
   const supabase = await createClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("organization_plans")
     .select("*")
     .eq("id", id)
     .limit(1)
-    .single()
-    .throwOnError();
+    .single();
 
-  if (!data) {
-    throw new NotFoundError("Plan not found");
+  if (error) {
+    throw new SupabasePostgrestActionError(error);
   }
 
   return data;

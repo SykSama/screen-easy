@@ -1,8 +1,6 @@
-import {
-  getOrganizationProfileRole,
-  getOrgSlugFromUrl,
-} from "@/queries/orgs/get-org.query";
-import { OrganizationMembershipRole } from "@/queries/orgs/orgs.type";
+import { getOrganizationProfileRoleQuery } from "@/queries/orgs/get-organization-profile-role.query";
+import { getOrganizationSlugFromUrl } from "@/queries/orgs/get-organization.query";
+
 import { createClient } from "@/utils/supabase/server";
 import { StorageApiError, StorageUnknownError } from "@supabase/storage-js";
 import {
@@ -20,6 +18,7 @@ import {
   UnauthorizedError,
 } from "../errors/errors";
 import { logger } from "../logger";
+import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
 
 export class SupabaseStorageError extends Error {}
 
@@ -126,17 +125,18 @@ export const orgProfileAction = createSafeActionClient({
 })
   .use(authMiddleware)
   .use(async ({ next, ctx: { user }, metadata: { roles } }) => {
-    const orgSlug = await getOrgSlugFromUrl();
+    const organizationSlug = await getOrganizationSlugFromUrl();
 
-    if (!orgSlug) {
+    if (!organizationSlug) {
       notFound();
     }
 
-    const { organization, profile, role } = await getOrganizationProfileRole({
-      userId: user.id,
-      organizationSlug: orgSlug,
-      roles,
-    });
+    const { organization, profile, role } =
+      await getOrganizationProfileRoleQuery({
+        profile_id: user.id,
+        slug: organizationSlug,
+        roles,
+      });
 
     return next({ ctx: { organization, profile: { ...profile, role } } });
   });

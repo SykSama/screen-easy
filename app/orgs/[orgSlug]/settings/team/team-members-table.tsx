@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/table";
 
 import { Badge } from "@/components/ui/badge";
-import { getMembershipRolesQuery } from "@/queries/orgs/get-membership-roles.query";
-import { getOrgMembersQuery } from "@/queries/orgs/get-org-members.query";
-import { getOrgQuery } from "@/queries/orgs/get-org.query";
+
+import { getMembershipRolesQuery } from "@/queries/membership-roles/get-membership-roles.query";
+import { getOrganizationMembersQuery } from "@/queries/orgs/get-organization-members.query";
+import { getOrganizationFromSlugQuery } from "@/queries/orgs/get-organization.query";
 import type { User } from "@supabase/supabase-js";
 import { RemoveMemberButton } from "./_components/remove-member/remove-member-button";
 import { RoleSelector } from "./_components/update-role/role-selector";
@@ -28,8 +29,8 @@ export const TeamMembersTable = async ({
   orgSlug,
   searchQuery,
 }: TeamMembersTableProps) => {
-  const org = await getOrgQuery(orgSlug);
-  const members = await getOrgMembersQuery(org.id, searchQuery);
+  const org = await getOrganizationFromSlugQuery(orgSlug);
+  const members = await getOrganizationMembersQuery(org.id, searchQuery);
   const roles = await getMembershipRolesQuery();
 
   return (

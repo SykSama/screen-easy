@@ -138,7 +138,7 @@ export default [
       ".react-email",
       ".vercel",
       ".vscode",
-      "tailwind.config.js",
+      "tailwind.config.ts",
       "next.config.js",
       "eslint.config.mjs",
       "**/worker.js",

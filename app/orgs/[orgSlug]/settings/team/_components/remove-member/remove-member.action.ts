@@ -2,8 +2,9 @@
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
 import { ActionError } from "@/lib/errors/errors";
-import { deleteOrganizationMembership } from "@/queries/organization-memberships/delete-organization-memberships.query";
-import { OrganizationMembershipRole } from "@/queries/orgs/orgs.type";
+import { deleteOrganizationMembershipQuery } from "@/queries/organization-memberships/delete-organization-memberships.query";
+import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
+
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -67,9 +68,9 @@ export const removeMemberAction = orgProfileAction
         throw new ActionError("You can't delete the last owner");
       }
 
-      await deleteOrganizationMembership({
-        organizationId: organization.id,
-        userId: memberToDelete.profile_id,
+      await deleteOrganizationMembershipQuery({
+        organization_id: organization.id,
+        profile_id: memberToDelete.profile_id,
       });
 
       revalidatePath(`/orgs/${organization.slug}/settings/team`);

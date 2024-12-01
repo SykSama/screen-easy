@@ -7,10 +7,8 @@ import { useEffect } from "react";
 
 export default function RouteError({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
   useEffect(() => {
     // Log only serializable properties

@@ -1,8 +1,9 @@
 "use server";
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
-import { deleteOrganizationMembership } from "@/queries/organization-memberships/delete-organization-memberships.query";
-import { OrganizationMembershipRole } from "@/queries/orgs/orgs.type";
+import { deleteOrganizationMembershipQuery } from "@/queries/organization-memberships/delete-organization-memberships.query";
+
+import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -24,9 +25,9 @@ export const leaveOrgAction = orgProfileAction
       });
     }
 
-    await deleteOrganizationMembership({
-      organizationId: organization.id,
-      userId: profile.id,
+    await deleteOrganizationMembershipQuery({
+      organization_id: organization.id,
+      profile_id: profile.id,
     });
 
     revalidatePath(`/orgs/${organization.slug}/settings/team`);

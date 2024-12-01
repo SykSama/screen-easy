@@ -17,7 +17,9 @@ export const uploadFileQuery = async ({ file, path }: UploadFileInput) => {
       upsert: true,
     });
 
-  if (error) throw new SupabaseStorageActionError(error);
+  if (error) {
+    throw new SupabaseStorageActionError(error);
+  }
 
   return { storagePath: path };
 };

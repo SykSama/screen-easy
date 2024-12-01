@@ -1,3 +1,4 @@
+import { SupabasePostgrestActionError } from "@/lib/errors/errors";
 import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
@@ -6,10 +7,11 @@ export const getMembershipRolesQuery = async (): Promise<
 > => {
   const supabase = await createClient();
 
-  const { data: roles } = await supabase
-    .from("membership_roles")
-    .select("*")
-    .throwOnError();
+  const { data, error } = await supabase.from("membership_roles").select();
 
-  return roles ?? [];
+  if (error) {
+    throw new SupabasePostgrestActionError(error);
+  }
+
+  return data;
 };

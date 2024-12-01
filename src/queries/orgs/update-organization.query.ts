@@ -3,7 +3,7 @@ import type { Tables, TablesUpdate } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export type UpdateOrganizationQueryProps = {
-  id: string;
+  id: Tables<"organizations">["id"];
   organization: TablesUpdate<"organizations">;
 };
 
@@ -13,7 +13,7 @@ export const updateOrganizationQuery = async ({
 }: UpdateOrganizationQueryProps): Promise<Tables<"organizations">> => {
   const supabase = await createClient();
 
-  const { data: updatedOrganization, error } = await supabase
+  const { data, error } = await supabase
     .from("organizations")
     .update(organization)
     .eq("id", id)
@@ -24,5 +24,5 @@ export const updateOrganizationQuery = async ({
     throw new SupabasePostgrestActionError(error);
   }
 
-  return updatedOrganization;
+  return data;
 };

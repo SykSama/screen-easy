@@ -1,3 +1,4 @@
+import { SupabasePostgrestActionError } from "@/lib/errors/errors";
 import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
@@ -9,7 +10,7 @@ export type MembersFromOrganization = Pick<
   membership_roles: Tables<"membership_roles">;
 };
 
-export const getOrgMembersQuery = async (
+export const getOrganizationMembersQuery = async (
   id: string,
   search?: string,
 ): Promise<MembersFromOrganization[]> => {
@@ -24,9 +25,13 @@ export const getOrgMembersQuery = async (
     query = query.like("profiles.email", `%${search}%`);
   }
 
-  query.returns<MembersFromOrganization[]>().throwOnError();
+  query.returns<MembersFromOrganization[]>();
 
-  const { data: members } = await query;
+  const { data, error } = await query;
 
-  return members ?? [];
+  if (error) {
+    throw new SupabasePostgrestActionError(error);
+  }
+
+  return data;
 };

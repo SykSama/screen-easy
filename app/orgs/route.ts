@@ -1,5 +1,6 @@
 import { auth } from "@/features/auth/helper";
-import { getProfileOrgsQuery } from "@/queries/orgs/get-users-orgs.query";
+import { getProfileOrganizationsRolesQuery } from "@/queries/orgs/get-profile-organizations-roles.query";
+
 import { getServerUrl } from "@/utils/server-url";
 import { NextResponse } from "next/server";
 
@@ -10,13 +11,18 @@ export const GET = async () => {
     return NextResponse.redirect(`${getServerUrl()}/sign-in`);
   }
 
-  const orgs = await getProfileOrgsQuery(user.id);
+  const profileWithOrgs = await getProfileOrganizationsRolesQuery({
+    profile_id: user.id,
+  });
 
-  if (orgs.length === 0) {
+  if (profileWithOrgs.length === 0) {
     return NextResponse.redirect(new URL("/orgs/new", getServerUrl()));
   }
 
-  return NextResponse.redirect(
-    new URL(`/orgs/${orgs[0].organizations.slug}/dashboard`, getServerUrl()),
+  const url = new URL(
+    `/orgs/${profileWithOrgs[0].organizations.slug}/dashboard`,
+    getServerUrl(),
   );
+
+  return NextResponse.redirect(url);
 };

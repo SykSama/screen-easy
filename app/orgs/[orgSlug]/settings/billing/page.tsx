@@ -1,6 +1,7 @@
 import { stripe } from "@/lib/stripe";
-import { getPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
-import { getOrgQuery } from "@/queries/orgs/get-org.query";
+import { getOrganizationPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
+
+import { getOrganizationFromSlugQuery } from "@/queries/orgs/get-organization.query";
 import type { PageParams } from "@/types/next";
 import { getServerUrl } from "@/utils/server-url";
 import { Suspense } from "react";
@@ -27,11 +28,11 @@ type BillingPageContentProps = {
 export const BillingPageContent = async ({
   orgSlug,
 }: BillingPageContentProps) => {
-  const organization = await getOrgQuery(orgSlug);
+  const organization = await getOrganizationFromSlugQuery(orgSlug);
   const subscription = await stripe.subscriptions.retrieve(
     organization.stripe_subscription_id,
   );
-  const plan = await getPlanQuery(organization.plan_id);
+  const plan = await getOrganizationPlanQuery(organization.plan_id);
   const { url } = await stripe.billingPortal.sessions.create({
     customer: organization.stripe_customer_id,
     return_url: `${getServerUrl()}/orgs/${orgSlug}/settings/billing`,

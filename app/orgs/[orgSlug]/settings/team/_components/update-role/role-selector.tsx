@@ -1,6 +1,5 @@
 "use client";
 
-import type { MembersFromOrganization } from "@/queries/orgs/get-org-members.query";
 import type { Tables } from "@/types/database.types";
 
 import {
@@ -10,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { MembersFromOrganization } from "@/queries/orgs/get-organization-members.query";
 import { useOptimisticAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 import { updateRoleAction } from "./role.action";
