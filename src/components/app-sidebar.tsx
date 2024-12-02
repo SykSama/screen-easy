@@ -3,10 +3,12 @@
 import {
   CreditCard,
   Home,
+  Image,
+  Images,
   LifeBuoy,
+  Monitor,
   Send,
   Settings,
-  SplitIcon,
   User,
 } from "lucide-react";
 import * as React from "react";
@@ -80,9 +82,19 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
               icon: Home,
             },
             {
-              title: "Split PDF",
-              url: `/orgs/${orgSlug}/split-pdf`,
-              icon: SplitIcon,
+              title: "Medias",
+              url: `/orgs/${orgSlug}/medias`,
+              icon: Image,
+            },
+            {
+              title: "Collections",
+              url: `/orgs/${orgSlug}/collections`,
+              icon: Images,
+            },
+            {
+              title: "Screens",
+              url: `/orgs/${orgSlug}/screens`,
+              icon: Monitor,
             },
           ]}
         />
