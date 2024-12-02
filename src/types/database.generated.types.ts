@@ -34,6 +34,154 @@ export type Database = {
   }
   public: {
     Tables: {
+      collection_media: {
+        Row: {
+          collection_id: string
+          created_at: string
+          display_from: string | null
+          display_order: number
+          display_until: string | null
+          duration: number
+          media_id: string
+          transition_duration: number
+        }
+        Insert: {
+          collection_id: string
+          created_at?: string
+          display_from?: string | null
+          display_order: number
+          display_until?: string | null
+          duration?: number
+          media_id: string
+          transition_duration?: number
+        }
+        Update: {
+          collection_id?: string
+          created_at?: string
+          display_from?: string | null
+          display_order?: number
+          display_until?: string | null
+          duration?: number
+          media_id?: string
+          transition_duration?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_media_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_media_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          organization_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          organization_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          organization_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collections_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      media: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: number | null
+          file_size: number | null
+          height: number | null
+          id: string
+          metadata: Json | null
+          name: string
+          organization_id: string
+          status: Database["public"]["Enums"]["media_status"]
+          thumbnail_url: string | null
+          type: Database["public"]["Enums"]["media_type"]
+          updated_at: string
+          url: string
+          width: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          file_size?: number | null
+          height?: number | null
+          id?: string
+          metadata?: Json | null
+          name: string
+          organization_id: string
+          status?: Database["public"]["Enums"]["media_status"]
+          thumbnail_url?: string | null
+          type: Database["public"]["Enums"]["media_type"]
+          updated_at?: string
+          url: string
+          width?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          file_size?: number | null
+          height?: number | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          organization_id?: string
+          status?: Database["public"]["Enums"]["media_status"]
+          thumbnail_url?: string | null
+          type?: Database["public"]["Enums"]["media_type"]
+          updated_at?: string
+          url?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       membership_roles: {
         Row: {
           id: string
@@ -169,151 +317,6 @@ export type Database = {
           },
         ]
       }
-      pdf_batch_jobs: {
-        Row: {
-          completed_files: number
-          created_at: string
-          error_message: string | null
-          failed_files: number
-          id: string
-          job_type: Database["public"]["Enums"]["job_type"]
-          organization_id: string
-          profile_id: string
-          status: Database["public"]["Enums"]["job_status"]
-          total_files: number
-          updated_at: string
-        }
-        Insert: {
-          completed_files?: number
-          created_at?: string
-          error_message?: string | null
-          failed_files?: number
-          id?: string
-          job_type: Database["public"]["Enums"]["job_type"]
-          organization_id: string
-          profile_id: string
-          status?: Database["public"]["Enums"]["job_status"]
-          total_files: number
-          updated_at?: string
-        }
-        Update: {
-          completed_files?: number
-          created_at?: string
-          error_message?: string | null
-          failed_files?: number
-          id?: string
-          job_type?: Database["public"]["Enums"]["job_type"]
-          organization_id?: string
-          profile_id?: string
-          status?: Database["public"]["Enums"]["job_status"]
-          total_files?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pdf_batch_jobs_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pdf_batch_jobs_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pdf_job_results: {
-        Row: {
-          created_at: string
-          file_path: string
-          filename: string
-          id: string
-          job_id: string
-          metadata: Json | null
-          size_bytes: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          file_path: string
-          filename: string
-          id?: string
-          job_id: string
-          metadata?: Json | null
-          size_bytes: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          file_path?: string
-          filename?: string
-          id?: string
-          job_id?: string
-          metadata?: Json | null
-          size_bytes?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pdf_job_results_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "pdf_jobs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pdf_jobs: {
-        Row: {
-          batch_id: string
-          created_at: string
-          error_message: string | null
-          id: string
-          original_file_path: string
-          original_filename: string
-          processing_config: Json
-          status: Database["public"]["Enums"]["job_status"]
-          trigger_run_id: string | null
-          updated_at: string
-        }
-        Insert: {
-          batch_id: string
-          created_at?: string
-          error_message?: string | null
-          id?: string
-          original_file_path: string
-          original_filename: string
-          processing_config: Json
-          status?: Database["public"]["Enums"]["job_status"]
-          trigger_run_id?: string | null
-          updated_at?: string
-        }
-        Update: {
-          batch_id?: string
-          created_at?: string
-          error_message?: string | null
-          id?: string
-          original_file_path?: string
-          original_filename?: string
-          processing_config?: Json
-          status?: Database["public"]["Enums"]["job_status"]
-          trigger_run_id?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pdf_jobs_batch_id_fkey"
-            columns: ["batch_id"]
-            isOneToOne: false
-            referencedRelation: "pdf_batch_jobs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       profiles: {
         Row: {
           created_at: string
@@ -335,6 +338,111 @@ export type Database = {
         }
         Relationships: []
       }
+      screen_groups: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          organization_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          organization_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          organization_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screen_groups_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      screens: {
+        Row: {
+          collection_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          last_ping: string | null
+          name: string
+          organization_id: string
+          orientation: string
+          resolution_height: number | null
+          resolution_width: number | null
+          screen_group_id: string | null
+          status: Database["public"]["Enums"]["screen_status"]
+          updated_at: string
+        }
+        Insert: {
+          collection_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_ping?: string | null
+          name: string
+          organization_id: string
+          orientation?: string
+          resolution_height?: number | null
+          resolution_width?: number | null
+          screen_group_id?: string | null
+          status?: Database["public"]["Enums"]["screen_status"]
+          updated_at?: string
+        }
+        Update: {
+          collection_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_ping?: string | null
+          name?: string
+          organization_id?: string
+          orientation?: string
+          resolution_height?: number | null
+          resolution_width?: number | null
+          screen_group_id?: string | null
+          status?: Database["public"]["Enums"]["screen_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screens_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screens_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screens_screen_group_id_fkey"
+            columns: ["screen_group_id"]
+            isOneToOne: false
+            referencedRelation: "screen_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -349,8 +457,9 @@ export type Database = {
       }
     }
     Enums: {
-      job_status: "pending" | "processing" | "completed" | "failed"
-      job_type: "split" | "fill-form"
+      media_status: "processing" | "ready" | "error"
+      media_type: "image" | "video"
+      screen_status: "online" | "offline"
     }
     CompositeTypes: {
       [_ in never]: never

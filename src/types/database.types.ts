@@ -1,4 +1,3 @@
-import type { SplittingProcessingConfig } from "@/features/jobs/types";
 import type { MergeDeep } from "type-fest";
 import type { Database as DatabaseGenerated } from "./database.generated.types";
 
@@ -7,19 +6,7 @@ export type Database = MergeDeep<
   DatabaseGenerated,
   {
     public: {
-      Tables: {
-        pdf_jobs: {
-          Row: {
-            processing_config: SplittingProcessingConfig;
-          };
-          Insert: {
-            processing_config: SplittingProcessingConfig;
-          };
-          Update: {
-            processing_config?: SplittingProcessingConfig;
-          };
-        };
-      };
+      Tables: {};
     };
   }
 >;
