@@ -41,5 +41,5 @@ export const createOrgAction = authAction
       role_id: "OWNER",
     });
 
-    return redirect(`/orgs/${org.slug}`);
+    return redirect(`/orgs/${org.slug}/dashboard`);
   });

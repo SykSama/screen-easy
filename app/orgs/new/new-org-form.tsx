@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/loading-button";
 import {
   Card,
   CardContent,
@@ -96,9 +96,13 @@ export const NewOrgForm = ({ userEmail, defaultOrgName }: NewOrgFormProps) => {
                     {form.formState.errors.root.message}
                   </div>
                 )}
-                <Button type="submit" className="w-full">
-                  {action.isPending ? "Creating..." : "Create Organization"}
-                </Button>
+                <LoadingButton
+                  type="submit"
+                  className="w-full"
+                  isLoading={action.isPending}
+                >
+                  Create Organization
+                </LoadingButton>
               </div>
             </form>
           </Form>
