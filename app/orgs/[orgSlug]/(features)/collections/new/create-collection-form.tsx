@@ -1,5 +1,6 @@
 "use client";
 
+import { FormSection } from "@/components/form-section";
 import { LoadingButton } from "@/components/loading-button";
 import {
   Form,
@@ -11,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
@@ -44,53 +46,64 @@ export const CreateCollectionForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmitWithAction}
-        className="w-full max-w-xl space-y-4"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter collection name" {...field} />
-              </FormControl>
-              <FormDescription>
-                Give your collection a descriptive name
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={handleSubmitWithAction} className="mx-auto max-w-4xl">
+        <h1 className="text-2xl font-bold">Create Collection</h1>
+        <Separator className="my-10 mt-6" />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Enter collection description"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Describe what this collection is about
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Information Section */}
+        <FormSection
+          title="Information"
+          description="Add information about the collection"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Name</FormLabel>
+                  <FormDescription className="text-muted-foreground">
+                    Give your collection a descriptive name
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="mt-10"
+                    placeholder="My awesome collection"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <div className="flex justify-end">
-          <LoadingButton
-            type="submit"
-            isLoading={action.isPending}
-            className="self-end"
-          >
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Description</FormLabel>
+                  <FormDescription>
+                    Describe what this collection is about
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Textarea
+                    placeholder="This collection contains..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        <Separator className="my-10" />
+        <div className="flex justify-end gap-4">
+          <LoadingButton type="submit" isLoading={action.isPending}>
             Create Collection
           </LoadingButton>
         </div>
