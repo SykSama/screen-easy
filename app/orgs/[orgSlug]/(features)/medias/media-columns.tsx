@@ -7,6 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ImageIcon, VideoIcon } from "lucide-react";
 import { CollectionBadges } from "./components/collection-badges";
+import { MediaNameCell } from "./components/media-name-cell";
 
 export const columns: ColumnDef<GetOrganizationMediasOutput>[] = [
   {
@@ -22,17 +23,13 @@ export const columns: ColumnDef<GetOrganizationMediasOutput>[] = [
     accessorKey: "name",
     header: "Name",
     minSize: 500,
-    cell: ({ row }) => {
-      const name = row.getValue("name") as string;
-      const description = row.original.description as string | null;
-
-      return (
-        <div className="flex flex-col">
-          <span className="font-medium">{name}</span>
-          <span className="text-sm text-muted-foreground">{description}</span>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <MediaNameCell
+        id={row.original.id}
+        name={row.getValue("name")}
+        description={row.original.description}
+      />
+    ),
   },
   {
     accessorKey: "collections",
