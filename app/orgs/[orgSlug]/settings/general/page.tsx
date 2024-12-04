@@ -11,10 +11,12 @@ export default async function GeneralSettingsPage({
   const org = await getOrganizationFromSlugQuery(orgSlug);
 
   return (
-    <div className="flex flex-col space-y-6 p-4 pt-0">
-      <UpdateOrgForm initialData={org} />
-      <Separator />
-      <DeleteOrgForm />
+    <div className="grow p-6 lg:rounded-lg lg:p-10 lg:shadow-sm">
+      <div className="mx-auto max-w-6xl">
+        <UpdateOrgForm initialData={org} />
+        <Separator className="my-10" />
+        <DeleteOrgForm />
+      </div>
     </div>
   );
 }

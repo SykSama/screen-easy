@@ -1,41 +1,24 @@
 import type { PropsWithChildren } from "react";
 
-import { cn } from "@/utils/cn";
-import { Typography } from "./ui/typography";
-
-export const FormSection = (props: PropsWithChildren) => {
-  return (
-    <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-14 xl:px-24 2xl:px-32">
-      <div className="flex flex-col gap-3 py-6 md:grid-cols-12 lg:grid lg:py-8">
-        {props.children}
-      </div>
-    </div>
-  );
-};
-
-export type FormSectionSideProps = {
-  col?: 4 | 8 | 12;
-} & PropsWithChildren &
-  React.HTMLAttributes<HTMLDivElement>;
-
-export const FormSectionSide = (props: FormSectionSideProps) => {
-  return (
-    <div className={cn(`col-span-${props.col}`, props.className)}>
-      {props.children}
-    </div>
-  );
-};
-
-export type FormSectionHeaderProps = {
+export type FormSectionProps = {
   title: string;
   description: string;
 } & PropsWithChildren;
 
-export const FormSectionHeader = (props: FormSectionHeaderProps) => {
+export const FormSection = ({
+  title,
+  description,
+  children,
+}: FormSectionProps) => {
   return (
-    <div className="sticky top-12 space-y-2">
-      <Typography variant="h3">{props.title}</Typography>
-      <Typography variant="muted">{props.description}</Typography>
-    </div>
+    <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <div className="space-y-1">
+        <h2 className="text-base/7 font-semibold">{title}</h2>
+        <p data-slot="text" className="text-base/6 text-muted-foreground">
+          {description}
+        </p>
+      </div>
+      <div className="space-y-4">{children}</div>
+    </section>
   );
 };

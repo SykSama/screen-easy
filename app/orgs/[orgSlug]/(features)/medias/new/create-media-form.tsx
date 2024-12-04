@@ -19,11 +19,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+
+import { Separator } from "@/components/ui/separator";
 import { CloudUpload } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createMediaAction } from "./create-media.action";
 import { CreateMediaFormSchema } from "./create-media.schema";
+import { FormSection } from "@/components/form-section";
 
 export const CreateMediaForm = () => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
@@ -54,108 +57,123 @@ export const CreateMediaForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmitWithAction}
-        className="w-full max-w-80 space-y-4 py-10"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" type="" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" type="" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="files"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Select File</FormLabel>
-              <FormControl>
-                <FileUploader
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  dropzoneOptions={{
-                    maxFiles: 5,
-                    maxSize: 1024 * 1024 * 4,
-                    multiple: false,
-                  }}
-                  className="relative rounded-lg bg-background p-2"
-                >
-                  <FileInput
-                    id="fileInput"
-                    className="outline-dashed outline-1 outline-slate-500"
-                  >
-                    <div className="flex w-full flex-col items-center justify-center p-8 ">
-                      <CloudUpload className="size-10 text-gray-500" />
-                      <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>
-                        &nbsp; or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF
-                      </p>
-                    </div>
-                  </FileInput>
-                  <FileUploaderContent>
-                    {field.value.map((file, i) => (
-                      <FileUploaderItem
-                        key={i}
-                        index={i}
-                        aria-roledescription={`file ${i + 1} containing ${file.name}`}
-                        className="flex flex-row items-center gap-2 pt-3"
-                      >
-                        <Image
-                          src={URL.createObjectURL(file)}
-                          alt={file.name}
-                          height={20}
-                          width={20}
-                          className="size-5 p-0"
-                        />
-                        <span>{file.name}</span>
-                      </FileUploaderItem>
-                    ))}
-                  </FileUploaderContent>
-                </FileUploader>
-              </FormControl>
-              <FormDescription>Select a file to upload.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <LoadingButton
-          type="submit"
-          isLoading={action.isPending}
-          className="self-end"
+      <form onSubmit={handleSubmitWithAction} className="mx-auto max-w-4xl">
+        <h1 className="text-2xl font-bold">Upload Media</h1>
+        <Separator className="my-10 mt-6" />
+        <FormSection
+          title="Information"
+          description="Add information about the media"
         >
-          Upload
-        </LoadingButton>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Name</FormLabel>
+                  <FormDescription className="text-muted-foreground">
+                    This is your public display name.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="mt-10"
+                    placeholder="My beautiful media"
+                    type=""
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Description</FormLabel>
+                  <FormDescription>
+                    This is your public description.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input placeholder="shadcn" type="" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+        <Separator className="my-10" />
+        <FormSection title="File" description="Add a file to the media">
+          <FormField
+            control={form.control}
+            name="files"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Select File</FormLabel>
+                <FormControl>
+                  <FileUploader
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    dropzoneOptions={{
+                      maxFiles: 5,
+                      maxSize: 1024 * 1024 * 4,
+                      multiple: false,
+                    }}
+                    className="relative rounded-lg bg-background p-2"
+                  >
+                    <FileInput
+                      id="fileInput"
+                      className="outline-dashed outline-1 outline-slate-500"
+                    >
+                      <div className="flex w-full flex-col items-center justify-center p-8 ">
+                        <CloudUpload className="size-10 text-gray-500" />
+                        <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>
+                          &nbsp; or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          SVG, PNG, JPG or GIF
+                        </p>
+                      </div>
+                    </FileInput>
+                    <FileUploaderContent>
+                      {field.value.map((file, i) => (
+                        <FileUploaderItem
+                          key={i}
+                          index={i}
+                          aria-roledescription={`file ${i + 1} containing ${file.name}`}
+                          className="flex flex-row items-center gap-2 pt-3"
+                        >
+                          <Image
+                            src={URL.createObjectURL(file)}
+                            alt={file.name}
+                            height={20}
+                            width={20}
+                            className="size-5 p-0"
+                          />
+                          <span>{file.name}</span>
+                        </FileUploaderItem>
+                      ))}
+                    </FileUploaderContent>
+                  </FileUploader>
+                </FormControl>
+                <FormDescription>Select a file to upload.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+        <Separator className="my-10" />
+        <div className="flex justify-end gap-4">
+          <LoadingButton type="submit" isLoading={action.isPending}>
+            Upload
+          </LoadingButton>
+        </div>
       </form>
     </Form>
   );

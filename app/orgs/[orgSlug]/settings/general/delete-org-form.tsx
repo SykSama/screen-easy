@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  FormSection,
-  FormSectionHeader,
-  FormSectionSide,
-} from "@/components/form-section";
+import { FormSection } from "@/components/form-section";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,64 +36,56 @@ export const DeleteOrgForm = () => {
   );
 
   return (
-    <FormSection>
-      <FormSectionSide col={4}>
-        <FormSectionHeader
-          title="Danger Zone"
-          description="Permanently delete your organization and all of its data."
-        />
-      </FormSectionSide>
-
-      <FormSectionSide col={8}>
-        <Card>
-          <CardContent className="rounded-lg border-2 border-destructive/50 p-4">
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <h4 className="font-medium">
-                  Deleting this organization will also remove its projects
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  Make sure you have made a backup of your projects if you want
-                  to keep your data
-                </p>
-              </div>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive">Delete organization</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your organization and remove all associated data.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={async () => {
-                        await handleSubmitWithAction();
-                      }}
-                      className="bg-destructive hover:bg-destructive/90"
-                      disabled={action.isPending}
-                    >
-                      <>
-                        {action.isPending && (
-                          <Icons.spinner className="mr-2 size-4 animate-spin" />
-                        )}
-                        Delete
-                      </>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+    <FormSection
+      title="Danger Zone"
+      description="Permanently delete your organization and all of its data."
+    >
+      <Card>
+        <CardContent className="rounded-lg border-2 border-destructive/50 p-4">
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <h4 className="font-medium">
+                Deleting this organization will also remove its projects
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                Make sure you have made a backup of your projects if you want to
+                keep your data
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      </FormSectionSide>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive">Delete organization</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your organization and remove all associated data.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={async () => {
+                      await handleSubmitWithAction();
+                    }}
+                    className="bg-destructive hover:bg-destructive/90"
+                    disabled={action.isPending}
+                  >
+                    <>
+                      {action.isPending && (
+                        <Icons.spinner className="mr-2 size-4 animate-spin" />
+                      )}
+                      Delete
+                    </>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </CardContent>
+      </Card>
     </FormSection>
   );
 };
