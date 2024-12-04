@@ -7,7 +7,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-export const SearchInput = () => {
+export type SearchInputProps = {
+  placeholder?: string;
+};
+
+export const SearchInput = ({ placeholder }: SearchInputProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -40,7 +44,7 @@ export const SearchInput = () => {
       >
         <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2" />
         <Input
-          placeholder="Filter members"
+          placeholder={placeholder ?? "Filter members"}
           className="pl-8"
           onChange={(e) => {
             debouncedSearch(e.target.value);
