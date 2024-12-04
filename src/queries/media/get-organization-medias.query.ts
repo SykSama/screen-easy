@@ -7,14 +7,26 @@ export type GetOrganizationMediasInput = Pick<
   "organization_id"
 >;
 
+export type GetOrganizationMediasOutput = Tables<"media"> & {
+  collections: Pick<Tables<"collections">, "id" | "name">[];
+};
+
 export const getOrganizationMediasQuery = async ({
   organization_id,
-}: GetOrganizationMediasInput) => {
+}: GetOrganizationMediasInput): Promise<GetOrganizationMediasOutput[]> => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("media")
-    .select("*")
+    .select(
+      `
+      *,
+      collections (
+          id,
+          name
+        )
+    `,
+    )
     .eq("organization_id", organization_id)
     .order("created_at", { ascending: false });
 

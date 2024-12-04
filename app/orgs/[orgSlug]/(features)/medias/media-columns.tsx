@@ -2,12 +2,13 @@
 
 import { Badge } from "@/components/ui/badge";
 import { formatBytes } from "@/lib/utils";
-import type { Tables } from "@/types/database.generated.types";
+import type { GetOrganizationMediasOutput } from "@/queries/media/get-organization-medias.query";
 import type { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ImageIcon, VideoIcon } from "lucide-react";
+import { CollectionBadges } from "./components/collection-badges";
 
-export const columns: ColumnDef<Tables<"media">>[] = [
+export const columns: ColumnDef<GetOrganizationMediasOutput>[] = [
   {
     id: "type",
     header: () => <span />,
@@ -33,7 +34,14 @@ export const columns: ColumnDef<Tables<"media">>[] = [
       );
     },
   },
-
+  {
+    accessorKey: "collections",
+    header: "Collections",
+    cell: ({ row }) => {
+      const collections = row.original.collections;
+      return <CollectionBadges collections={collections} />;
+    },
+  },
   {
     accessorKey: "status",
     header: "Status",
