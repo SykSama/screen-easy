@@ -6,7 +6,21 @@ export type Database = MergeDeep<
   DatabaseGenerated,
   {
     public: {
-      Tables: {};
+      Views: {
+        movies_view: {
+          Row: {
+            // id is a primary key in public.movies, so it must be `not null`
+            id: number;
+          };
+        };
+      };
+      Tables: {
+        collection_media: {
+          Insert: {
+            display_order?: number | null;
+          };
+        };
+      };
     };
   }
 >;

@@ -1,5 +1,6 @@
 "use client";
 
+import { FormSection } from "@/components/form-section";
 import { LoadingButton } from "@/components/loading-button";
 import {
   FileInput,
@@ -17,18 +18,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-
-import { Separator } from "@/components/ui/separator";
 import { CloudUpload } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createMediaAction } from "./create-media.action";
 import { CreateMediaFormSchema } from "./create-media.schema";
-import { FormSection } from "@/components/form-section";
+import { MultiSelect } from "@/components/ui/multi-select";
 
-export const CreateMediaForm = () => {
+type Option = {
+  label: string;
+  value: string;
+};
+
+type CreateMediaFormProps = {
+  collectionOptions: Option[];
+};
+
+export const CreateMediaForm = ({
+  collectionOptions,
+}: CreateMediaFormProps) => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     createMediaAction,
     zodResolver(CreateMediaFormSchema),
@@ -38,6 +49,7 @@ export const CreateMediaForm = () => {
           files: [],
           name: "",
           description: undefined,
+          collectionIds: [],
         },
       },
       actionProps: {
@@ -60,6 +72,8 @@ export const CreateMediaForm = () => {
       <form onSubmit={handleSubmitWithAction} className="mx-auto max-w-4xl">
         <h1 className="text-2xl font-bold">Upload Media</h1>
         <Separator className="my-10 mt-6" />
+
+        {/* Information Section */}
         <FormSection
           title="Information"
           description="Add information about the media"
@@ -107,7 +121,42 @@ export const CreateMediaForm = () => {
             )}
           />
         </FormSection>
+
         <Separator className="my-10" />
+
+        {/* Collections Section */}
+        <FormSection
+          title="Collections"
+          description="Add this media to collections"
+        >
+          <FormField
+            control={form.control}
+            name="collectionIds"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Collections</FormLabel>
+                  <FormDescription>
+                    Select collections to add this media to
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <MultiSelect
+                    options={collectionOptions}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    placeholder="Select collections"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        <Separator className="my-10" />
+
+        {/* File Section */}
         <FormSection title="File" description="Add a file to the media">
           <FormField
             control={form.control}
@@ -168,6 +217,7 @@ export const CreateMediaForm = () => {
             )}
           />
         </FormSection>
+
         <Separator className="my-10" />
         <div className="flex justify-end gap-4">
           <LoadingButton type="submit" isLoading={action.isPending}>
