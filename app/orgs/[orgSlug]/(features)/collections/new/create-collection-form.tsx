@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
+import { AddMediasToCollection } from "../_features/components/add-medias-to-collection";
 import { createCollectionAction } from "./create-collection.action";
 import { CreateCollectionFormSchema } from "./create-collection.schema";
 
@@ -29,6 +30,7 @@ export const CreateCollectionForm = () => {
         defaultValues: {
           name: "",
           description: "",
+          medias: [],
         },
       },
       actionProps: {
@@ -99,6 +101,21 @@ export const CreateCollectionForm = () => {
               </FormItem>
             )}
           />
+        </FormSection>
+
+        <Separator className="my-10" />
+
+        {/* Media Section */}
+        <FormSection
+          title="Media"
+          description="Add and organize media in your collection"
+        >
+          <FormItem>
+            <FormControl>
+              <AddMediasToCollection form={form} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
         </FormSection>
 
         <Separator className="my-10" />
