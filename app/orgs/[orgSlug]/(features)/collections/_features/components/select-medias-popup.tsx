@@ -1,5 +1,6 @@
 "use client";
 
+import { MediaPreview } from "@/app/orgs/[orgSlug]/(features)/medias/[mediaId]/_components/media-preview-client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,7 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { Tables } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
-import { Check, ImageIcon } from "lucide-react";
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import type { MediaWithDuration } from "../../new/create-collection.schema";
@@ -113,30 +114,27 @@ export const SelectMediasPopup = ({
                     onClick={() => handleSelect(media)}
                     variant="ghost"
                     className={cn(
-                      "group relative aspect-square h-auto p-0 overflow-hidden flex flex-col",
+                      "group relative aspect-square h-auto p-0 overflow-hidden flex flex-col rounded-lg border bg-card",
                       selectedMedias.some((m) => m.id === media.id) &&
-                        "ring-2 ring-primary",
+                        "ring-[3px] ring-blue-500 ring-offset-2 ring-offset-background",
                     )}
                   >
                     <div className="w-full flex-1">
-                      {media.type === "image" ? (
-                        <div className="flex size-full items-center justify-center bg-muted">
-                          <ImageIcon className="size-8 text-muted-foreground" />
-                        </div>
-                      ) : (
-                        <div className="flex h-full items-center justify-center bg-muted">
-                          <span className="text-sm text-muted-foreground">
-                            {media.type}
-                          </span>
-                        </div>
-                      )}
+                      <MediaPreview
+                        media={media}
+                        transform={{
+                          width: 200,
+                          height: 200,
+                          resize: "cover",
+                        }}
+                      />
                     </div>
-                    <div className="w-full truncate bg-muted/50 p-2 text-center text-xs">
+                    <div className="absolute bottom-0 z-10 w-full truncate bg-muted/80 p-2 text-center text-xs backdrop-blur-sm">
                       {media.name}
                     </div>
                     {selectedMedias.some((m) => m.id === media.id) && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                        <Check className="size-8 text-white" />
+                      <div className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-full bg-primary">
+                        <Check className="size-4 text-primary-foreground" />
                       </div>
                     )}
                   </Button>

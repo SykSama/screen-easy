@@ -19,8 +19,7 @@ CREATE TABLE "public"."media" (
     "description" text,
     "type" media_type NOT NULL,
     "status" media_status DEFAULT 'processing' NOT NULL,
-    "url" text NOT NULL,
-    "thumbnail_url" text,
+    "path" text NOT NULL,
     "metadata" jsonb DEFAULT '{}'::jsonb,
     "duration" integer, -- in seconds, for videos
     "width" integer,

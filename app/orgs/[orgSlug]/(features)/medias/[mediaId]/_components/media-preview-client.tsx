@@ -1,6 +1,9 @@
+"use client";
+
 import type { Tables } from "@/types/database.types";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import type { TransformOptions } from "@supabase/storage-js";
+import { useQuery } from "@tanstack/react-query";
 import { ImageIcon, ImageOff } from "lucide-react";
 import Image from "next/image";
 
@@ -9,16 +12,24 @@ type MediaPreviewProps = {
   transform?: TransformOptions;
 };
 
-export const MediaPreview = async ({ media, transform }: MediaPreviewProps) => {
-  const supabase = await createClient();
+export const MediaPreview = ({ media, transform }: MediaPreviewProps) => {
+  const supabase = createClient();
 
-  const { data, error } = await supabase.storage
-    .from("organizations")
-    .createSignedUrl(media.path, 60 * 60, {
-      transform: transform,
-    });
+  const { data: signedUrl, isError } = useQuery({
+    queryKey: ["mediaUrl", media.path, transform],
+    queryFn: async () => {
+      const { data, error } = await supabase.storage
+        .from("organizations")
+        .createSignedUrl(media.path, 60 * 60, {
+          transform: transform,
+        });
 
-  if (error) {
+      if (error) throw error;
+      return data.signedUrl;
+    },
+  });
+
+  if (isError) {
     return (
       <div className="relative aspect-square w-full overflow-hidden rounded-lg">
         <ImageOff className="size-10" />
@@ -26,14 +37,14 @@ export const MediaPreview = async ({ media, transform }: MediaPreviewProps) => {
     );
   }
 
-  if (media.type === "image") {
+  if (media.type === "image" && signedUrl) {
     return (
       <div className="relative aspect-square w-full overflow-hidden rounded-lg">
         <Image
-          src={data.signedUrl}
+          src={signedUrl}
           alt={media.name}
           fill
-          className="object-contain"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
     );

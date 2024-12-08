@@ -29,7 +29,7 @@ export const createMediaAction = orgProfileAction
       description,
       organization_id: organization.id,
       type: file.type.startsWith("image/") ? "image" : "video",
-      url: mediaPath,
+      path: mediaPath,
       file_size: file.size,
     });
 

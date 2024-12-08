@@ -131,11 +131,10 @@ export type Database = {
           metadata: Json | null
           name: string
           organization_id: string
+          path: string
           status: Database["public"]["Enums"]["media_status"]
-          thumbnail_url: string | null
           type: Database["public"]["Enums"]["media_type"]
           updated_at: string
-          url: string
           width: number | null
         }
         Insert: {
@@ -148,11 +147,10 @@ export type Database = {
           metadata?: Json | null
           name: string
           organization_id: string
+          path: string
           status?: Database["public"]["Enums"]["media_status"]
-          thumbnail_url?: string | null
           type: Database["public"]["Enums"]["media_type"]
           updated_at?: string
-          url: string
           width?: number | null
         }
         Update: {
@@ -165,11 +163,10 @@ export type Database = {
           metadata?: Json | null
           name?: string
           organization_id?: string
+          path?: string
           status?: Database["public"]["Enums"]["media_status"]
-          thumbnail_url?: string | null
           type?: Database["public"]["Enums"]["media_type"]
           updated_at?: string
-          url?: string
           width?: number | null
         }
         Relationships: [
