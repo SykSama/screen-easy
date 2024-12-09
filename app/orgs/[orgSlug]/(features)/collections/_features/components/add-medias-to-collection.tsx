@@ -16,7 +16,7 @@ import type {
   MediaWithDuration,
 } from "../../new/create-collection.schema";
 
-import { SelectMediasPopup } from "./select-medias-popup";
+import { MediasSelector } from "./medias-selector";
 
 export type AddMediasToCollectionProps = {
   form: UseFormReturn<CreateCollectionFormValues>;
@@ -59,7 +59,7 @@ export const AddMediasToCollection = ({ form }: AddMediasToCollectionProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <SelectMediasPopup
+        <MediasSelector
           initalMedias={selectedMedias}
           onSelect={handleMediaSelection}
         />
