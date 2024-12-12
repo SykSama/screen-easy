@@ -11,15 +11,7 @@ export const getMediaQuery = async (id: string): Promise<GetMediaOutput> => {
 
   const { data, error } = await supabase
     .from("media")
-    .select(
-      `
-      *,
-      collections (
-        id,
-        name
-      )
-    `,
-    )
+    .select("*, collections( id, name )")
     .eq("id", id)
     .single();
 

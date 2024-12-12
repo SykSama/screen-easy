@@ -43,7 +43,6 @@ export type Database = {
           display_until: string | null
           duration: number
           media_id: string
-          transition_duration: number
         }
         Insert: {
           collection_id: string
@@ -53,7 +52,6 @@ export type Database = {
           display_until?: string | null
           duration?: number
           media_id: string
-          transition_duration?: number
         }
         Update: {
           collection_id?: string
@@ -63,7 +61,6 @@ export type Database = {
           display_until?: string | null
           duration?: number
           media_id?: string
-          transition_duration?: number
         }
         Relationships: [
           {
@@ -124,7 +121,6 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          duration: number | null
           file_size: number | null
           height: number | null
           id: string
@@ -135,12 +131,12 @@ export type Database = {
           status: Database["public"]["Enums"]["media_status"]
           type: Database["public"]["Enums"]["media_type"]
           updated_at: string
+          video_duration: number | null
           width: number | null
         }
         Insert: {
           created_at?: string
           description?: string | null
-          duration?: number | null
           file_size?: number | null
           height?: number | null
           id?: string
@@ -151,12 +147,12 @@ export type Database = {
           status?: Database["public"]["Enums"]["media_status"]
           type: Database["public"]["Enums"]["media_type"]
           updated_at?: string
+          video_duration?: number | null
           width?: number | null
         }
         Update: {
           created_at?: string
           description?: string | null
-          duration?: number | null
           file_size?: number | null
           height?: number | null
           id?: string
@@ -167,6 +163,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["media_status"]
           type?: Database["public"]["Enums"]["media_type"]
           updated_at?: string
+          video_duration?: number | null
           width?: number | null
         }
         Relationships: [
