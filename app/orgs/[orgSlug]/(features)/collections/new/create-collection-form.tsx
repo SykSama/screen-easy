@@ -18,7 +18,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
 import { AddMediasToCollection } from "../_features/components/add-medias-to-collection";
-import MediasSelectorDesign from "../_features/components/medias-selector/medias-selector-design";
 import { createCollectionAction } from "./create-collection.action";
 import { CreateCollectionFormSchema } from "./create-collection.schema";
 
@@ -117,14 +116,6 @@ export const CreateCollectionForm = () => {
             </FormControl>
             <FormMessage />
           </FormItem>
-        </FormSection>
-
-        <Separator className="my-10" />
-        <FormSection
-          title="Media"
-          description="Add and organize media in your collection"
-        >
-          <MediasSelectorDesign />
         </FormSection>
 
         <Separator className="my-10" />
