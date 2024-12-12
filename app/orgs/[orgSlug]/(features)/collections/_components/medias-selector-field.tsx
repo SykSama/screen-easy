@@ -8,6 +8,7 @@ import {
   SortableDragHandle,
   SortableItem,
 } from "@/components/ui/sortable";
+import { Typography } from "@/components/ui/typography";
 import { MediasSelector } from "@/features/medias/components/medias-selector";
 import type { Tables } from "@/types/database.types";
 import { GripVertical, TrashIcon } from "lucide-react";
@@ -57,7 +58,7 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
         overlay={
           <div className="grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2">
             <div className="h-8 w-full rounded-sm bg-primary/10" />
-            <div className="h-8 w-full rounded-sm bg-primary/10" />
+            <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
             <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
             <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
           </div>
@@ -66,23 +67,16 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
         <div className="flex w-full flex-col gap-2">
           {fields.map((field, index) => (
             <SortableItem key={field.id} value={field.id} asChild>
-              <div className="grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2">
-                <FormField
-                  control={form.control}
-                  name={`medias.${index}.name`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input className="h-8" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+              <div className="grid grid-cols-[1fr,0.5fr,auto,auto] items-center gap-2">
+                <Typography variant="default" className="w-full">
+                  {field.name}
+                </Typography>
+
                 <FormField
                   control={form.control}
                   name={`medias.${index}.duration`}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormControl>
                         <Input
                           type="number"
