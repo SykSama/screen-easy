@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
-import { AddMediasToCollection } from "../_features/components/add-medias-to-collection";
+import { AddMediasToCollection } from "../_components/add-medias-to-collection";
 import { createCollectionAction } from "./create-collection.action";
 import { CreateCollectionFormSchema } from "./create-collection.schema";
 

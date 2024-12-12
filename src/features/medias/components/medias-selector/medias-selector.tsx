@@ -11,16 +11,17 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+
 import type { Tables } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
 import { LayoutGrid, Search, TableIcon } from "lucide-react";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
-import type { MediaWithDuration } from "../../new/create-collection.schema";
-import { getMediasQueryClient } from "../queries/get-medias.query.client";
-import { GridLayout } from "./medias-selector/grid-layout";
-import { SelectedMedias } from "./medias-selector/selected-medias";
-import { TableLayout } from "./medias-selector/table-layout";
+import { getMediasQueryClient } from "../../queries/get-medias.query.client";
+import { GridLayout } from "./grid-layout";
+import { SelectedMedias } from "./selected-medias";
+import { TableLayout } from "./table-layout";
+import type { MediaWithDuration } from "./types";
 
 type Media = Tables<"media">;
 

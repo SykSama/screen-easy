@@ -1,12 +1,5 @@
+import { MediaWithDurationSchema } from "@/features/medias/components/medias-selector";
 import { z } from "zod";
-
-const MediaWithDurationSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  duration: z.number(),
-});
-
-export type MediaWithDuration = z.infer<typeof MediaWithDurationSchema>;
 
 export const CreateCollectionFormSchema = z.object({
   name: z.string().min(1, "Name is required"),

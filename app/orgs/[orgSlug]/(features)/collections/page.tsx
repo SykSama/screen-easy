@@ -3,22 +3,17 @@ import type { PageParams } from "@/types/next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { SearchInput } from "../../settings/team/_components/search/search-input";
-import { CollectionsDataTable } from "./collections-data-table";
+import { CollectionsDataTable } from "./_components/collections-data-table/collections-data-table";
 
 export default async function CollectionsPage({
   params,
-  searchParams,
 }: PageParams<{ orgSlug: string }>) {
   const { orgSlug } = await params;
-  const { searchQuery } = await searchParams;
 
   return (
     <div className="pt-4">
       <Suspense fallback={<div>Loading...</div>}>
-        <PageContent
-          orgSlug={orgSlug}
-          searchQuery={searchQuery as string | undefined}
-        />
+        <PageContent orgSlug={orgSlug} />
       </Suspense>
     </div>
   );
@@ -26,10 +21,9 @@ export default async function CollectionsPage({
 
 type PageContentProps = {
   orgSlug: string;
-  searchQuery?: string;
 };
 
-const PageContent = async ({ orgSlug, searchQuery }: PageContentProps) => {
+const PageContent = async ({ orgSlug }: PageContentProps) => {
   return (
     <div className="container mx-auto flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2">

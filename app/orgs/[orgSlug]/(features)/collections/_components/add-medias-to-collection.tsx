@@ -8,15 +8,14 @@ import {
   SortableDragHandle,
   SortableItem,
 } from "@/components/ui/sortable";
+import {
+  MediasSelector,
+  type MediaWithDuration,
+} from "@/features/medias/components/medias-selector";
 import { GripVertical, TrashIcon } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
-import type {
-  CreateCollectionFormValues,
-  MediaWithDuration,
-} from "../../new/create-collection.schema";
-
-import { MediasSelector } from "./medias-selector";
+import type { CreateCollectionFormValues } from "../new/create-collection.schema";
 
 export type AddMediasToCollectionProps = {
   form: UseFormReturn<CreateCollectionFormValues>;
