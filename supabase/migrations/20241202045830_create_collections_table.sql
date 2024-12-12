@@ -17,7 +17,6 @@ create table public.collection_media (
     media_id uuid not null,
     display_order integer not null,
     duration integer default 10000 not null, -- display duration in milliseconds
-    transition_duration integer default 1000 not null, -- transition time in milliseconds
     display_from timestamp with time zone, -- start date for displaying the media (null means no start restriction)
     display_until timestamp with time zone, -- end date for displaying the media (null means no end restriction)
     created_at timestamp with time zone default now() not null,
