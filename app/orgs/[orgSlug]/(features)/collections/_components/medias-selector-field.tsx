@@ -8,34 +8,26 @@ import {
   SortableDragHandle,
   SortableItem,
 } from "@/components/ui/sortable";
-import {
-  MediasSelector,
-  type MediaWithDuration,
-} from "@/features/medias/components/medias-selector";
+import { MediasSelector } from "@/features/medias/components/medias-selector";
+import type { Tables } from "@/types/database.types";
 import { GripVertical, TrashIcon } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 import type { CreateCollectionFormValues } from "../new/create-collection.schema";
 
-export type AddMediasToCollectionProps = {
+export type MediasSelectorFieldProps = {
   form: UseFormReturn<CreateCollectionFormValues>;
 };
 
-export const AddMediasToCollection = ({ form }: AddMediasToCollectionProps) => {
+export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
   const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: "medias",
     keyName: "fieldId",
   });
 
-  const selectedMedias = fields.map((field) => ({
-    id: field.id,
-    name: field.name,
-    duration: field.duration,
-  }));
-
-  const handleMediaSelection = (medias: MediaWithDuration[]) => {
-    const currentIds = fields.map((f) => f.id);
+  const handleMediaSelection = (medias: Tables<"media">[]) => {
+    const currentIds = fields.map((field) => field.id);
 
     [...fields].reverse().forEach((field, idx) => {
       const reverseIndex = fields.length - 1 - idx;
@@ -47,9 +39,8 @@ export const AddMediasToCollection = ({ form }: AddMediasToCollectionProps) => {
     medias.forEach((media) => {
       if (!currentIds.includes(media.id)) {
         append({
-          id: media.id,
-          name: media.name,
-          duration: media.duration,
+          ...media,
+          duration: media.duration ?? 0,
         });
       }
     });
@@ -58,10 +49,7 @@ export const AddMediasToCollection = ({ form }: AddMediasToCollectionProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <MediasSelector
-          initalMedias={selectedMedias}
-          onSelect={handleMediaSelection}
-        />
+        <MediasSelector initalMedias={fields} onSelect={handleMediaSelection} />
       </div>
       <Sortable
         value={fields}

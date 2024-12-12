@@ -1,13 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import type { Tables } from "@/types/database.types";
 import { Plus } from "lucide-react";
-import type { Media } from "./types";
+import { MediaPreviewClient } from "../media-preview/media-preview-client";
 
 type GridItemProps = {
-  media: Media;
+  media: Tables<"media">;
   isSelected: boolean;
   onClick: () => void;
 };
+
+//TODO: add tags later
+const tags = ["tag1", "tag2", "tag3"];
 
 export const GridItem = ({ media, isSelected, onClick }: GridItemProps) => {
   return (
@@ -20,18 +24,21 @@ export const GridItem = ({ media, isSelected, onClick }: GridItemProps) => {
       onClick={onClick}
     >
       <div className="relative aspect-[2/3]">
-        <img
-          src={"/images/placeholder-media.svg"}
-          alt={media.title}
-          className="size-full object-cover"
+        <MediaPreviewClient
+          media={media}
+          imageProps={{
+            fill: true,
+            className: "size-full object-contain",
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
         <div className="absolute inset-x-0 bottom-0 p-2">
           <h3 className="mb-1 truncate text-sm font-semibold text-white">
-            {media.title}
+            {media.name}
           </h3>
           <div className="flex flex-wrap gap-1">
-            {media.tags.slice(0, 1).map((tag, index) => (
+            {tags.slice(0, 1).map((tag, index) => (
               <Badge
                 key={index}
                 variant="secondary"
@@ -40,10 +47,10 @@ export const GridItem = ({ media, isSelected, onClick }: GridItemProps) => {
                 {tag}
               </Badge>
             ))}
-            {media.tags.length > 1 && (
+            {tags.length > 1 && (
               <Badge variant="secondary" className="px-1 py-0 text-xs">
                 <Plus className="mr-0.5 size-2" />
-                {media.tags.length - 1}
+                {tags.length - 1}
               </Badge>
             )}
           </div>

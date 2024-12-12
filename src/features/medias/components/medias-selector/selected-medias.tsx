@@ -1,13 +1,16 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import type { Tables } from "@/types/database.types";
 import { Plus, X } from "lucide-react";
-import type { Media } from "./types";
 
 type SelectedMediasProps = {
-  medias: Media[];
+  medias: Tables<"media">[];
   onRemove: (mediaId: string) => void;
 };
+
+//TODO: add tags later
+const tags = ["tag1", "tag2", "tag3"];
 
 export const SelectedMedias = ({ medias, onRemove }: SelectedMediasProps) => {
   if (medias.length === 0) return null;
@@ -24,19 +27,19 @@ export const SelectedMedias = ({ medias, onRemove }: SelectedMediasProps) => {
             >
               <div className="flex min-w-0 flex-1 items-center space-x-4">
                 <span className="w-32 shrink-0 truncate text-sm font-medium">
-                  {media.title}
+                  {media.name}
                 </span>
                 <p className="flex-1 truncate text-xs">{media.description}</p>
                 <div className="flex shrink-0 flex-wrap gap-1">
-                  {media.tags.slice(0, 2).map((tag, index) => (
+                  {tags.slice(0, 2).map((tag, index) => (
                     <Badge key={index} variant={"outline"} className="text-xs">
                       {tag}
                     </Badge>
                   ))}
-                  {media.tags.length > 2 && (
+                  {tags.length > 2 && (
                     <Badge variant="secondary" className="text-xs">
                       <Plus className="mr-1 size-3" />
-                      {media.tags.length - 2}
+                      {tags.length - 2}
                     </Badge>
                   )}
                 </div>

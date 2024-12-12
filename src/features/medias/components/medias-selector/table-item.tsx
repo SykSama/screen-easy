@@ -1,29 +1,43 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import type { Media } from "./types";
+import type { Tables } from "@/types/database.types";
+import { MediaPreviewClient } from "../media-preview/media-preview-client";
 
 type TableItemProps = {
-  media: Media;
+  media: Tables<"media">;
   isSelected: boolean;
   onSelect: () => void;
 };
+
+//TODO: add tags later
+const tags = ["tag1", "tag2", "tag3"];
 
 export const TableItem = ({ media, isSelected, onSelect }: TableItemProps) => {
   return (
     <TableRow>
       <TableCell className="w-[100px]">
-        <img
-          src={media.image}
-          alt={media.title}
-          className="h-16 w-12 rounded object-cover"
+        <MediaPreviewClient
+          media={media}
+          transform={{
+            width: 48,
+            height: 64,
+            resize: "contain",
+          }}
+          imageProps={{
+            className: "rounded object-contain",
+            width: 48,
+            height: 64,
+          }}
         />
       </TableCell>
-      <TableCell className="font-medium">{media.title}</TableCell>
+      <TableCell className="font-medium">{media.name}</TableCell>
       <TableCell>{media.description}</TableCell>
       <TableCell>
         <div className="flex flex-wrap gap-1">
-          {media.tags.map((tag, index) => (
+          {tags.map((tag, index) => (
             <Badge key={index} variant="secondary" className="text-xs">
               {tag}
             </Badge>

@@ -7,11 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import type { Tables } from "@/types/database.types";
 import { TableItem } from "./table-item";
-import type { Media } from "./types";
 
 type TableLayoutProps = {
-  medias: Media[];
+  medias: Tables<"media">[];
   selectedMediaIds: Set<string>;
   onSelect: (mediaId: string) => void;
   isLoading?: boolean;

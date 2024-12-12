@@ -1,6 +1,7 @@
 import { getOrganizationProfileRoleQuery } from "@/queries/orgs/get-organization-profile-role.query";
 import { getOrganizationSlugFromUrl } from "@/queries/orgs/get-organization.query";
 
+import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
 import { createClient } from "@/utils/supabase/server";
 import { StorageApiError, StorageUnknownError } from "@supabase/storage-js";
 import {
@@ -18,9 +19,6 @@ import {
   UnauthorizedError,
 } from "../errors/errors";
 import { logger } from "../logger";
-import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
-
-export class SupabaseStorageError extends Error {}
 
 const log = logger.child({
   module: "ServerAction",

@@ -5,7 +5,9 @@ export type Media = {
   title: string;
   description: string;
   tags: string[];
-  image: string;
+  path: string;
+  type: string;
+  name: string;
 };
 
 export const MediaWithDurationSchema = z.object({

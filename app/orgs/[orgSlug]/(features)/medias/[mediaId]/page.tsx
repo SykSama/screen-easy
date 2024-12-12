@@ -3,7 +3,7 @@ import { getMediaQuery } from "@/queries/media/get-media.query";
 import type { PageParams } from "@/types/next";
 import { MediaCollections } from "./_components/media-collections";
 import { MediaHeader } from "./_components/media-header";
-import { MediaPreview } from "./_components/media-preview";
+import { MediaPreview } from "@/features/medias/components/media-preview/media-preview";
 
 export default async function MediaPage(
   props: PageParams<{ orgSlug: string; mediaId: string }>,

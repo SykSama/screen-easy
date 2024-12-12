@@ -21,31 +21,28 @@ import { getMediasQueryClient } from "../../queries/get-medias.query.client";
 import { GridLayout } from "./grid-layout";
 import { SelectedMedias } from "./selected-medias";
 import { TableLayout } from "./table-layout";
-import type { MediaWithDuration } from "./types";
 
-type Media = Tables<"media">;
-
-export type MediasSelectorProps = {
-  onSelect: (medias: MediaWithDuration[]) => void;
-  initalMedias?: MediaWithDuration[];
+export type MediasSelectorDialogProps = {
+  onSelect: (medias: Tables<"media">[]) => void;
+  initalMedias?: Tables<"media">[];
 };
 
-export const MediasSelector = ({
+export const MediasSelectorDialog = ({
   onSelect,
   initalMedias = [],
-}: MediasSelectorProps) => {
+}: MediasSelectorDialogProps) => {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
-  const [selectedMedias, setSelectedMedias] =
-    useState<MediaWithDuration[]>(initalMedias);
   const [isGridView, setIsGridView] = useState(true);
+  const [selectedMedias, setSelectedMedias] =
+    useState<Tables<"media">[]>(initalMedias);
 
   const { data: medias, isLoading } = useQuery({
     queryKey: ["medias", debouncedSearch],
     queryFn: async () => getMediasQueryClient(debouncedSearch),
   });
 
-  const handleSelect = (media: Media) => {
+  const handleSelect = (media: Tables<"media">) => {
     setSelectedMedias((currentSelected) => {
       const isAlreadySelected = currentSelected.some((m) => m.id === media.id);
 
@@ -53,14 +50,7 @@ export const MediasSelector = ({
         return currentSelected.filter((m) => m.id !== media.id);
       }
 
-      return [
-        ...currentSelected,
-        {
-          id: media.id,
-          name: media.name,
-          duration: 0,
-        },
-      ];
+      return [...currentSelected, media];
     });
   };
 
@@ -82,16 +72,6 @@ export const MediasSelector = ({
   };
 
   const selectedMediaIds = new Set(selectedMedias.map((m) => m.id));
-
-  const fakeMediasForNow = [
-    ...(medias ?? []).map((m) => ({
-      id: m.id,
-      title: m.name,
-      description: m.description ?? "",
-      tags: ["media", "image"],
-      image: m.path,
-    })),
-  ];
 
   return (
     <Dialog onOpenChange={onOpenChange}>
@@ -140,7 +120,7 @@ export const MediasSelector = ({
           <div className="p-6">
             {isGridView ? (
               <GridLayout
-                medias={fakeMediasForNow}
+                medias={medias ?? []}
                 selectedMediaIds={selectedMediaIds}
                 onSelect={(mediaId) => {
                   const media = medias?.find((m) => m.id === mediaId);
@@ -150,7 +130,7 @@ export const MediasSelector = ({
               />
             ) : (
               <TableLayout
-                medias={fakeMediasForNow}
+                medias={medias ?? []}
                 selectedMediaIds={selectedMediaIds}
                 onSelect={(mediaId) => {
                   const media = medias?.find((m) => m.id === mediaId);
@@ -161,16 +141,7 @@ export const MediasSelector = ({
             )}
           </div>
         </ScrollArea>
-        <SelectedMedias
-          medias={selectedMedias.map((m) => ({
-            id: m.id,
-            title: m.name,
-            description: "",
-            tags: ["media", "image"],
-            image: "",
-          }))}
-          onRemove={handleRemove}
-        />
+        <SelectedMedias medias={selectedMedias} onRemove={handleRemove} />
 
         <div className="flex items-center justify-end gap-4 border-t px-6 py-4">
           <DialogClose asChild>
