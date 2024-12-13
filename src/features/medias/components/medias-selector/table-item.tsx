@@ -3,11 +3,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import type { Tables } from "@/types/database.types";
+import type { Media } from "../../types";
 import { MediaPreviewClient } from "../media-preview/media-preview-client";
 
 type TableItemProps = {
-  media: Tables<"media">;
+  media: Media;
   isSelected: boolean;
   onSelect: () => void;
 };

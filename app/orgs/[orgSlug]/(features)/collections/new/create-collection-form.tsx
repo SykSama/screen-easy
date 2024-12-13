@@ -18,20 +18,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
 
+import type { Tables } from "@/types/database.generated.types";
 import { MediasSelectorField } from "../_components/medias-selector-field";
 import { createCollectionAction } from "./create-collection.action";
+
+import type { MediaInCollection } from "@/features/medias/types";
 import { CreateCollectionFormSchema } from "./create-collection.schema";
 
-export const CreateCollectionForm = () => {
+export type CreateCollectionFormProps = {
+  initialValue?: Tables<"collections"> & { medias: MediaInCollection[] };
+};
+
+export const CreateCollectionForm = ({
+  initialValue,
+}: CreateCollectionFormProps) => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     createCollectionAction,
     zodResolver(CreateCollectionFormSchema),
     {
       formProps: {
         defaultValues: {
-          name: "",
-          description: "",
-          medias: [],
+          id: initialValue?.id ?? "",
+          name: initialValue?.name ?? "",
+          description: initialValue?.description ?? "",
+          medias: initialValue?.medias ?? [],
         },
       },
       actionProps: {
@@ -111,12 +121,7 @@ export const CreateCollectionForm = () => {
           title="Media"
           description="Add and organize media in your collection"
         >
-          <FormItem>
-            <FormControl>
-              <MediasSelectorField form={form} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+          <MediasSelectorField form={form} />
         </FormSection>
 
         <Separator className="my-10" />

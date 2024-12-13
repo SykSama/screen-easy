@@ -20,12 +20,16 @@ export const columns: ColumnDef<Tables<"collections">>[] = [
       const name = row.getValue("name") as string;
       const description = row.original.description as string | null;
       return (
-        <div className="flex flex-col">
-          <span className="font-medium">{name}</span>
-          {description && (
-            <span className="text-sm text-muted-foreground">{description}</span>
-          )}
-        </div>
+        <Link href={`collections/${row.original.id}`}>
+          <div className="flex flex-col">
+            <span className="font-medium">{name}</span>
+            {description && (
+              <span className="text-sm text-muted-foreground">
+                {description}
+              </span>
+            )}
+          </div>
+        </Link>
       );
     },
   },

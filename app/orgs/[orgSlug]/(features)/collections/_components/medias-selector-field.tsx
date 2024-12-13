@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sortable";
 import { Typography } from "@/components/ui/typography";
 import { MediasSelector } from "@/features/medias/components/medias-selector";
-import type { Tables } from "@/types/database.types";
+import type { Media } from "@/features/medias/types";
 import { GripVertical, TrashIcon } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
@@ -27,7 +27,7 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
     keyName: "fieldId",
   });
 
-  const handleMediaSelection = (medias: Tables<"media">[]) => {
+  const handleMediaSelection = (medias: Media[]) => {
     const currentIds = fields.map((field) => field.id);
 
     [...fields].reverse().forEach((field, idx) => {
@@ -42,6 +42,7 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
         append({
           ...media,
           duration: 0,
+          display_order: fields.length,
         });
       }
     });

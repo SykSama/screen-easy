@@ -12,19 +12,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import type { Tables } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
 import { LayoutGrid, Search, TableIcon } from "lucide-react";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import { getMediasQueryClient } from "../../queries/get-medias.query.client";
+import type { Media } from "../../types";
 import { GridLayout } from "./grid-layout";
 import { SelectedMedias } from "./selected-medias";
 import { TableLayout } from "./table-layout";
 
 export type MediasSelectorDialogProps = {
-  onSelect: (medias: Tables<"media">[]) => void;
-  initalMedias?: Tables<"media">[];
+  onSelect: (medias: Media[]) => void;
+  initalMedias?: Media[];
 };
 
 export const MediasSelectorDialog = ({
@@ -34,15 +34,14 @@ export const MediasSelectorDialog = ({
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
   const [isGridView, setIsGridView] = useState(true);
-  const [selectedMedias, setSelectedMedias] =
-    useState<Tables<"media">[]>(initalMedias);
+  const [selectedMedias, setSelectedMedias] = useState<Media[]>(initalMedias);
 
   const { data: medias, isLoading } = useQuery({
     queryKey: ["medias", debouncedSearch],
     queryFn: async () => getMediasQueryClient(debouncedSearch),
   });
 
-  const handleSelect = (media: Tables<"media">) => {
+  const handleSelect = (media: Media) => {
     setSelectedMedias((currentSelected) => {
       const isAlreadySelected = currentSelected.some((m) => m.id === media.id);
 

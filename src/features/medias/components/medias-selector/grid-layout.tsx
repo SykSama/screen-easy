@@ -1,9 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Tables } from "@/types/database.types";
+import type { Media } from "../../types";
 import { GridItem } from "./grid-item";
 
 type GridLayoutProps = {
-  medias: Tables<"media">[];
+  medias: Media[];
   selectedMediaIds: Set<string>;
   onSelect: (mediaId: string) => void;
   isLoading?: boolean;

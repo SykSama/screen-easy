@@ -1,11 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { Tables } from "@/types/database.types";
 import { Plus } from "lucide-react";
+import type { Media } from "../../types";
 import { MediaPreviewClient } from "../media-preview/media-preview-client";
 
 type GridItemProps = {
-  media: Tables<"media">;
+  media: Media;
   isSelected: boolean;
   onClick: () => void;
 };

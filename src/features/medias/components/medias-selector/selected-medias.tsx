@@ -1,11 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Tables } from "@/types/database.types";
 import { Plus, X } from "lucide-react";
+import type { Media } from "../../types";
 
 type SelectedMediasProps = {
-  medias: Tables<"media">[];
+  medias: Media[];
   onRemove: (mediaId: string) => void;
 };
 
