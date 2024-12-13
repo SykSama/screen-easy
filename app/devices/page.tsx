@@ -14,6 +14,7 @@ export default async function RoutePage() {
   const { data, error } = await supabase.from("device_waiting").insert({
     id: deviceId,
     otp_code: otpCode,
+    // On ajoute les informations du devices ici ?
   });
 
   return <WaitingDevice deviceId={deviceId} otpCode={otpCode} />;

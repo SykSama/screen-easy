@@ -1,5 +1,5 @@
 import type { StorageError } from "@supabase/storage-js";
-import type { PostgrestError } from "@supabase/supabase-js";
+import type { AuthError, PostgrestError } from "@supabase/supabase-js";
 
 export class UnauthenticatedError extends Error {}
 
@@ -29,5 +29,15 @@ export class SupabasePostgrestActionError extends ActionError {
     super(postgrestError.message);
     this.name = "SupabasePostgrestActionError";
     this.postgrestError = postgrestError;
+  }
+}
+
+export class SupabaseAuthActionError extends ActionError {
+  authError: AuthError;
+
+  constructor(authError: AuthError) {
+    super(authError.message);
+    this.name = "SupabaseAuthActionError";
+    this.authError = authError;
   }
 }
