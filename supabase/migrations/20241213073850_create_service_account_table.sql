@@ -17,3 +17,24 @@ create trigger update_updated_at
 before update on public.service_accounts
 for each row
 execute function public.update_updated_at();
+
+-- Function to handle new user and create profiles
+create or replace function public.handle_new_service_account()
+returns trigger
+language plpgsql
+security definer set search_path = ''
+as $$
+begin
+  insert into public.service_accounts (id, email, organization_id)
+  values (new.id, new.email, (new.raw_user_meta_data ->> 'organization_id')::uuid);
+
+  return new;
+end;
+$$;
+
+-- Trigger to handle new user and create profile
+create trigger on_service_account_created
+after insert on auth.users
+for each row
+when (NEW.raw_user_meta_data ->> 'service_account' is not null)
+execute function public.handle_new_service_account();

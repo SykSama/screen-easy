@@ -7,6 +7,7 @@ import { createOrganizationMembershipsQuery } from "@/queries/organization-membe
 import { getOrganizationPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
 
 import { createOrganizationQuery } from "@/queries/orgs/create-organizations.query";
+import { supabaseAdmin } from "@/utils/supabase/admin";
 import { redirect } from "next/navigation";
 import { NewOrgFormSchema } from "./new-org-form.schema";
 
@@ -39,6 +40,19 @@ export const createOrgAction = authAction
       organization_id: org.id,
       profile_id: user.id,
       role_id: "OWNER",
+    });
+
+    //TODO: change this to be a trigger in the database
+    const emailDomain = email.split("@")[1];
+    const emailForServiceAccount = `${org.slug}@${emailDomain}`;
+
+    const { error } = await supabaseAdmin.auth.admin.createUser({
+      email: emailForServiceAccount,
+      email_confirm: true,
+      user_metadata: {
+        organization_id: org.id,
+        service_account: true,
+      },
     });
 
     return redirect(`/orgs/${org.slug}/dashboard`);

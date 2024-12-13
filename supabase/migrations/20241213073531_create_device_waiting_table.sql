@@ -1,6 +1,6 @@
 create table public.device_waiting (
     id uuid not null primary key default gen_random_uuid(),
-    otp_code text not null,
+    otp_code char(6) not null unique default nanoid(6, 'abcdefghijklmnopqrstuvwxyz0123456789'),
     created_at timestamp with time zone not null default now(),
     updated_at timestamp with time zone not null default now(),
 
@@ -9,6 +9,8 @@ create table public.device_waiting (
     organization_email text,
     sign_in_otp_code text
 );
+
+create unique index "device_waiting_otp_code_idx" on public.device_waiting("otp_code");
 
 alter table public.device_waiting enable row level security;
 
