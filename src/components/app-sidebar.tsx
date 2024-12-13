@@ -92,8 +92,8 @@ export function AppSidebar({ orgs, user, orgSlug, ...props }: AppSidebarProps) {
               icon: Images,
             },
             {
-              title: "Screens",
-              url: `/orgs/${orgSlug}/screens`,
+              title: "Devices",
+              url: `/orgs/${orgSlug}/devices`,
               icon: Monitor,
             },
           ]}
