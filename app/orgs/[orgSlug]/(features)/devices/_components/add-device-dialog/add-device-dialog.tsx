@@ -21,11 +21,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
+import { AddDeviceForm } from "./add-device-form";
 
 export function AddDeviceDialog() {
   const [open, setOpen] = React.useState(false);
@@ -62,7 +60,7 @@ export function AddDeviceDialog() {
             Add a new device to your organization.
           </DrawerDescription>
         </DrawerHeader>
-        <AddDeviceForm className="px-4" />
+        <AddDeviceForm />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -70,17 +68,5 @@ export function AddDeviceDialog() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  );
-}
-
-function AddDeviceForm({ className }: React.ComponentProps<"form">) {
-  return (
-    <form className={cn("grid items-start gap-4", className)}>
-      <div className="grid gap-2">
-        <Label htmlFor="name">Name</Label>
-        <Input type="text" id="name" />
-      </div>
-      <Button type="submit">Add Device</Button>
-    </form>
   );
 }

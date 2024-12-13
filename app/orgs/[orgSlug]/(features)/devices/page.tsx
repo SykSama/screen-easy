@@ -1,7 +1,7 @@
 import { SearchInput } from "@/features/filters/components/search-input";
 import type { PageParams } from "@/types/next";
 import { Suspense } from "react";
-import { AddDeviceDialog } from "./_components/add-dialog/add-dialog";
+import { AddDeviceDialog } from "./_components/add-device-dialog/add-device-dialog";
 import { DevicesDataTable } from "./_components/devices-data-table/devices-data-table";
 
 export default async function DevicesPage({

@@ -53,12 +53,14 @@ $$;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row
+when (NEW.is_anonymous = false)
 execute function public.handle_new_user();
 
 -- Trigger to handle update user and update profile
 create trigger on_auth_user_updated
 after update on auth.users
 for each row
+when (NEW.is_anonymous = false)
 execute function public.handle_update_user();
 
 create trigger update_updated_at

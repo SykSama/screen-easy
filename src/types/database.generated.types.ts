@@ -159,6 +159,44 @@ export type Database = {
           },
         ]
       }
+      device_waiting: {
+        Row: {
+          created_at: string
+          id: string
+          organization_email: string | null
+          organization_id: string | null
+          otp_code: string
+          sign_in_otp_code: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          organization_email?: string | null
+          organization_id?: string | null
+          otp_code: string
+          sign_in_otp_code?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          organization_email?: string | null
+          organization_id?: string | null
+          otp_code?: string
+          sign_in_otp_code?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_waiting_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devices: {
         Row: {
           collection_id: string | null
@@ -450,6 +488,38 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      service_accounts: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          organization_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          organization_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          organization_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_accounts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
