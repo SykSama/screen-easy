@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { SearchInput } from "@/features/filters/components/search-input";
 import type { PageParams } from "@/types/next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { SearchInput } from "../../settings/team/_components/search/search-input";
 import { CollectionsDataTable } from "./_components/collections-data-table/collections-data-table";
 
 export default async function CollectionsPage({

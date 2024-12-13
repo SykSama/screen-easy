@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { SearchInput } from "@/features/filters/components/search-input";
 import type { PageParams } from "@/types/next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { SearchInput } from "../../settings/team/_components/search/search-input";
 import { DevicesDataTable } from "./_components/devices-data-table/devices-data-table";
 
 export default async function DevicesPage({

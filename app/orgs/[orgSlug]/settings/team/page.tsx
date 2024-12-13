@@ -4,10 +4,11 @@ import type { PageParams } from "@/types/next";
 
 import Link from "next/link";
 import { Suspense } from "react";
+
 import { LeaveOrganizationButton } from "./_components/leave/leave-org-button";
-import { SearchInput } from "./_components/search/search-input";
 import { TeamMembersTable } from "./team-members-table";
 import { TeamMembersTableSkeleton } from "./team-members-table-skeleton";
+import { SearchInput } from "@/features/filters/components/search-input";
 
 export default async function TeamSettingsPage({
   params,

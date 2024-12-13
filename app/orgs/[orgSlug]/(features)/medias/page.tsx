@@ -1,10 +1,9 @@
 import type { PageParams } from "@/types/next";
 
 import { Button } from "@/components/ui/button";
-
+import { SearchInput } from "@/features/filters/components/search-input";
 import Link from "next/link";
 import { Suspense } from "react";
-import { SearchInput } from "../../settings/team/_components/search/search-input";
 import { MediasDataTable } from "./medias-data-table";
 
 export default async function MediasPage({
