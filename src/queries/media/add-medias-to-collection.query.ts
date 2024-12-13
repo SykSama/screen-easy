@@ -20,7 +20,7 @@ export const addMediasToCollectionQuery = async ({
 
   const { data, error } = await supabase
     .from("collection_media")
-    .insert(collectionMedias)
+    .upsert(collectionMedias)
     .select();
 
   if (error) {

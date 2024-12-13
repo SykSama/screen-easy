@@ -5,16 +5,17 @@ import { createCollectionQuery } from "@/queries/collections/create-collection.q
 import { addMediasToCollectionQuery } from "@/queries/media/add-medias-to-collection.query";
 import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
 import { redirect } from "next/navigation";
-import { CreateCollectionFormSchema } from "./create-collection.schema";
+import { CollectionFormSchema } from "./collection-form.schema";
 
-export const createCollectionAction = orgProfileAction
-  .schema(CreateCollectionFormSchema)
+export const collectionFormAction = orgProfileAction
+  .schema(CollectionFormSchema)
   .metadata({
-    actionName: "createCollectionAction",
+    actionName: "collectionFormAction",
     roles: OrganizationMembershipRole.options,
   })
   .action(async ({ parsedInput, ctx: { organization } }) => {
     const collection = await createCollectionQuery({
+      id: parsedInput.id,
       name: parsedInput.name,
       description: parsedInput.description,
       organization_id: organization.id,

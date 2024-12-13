@@ -67,6 +67,13 @@ export type Database = {
             foreignKeyName: "collection_media_collection_id_fkey"
             columns: ["collection_id"]
             isOneToOne: false
+            referencedRelation: "collection_with_medias_v"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_media_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
             referencedRelation: "collections"
             referencedColumns: ["id"]
           },
@@ -418,6 +425,13 @@ export type Database = {
             foreignKeyName: "screens_collection_id_fkey"
             columns: ["collection_id"]
             isOneToOne: false
+            referencedRelation: "collection_with_medias_v"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screens_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
             referencedRelation: "collections"
             referencedColumns: ["id"]
           },
@@ -439,7 +453,18 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      collection_with_medias_v: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string | null
+          is_active: boolean | null
+          medias: Json | null
+          name: string | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       nanoid: {

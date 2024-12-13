@@ -7,10 +7,12 @@ export type Database = MergeDeep<
   {
     public: {
       Views: {
-        movies_view: {
+        collection_with_medias_v: {
           Row: {
-            // id is a primary key in public.movies, so it must be `not null`
-            id: number;
+            medias: Tables<"media">[] & {
+              duration: number;
+              display_order: number;
+            };
           };
         };
       };

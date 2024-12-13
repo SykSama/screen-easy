@@ -14,7 +14,7 @@ import type { Media } from "@/features/medias/types";
 import { GripVertical, TrashIcon } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
-import type { CreateCollectionFormValues } from "../new/create-collection.schema";
+import type { CreateCollectionFormValues } from "./collection-form.schema";
 
 export type MediasSelectorFieldProps = {
   form: UseFormReturn<CreateCollectionFormValues>;

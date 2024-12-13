@@ -57,7 +57,7 @@ return data;
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 
 export const columns: ColumnDef<Tables<"{feature_name}">>[] = [
 {

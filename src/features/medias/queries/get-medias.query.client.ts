@@ -1,5 +1,6 @@
 import { SupabasePostgrestActionError } from "@/lib/errors/errors";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types";
+
 import { createClient } from "@/utils/supabase/client";
 
 export const getMediasQueryClient = async (

@@ -9,7 +9,7 @@ export const createCollectionQuery = async (
 
   const { data, error } = await supabase
     .from("collections")
-    .insert(collection)
+    .upsert(collection)
     .select()
     .single();
 

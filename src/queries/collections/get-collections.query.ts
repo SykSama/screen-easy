@@ -1,5 +1,5 @@
 import { SupabasePostgrestActionError } from "@/lib/errors/errors";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export type GetCollectionsInput = Pick<
@@ -32,14 +32,16 @@ export type GetCollectionOutput = Tables<"collections"> & {
   medias: MediaWithDuration[];
 };
 
-export const getCollectionQuery = async ({
+export const getCollectionWithMediasQuery = async ({
   id,
-}: Pick<Tables<"collections">, "id">): Promise<GetCollectionOutput> => {
+}: Pick<Tables<"collections">, "id">): Promise<
+  Tables<"collection_with_medias_v">
+> => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from("collections")
-    .select("*, media(*), collection_media(duration, display_order, media_id)")
+    .from("collection_with_medias_v")
+    .select("*")
     .eq("id", id)
     .single();
 
@@ -47,17 +49,5 @@ export const getCollectionQuery = async ({
     throw new SupabasePostgrestActionError(error);
   }
 
-  const { media, collection_media, ...rest } = data;
-
-  const collectionWithDurationMedia = media.map((media) => ({
-    ...media,
-    duration:
-      collection_media.find((cm) => cm.media_id === media.id)?.duration ??
-      10000,
-    display_order:
-      collection_media.find((cm) => cm.media_id === media.id)?.display_order ??
-      0,
-  }));
-
-  return { ...rest, medias: collectionWithDurationMedia };
+  return data;
 };

@@ -1,5 +1,5 @@
 import { SupabasePostgrestActionError } from "@/lib/errors/errors";
-import type { Tables } from "@/types/database.generated.types";
+import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export type GetMediaOutput = Tables<"media"> & {

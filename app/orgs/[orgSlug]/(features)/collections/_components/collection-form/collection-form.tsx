@@ -14,27 +14,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import type { Tables } from "@/types/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
+import { collectionFormAction } from "./collection-form.action";
+import { CollectionFormSchema } from "./collection-form.schema";
+import { MediasSelectorField } from "./medias-selector-field";
 
-import type { Tables } from "@/types/database.generated.types";
-import { MediasSelectorField } from "../_components/medias-selector-field";
-import { createCollectionAction } from "./create-collection.action";
-
-import type { MediaInCollection } from "@/features/medias/types";
-import { CreateCollectionFormSchema } from "./create-collection.schema";
-
-export type CreateCollectionFormProps = {
-  initialValue?: Tables<"collections"> & { medias: MediaInCollection[] };
+export type CollectionFormProps = {
+  initialValue?: Tables<"collection_with_medias_v">;
 };
 
-export const CreateCollectionForm = ({
-  initialValue,
-}: CreateCollectionFormProps) => {
+export const CollectionForm = ({ initialValue }: CollectionFormProps) => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
-    createCollectionAction,
-    zodResolver(CreateCollectionFormSchema),
+    collectionFormAction,
+    zodResolver(CollectionFormSchema),
     {
       formProps: {
         defaultValues: {
@@ -46,7 +41,11 @@ export const CreateCollectionForm = ({
       },
       actionProps: {
         onSuccess: () => {
-          toast.success("Collection created successfully");
+          const message = initialValue
+            ? "Collection updated successfully"
+            : "Collection created successfully";
+
+          toast.success(message);
         },
         onError: (args) => {
           if (args.error.serverError) {
@@ -60,7 +59,9 @@ export const CreateCollectionForm = ({
   return (
     <Form {...form}>
       <form onSubmit={handleSubmitWithAction} className="mx-auto max-w-4xl">
-        <h1 className="text-2xl font-bold">Create Collection</h1>
+        <h1 className="text-2xl font-bold">
+          {initialValue ? "Update Collection" : "Create Collection"}
+        </h1>
         <Separator className="my-10 mt-6" />
 
         {/* Information Section */}
@@ -127,7 +128,7 @@ export const CreateCollectionForm = ({
         <Separator className="my-10" />
         <div className="flex justify-end gap-4">
           <LoadingButton type="submit" isLoading={action.isPending}>
-            Create Collection
+            {initialValue ? "Update Collection" : "Create Collection"}
           </LoadingButton>
         </div>
       </form>

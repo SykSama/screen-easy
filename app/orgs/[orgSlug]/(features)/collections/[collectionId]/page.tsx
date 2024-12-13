@@ -1,6 +1,6 @@
-import { getCollectionQuery } from "@/queries/collections/get-collections.query";
+import { getCollectionWithMediasQuery } from "@/queries/collections/get-collections.query";
 import type { PageParams } from "@/types/next";
-import { CreateCollectionForm } from "../new/create-collection-form";
+import { CollectionForm } from "../_components/collection-form/collection-form";
 
 export default async function UpdateCollectionPage(
   props: PageParams<{ collectionId: string }>,
@@ -20,6 +20,6 @@ export const UpdateCollectionPageContent = async ({
 }: {
   collectionId: string;
 }) => {
-  const collection = await getCollectionQuery({ id: collectionId });
-  return <CreateCollectionForm initialValue={collection} />;
+  const collection = await getCollectionWithMediasQuery({ id: collectionId });
+  return <CollectionForm initialValue={collection} />;
 };
