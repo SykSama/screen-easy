@@ -1,8 +1,9 @@
 "use server";
 
 import { orgProfileAction } from "@/lib/actions/safe-actions";
-import { createCollectionQuery } from "@/queries/collections/create-collection.query";
-import { addMediasToCollectionQuery } from "@/queries/media/add-medias-to-collection.query";
+
+import { upsertCollectionQuery } from "@/queries/collections/upsert-collection.query";
+import { upsertMediasToCollectionQuery } from "@/queries/media/upsert-medias-to-collection.query";
 import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
 import { redirect } from "next/navigation";
 import { CollectionFormSchema } from "./collection-form.schema";
@@ -14,7 +15,7 @@ export const collectionFormAction = orgProfileAction
     roles: OrganizationMembershipRole.options,
   })
   .action(async ({ parsedInput, ctx: { organization } }) => {
-    const collection = await createCollectionQuery({
+    const collection = await upsertCollectionQuery({
       id: parsedInput.id,
       name: parsedInput.name,
       description: parsedInput.description,
@@ -23,7 +24,7 @@ export const collectionFormAction = orgProfileAction
 
     const { medias } = parsedInput;
 
-    await addMediasToCollectionQuery({
+    await upsertMediasToCollectionQuery({
       collectionId: collection.id,
       medias: medias.map((media, index) => ({
         media_id: media.id,
