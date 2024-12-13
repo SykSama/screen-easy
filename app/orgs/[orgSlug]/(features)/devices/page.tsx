@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/features/filters/components/search-input";
 import type { PageParams } from "@/types/next";
-import Link from "next/link";
 import { Suspense } from "react";
+import { AddDeviceDialog } from "./_components/add-dialog/add-dialog";
 import { DevicesDataTable } from "./_components/devices-data-table/devices-data-table";
 
 export default async function DevicesPage({
@@ -29,9 +28,7 @@ const PageContent = async ({ orgSlug }: PageContentProps) => {
       <div className="flex items-center justify-between gap-2">
         <SearchInput placeholder="Find a device" />
         <div className="flex gap-2">
-          <Button asChild size={"xs"}>
-            <Link href={`/orgs/${orgSlug}/devices/new`}>Add</Link>
-          </Button>
+          <AddDeviceDialog />
         </div>
       </div>
 
