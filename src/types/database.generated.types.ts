@@ -124,6 +124,118 @@ export type Database = {
           },
         ]
       }
+      device_groups: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          organization_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          organization_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          organization_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_groups_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devices: {
+        Row: {
+          collection_id: string | null
+          created_at: string
+          description: string | null
+          device_group_id: string | null
+          id: string
+          last_ping: string | null
+          name: string
+          organization_id: string
+          orientation: string
+          resolution_height: number | null
+          resolution_width: number | null
+          status: Database["public"]["Enums"]["device_status"]
+          updated_at: string
+        }
+        Insert: {
+          collection_id?: string | null
+          created_at?: string
+          description?: string | null
+          device_group_id?: string | null
+          id?: string
+          last_ping?: string | null
+          name: string
+          organization_id: string
+          orientation?: string
+          resolution_height?: number | null
+          resolution_width?: number | null
+          status?: Database["public"]["Enums"]["device_status"]
+          updated_at?: string
+        }
+        Update: {
+          collection_id?: string | null
+          created_at?: string
+          description?: string | null
+          device_group_id?: string | null
+          id?: string
+          last_ping?: string | null
+          name?: string
+          organization_id?: string
+          orientation?: string
+          resolution_height?: number | null
+          resolution_width?: number | null
+          status?: Database["public"]["Enums"]["device_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devices_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collection_with_medias_v"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devices_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devices_device_group_id_fkey"
+            columns: ["device_group_id"]
+            isOneToOne: false
+            referencedRelation: "device_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devices_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media: {
         Row: {
           created_at: string
@@ -339,118 +451,6 @@ export type Database = {
         }
         Relationships: []
       }
-      screen_groups: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          name: string
-          organization_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name: string
-          organization_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name?: string
-          organization_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "screen_groups_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      screens: {
-        Row: {
-          collection_id: string | null
-          created_at: string
-          description: string | null
-          id: string
-          last_ping: string | null
-          name: string
-          organization_id: string
-          orientation: string
-          resolution_height: number | null
-          resolution_width: number | null
-          screen_group_id: string | null
-          status: Database["public"]["Enums"]["screen_status"]
-          updated_at: string
-        }
-        Insert: {
-          collection_id?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          last_ping?: string | null
-          name: string
-          organization_id: string
-          orientation?: string
-          resolution_height?: number | null
-          resolution_width?: number | null
-          screen_group_id?: string | null
-          status?: Database["public"]["Enums"]["screen_status"]
-          updated_at?: string
-        }
-        Update: {
-          collection_id?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          last_ping?: string | null
-          name?: string
-          organization_id?: string
-          orientation?: string
-          resolution_height?: number | null
-          resolution_width?: number | null
-          screen_group_id?: string | null
-          status?: Database["public"]["Enums"]["screen_status"]
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "screens_collection_id_fkey"
-            columns: ["collection_id"]
-            isOneToOne: false
-            referencedRelation: "collection_with_medias_v"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "screens_collection_id_fkey"
-            columns: ["collection_id"]
-            isOneToOne: false
-            referencedRelation: "collections"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "screens_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "screens_screen_group_id_fkey"
-            columns: ["screen_group_id"]
-            isOneToOne: false
-            referencedRelation: "screen_groups"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       collection_with_medias_v: {
@@ -476,9 +476,9 @@ export type Database = {
       }
     }
     Enums: {
+      device_status: "online" | "offline"
       media_status: "processing" | "ready" | "error"
       media_type: "image" | "video"
-      screen_status: "online" | "offline"
     }
     CompositeTypes: {
       [_ in never]: never

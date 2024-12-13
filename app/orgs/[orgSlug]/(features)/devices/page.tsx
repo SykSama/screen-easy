@@ -1,13 +1,43 @@
+import { Button } from "@/components/ui/button";
 import type { PageParams } from "@/types/next";
+import Link from "next/link";
+import { Suspense } from "react";
+import { SearchInput } from "../../settings/team/_components/search/search-input";
+import { DevicesDataTable } from "./_components/devices-data-table/devices-data-table";
 
-export default async function DevicesPage(
-  props: PageParams<{ orgSlug: string }>,
-) {
-  const { orgSlug } = await props.params;
+export default async function DevicesPage({
+  params,
+}: PageParams<{ orgSlug: string }>) {
+  const { orgSlug } = await params;
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      <h1>Devices for {orgSlug}</h1>
+    <div className="pt-4">
+      <Suspense fallback={<div>Loading...</div>}>
+        <PageContent orgSlug={orgSlug} />
+      </Suspense>
     </div>
   );
 }
+
+type PageContentProps = {
+  orgSlug: string;
+};
+
+const PageContent = async ({ orgSlug }: PageContentProps) => {
+  return (
+    <div className="container mx-auto flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-2">
+        <SearchInput placeholder="Find a device" />
+        <div className="flex gap-2">
+          <Button asChild size={"xs"}>
+            <Link href={`/orgs/${orgSlug}/devices/new`}>Add</Link>
+          </Button>
+        </div>
+      </div>
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <DevicesDataTable organizationSlug={orgSlug} />
+      </Suspense>
+    </div>
+  );
+};

@@ -38,7 +38,7 @@ const PageContent = async ({ orgSlug, searchQuery }: PageContentProps) => {
         <SearchInput placeholder="Find a medias" />
         <div className="flex gap-2">
           <Button asChild size={"xs"}>
-            <Link href={`/orgs/${orgSlug}/medias/new`}>Ajouter</Link>
+            <Link href={`/orgs/${orgSlug}/medias/new`}>Add</Link>
           </Button>
         </div>
       </div>
