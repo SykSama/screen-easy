@@ -9,20 +9,19 @@ begin
 end;
 $$;
 
-CREATE OR REPLACE FUNCTION nanoid(size int DEFAULT 21, alphabet text DEFAULT '_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    RETURNS text
-    LANGUAGE plpgsql
-    volatile
-AS
-$$
-DECLARE
+create or replace function nanoid(size int default 21, alphabet text default '_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+returns text
+language plpgsql
+volatile
+as $$
+declare
     idBuilder text := '';
     i int := 0;
     bytes bytea;
     alphabetIndex int;
     mask int;
     step int;
-BEGIN
+begin
     mask := (2 << cast(floor(log(length(alphabet) - 1) / log(2)) as int)) - 1;
     step := cast(ceil(1.6 * mask * size / length(alphabet)) AS int);
 

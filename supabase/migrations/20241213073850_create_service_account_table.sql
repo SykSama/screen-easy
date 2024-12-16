@@ -1,3 +1,8 @@
+create role "service_account";
+
+grant service_account to authenticator;
+grant anon to service_account;
+
 create table public.service_accounts (
     id uuid not null references auth.users on delete cascade,
     email text not null,
@@ -22,7 +27,7 @@ execute function public.update_updated_at();
 create or replace function public.handle_new_service_account()
 returns trigger
 language plpgsql
-security definer set search_path = ''
+security definer
 as $$
 begin
   insert into public.service_accounts (id, email, organization_id)
@@ -32,9 +37,8 @@ begin
 end;
 $$;
 
--- Trigger to handle new user and create profile
 create trigger on_service_account_created
 after insert on auth.users
 for each row
-when (NEW.raw_user_meta_data ->> 'service_account' is not null)
+when (coalesce((new.raw_user_meta_data ->> 'service_account')::boolean, false))
 execute function public.handle_new_service_account();

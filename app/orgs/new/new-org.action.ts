@@ -49,6 +49,7 @@ export const createOrgAction = authAction
     const { error } = await supabaseAdmin.auth.admin.createUser({
       email: emailForServiceAccount,
       email_confirm: true,
+      role: "service_account",
       user_metadata: {
         organization_id: org.id,
         service_account: true,

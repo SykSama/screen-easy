@@ -159,35 +159,78 @@ export type Database = {
           },
         ]
       }
+      device_information: {
+        Row: {
+          device_brand: string | null
+          device_name: string | null
+          device_os: string | null
+          device_os_version: string | null
+          id: string
+          screen_height: number | null
+          screen_scale: number | null
+          screen_width: number | null
+        }
+        Insert: {
+          device_brand?: string | null
+          device_name?: string | null
+          device_os?: string | null
+          device_os_version?: string | null
+          id?: string
+          screen_height?: number | null
+          screen_scale?: number | null
+          screen_width?: number | null
+        }
+        Update: {
+          device_brand?: string | null
+          device_name?: string | null
+          device_os?: string | null
+          device_os_version?: string | null
+          id?: string
+          screen_height?: number | null
+          screen_scale?: number | null
+          screen_width?: number | null
+        }
+        Relationships: []
+      }
       device_waiting: {
         Row: {
           created_at: string
+          device_information_id: string | null
           id: string
+          nanoid: string
           organization_email: string | null
           organization_id: string | null
-          otp_code: string
           sign_in_otp_code: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          device_information_id?: string | null
           id?: string
+          nanoid?: string
           organization_email?: string | null
           organization_id?: string | null
-          otp_code: string
           sign_in_otp_code?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          device_information_id?: string | null
           id?: string
+          nanoid?: string
           organization_email?: string | null
           organization_id?: string | null
-          otp_code?: string
           sign_in_otp_code?: string | null
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "device_waiting_device_information_id_fkey"
+            columns: ["device_information_id"]
+            isOneToOne: false
+            referencedRelation: "device_information"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "device_waiting_organization_id_fkey"
             columns: ["organization_id"]
@@ -203,6 +246,7 @@ export type Database = {
           created_at: string
           description: string | null
           device_group_id: string | null
+          device_information_id: string | null
           id: string
           last_ping: string | null
           name: string
@@ -210,7 +254,6 @@ export type Database = {
           orientation: string
           resolution_height: number | null
           resolution_width: number | null
-          status: Database["public"]["Enums"]["device_status"]
           updated_at: string
         }
         Insert: {
@@ -218,6 +261,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           device_group_id?: string | null
+          device_information_id?: string | null
           id?: string
           last_ping?: string | null
           name: string
@@ -225,7 +269,6 @@ export type Database = {
           orientation?: string
           resolution_height?: number | null
           resolution_width?: number | null
-          status?: Database["public"]["Enums"]["device_status"]
           updated_at?: string
         }
         Update: {
@@ -233,6 +276,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           device_group_id?: string | null
+          device_information_id?: string | null
           id?: string
           last_ping?: string | null
           name?: string
@@ -240,7 +284,6 @@ export type Database = {
           orientation?: string
           resolution_height?: number | null
           resolution_width?: number | null
-          status?: Database["public"]["Enums"]["device_status"]
           updated_at?: string
         }
         Relationships: [
@@ -263,6 +306,13 @@ export type Database = {
             columns: ["device_group_id"]
             isOneToOne: false
             referencedRelation: "device_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devices_device_information_id_fkey"
+            columns: ["device_information_id"]
+            isOneToOne: false
+            referencedRelation: "device_information"
             referencedColumns: ["id"]
           },
           {
@@ -500,7 +550,7 @@ export type Database = {
         Insert: {
           created_at?: string
           email: string
-          id?: string
+          id: string
           organization_id?: string | null
           updated_at?: string
         }
@@ -546,7 +596,6 @@ export type Database = {
       }
     }
     Enums: {
-      device_status: "online" | "offline"
       media_status: "processing" | "ready" | "error"
       media_type: "image" | "video"
     }
