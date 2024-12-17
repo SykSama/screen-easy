@@ -86,3 +86,46 @@ create trigger "set_devices_updated_at"
 before update on "public"."devices"
 for each row
 execute function "public"."update_updated_at"();
+
+create or replace function new_device(device_id uuid, name text)
+returns json
+language plpgsql
+security definer
+as $$
+declare
+  organization_id uuid;
+  device_information_id uuid;
+  inserted_device json;
+begin
+    -- Get organization_id and device_information_id from waiting_device
+    select 
+        w.organization_id,
+        w.device_information_id
+    into 
+        organization_id,
+        device_information_id
+    from public.device_waiting w
+    where w.device_id = device_id;
+
+    if organization_id is null then
+        raise exception 'Device not found in waiting list';
+    end if;
+
+    -- Insert the new device
+    insert into public.devices (
+        id,
+        name,
+        organization_id,
+        device_information_id
+    )
+    values (
+        device_id,
+        name,
+        organization_id,
+        device_information_id
+    )
+    returning row_to_json(devices.*) into inserted_device;
+
+    return inserted_device;
+end;
+$$;
