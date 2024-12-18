@@ -33,7 +33,7 @@ export const CollectionForm = ({ initialValue }: CollectionFormProps) => {
     {
       formProps: {
         defaultValues: {
-          id: initialValue?.id ?? "",
+          id: initialValue?.id ?? undefined,
           name: initialValue?.name ?? "",
           description: initialValue?.description ?? "",
           medias: initialValue?.medias ?? [],
