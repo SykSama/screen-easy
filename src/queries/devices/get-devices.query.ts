@@ -36,3 +36,27 @@ export const getDevicesQuery = async ({
 
   return data;
 };
+
+export type GetDeviceOutput = Tables<"devices"> & {
+  device_information: Tables<"device_information"> | null;
+};
+
+export const getDeviceQuery = async ({
+  deviceId,
+}: {
+  deviceId: string;
+}): Promise<GetDeviceOutput> => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("devices")
+    .select("*, device_information(*)")
+    .eq("id", deviceId)
+    .single();
+
+  if (error) {
+    throw new SupabasePostgrestActionError(error);
+  }
+
+  return data;
+};

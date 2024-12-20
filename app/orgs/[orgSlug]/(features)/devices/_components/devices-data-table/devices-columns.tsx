@@ -11,6 +11,36 @@ import {
 import { faDesktop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+
+type DeviceNameCellProps = {
+  id: string;
+  name: string;
+  description: string | null;
+};
+
+export const DeviceNameCell = ({
+  id,
+  name,
+  description,
+}: DeviceNameCellProps) => {
+  const params = useParams();
+
+  return (
+    <Link
+      href={`/orgs/${params.orgSlug}/devices/${id}`}
+      className="block hover:underline"
+    >
+      <div className="flex flex-col">
+        <span className="font-medium">{name}</span>
+        {description && (
+          <span className="text-sm text-muted-foreground">{description}</span>
+        )}
+      </div>
+    </Link>
+  );
+};
 
 export const columns: ColumnDef<GetDevicesOutput>[] = [
   {
@@ -26,16 +56,12 @@ export const columns: ColumnDef<GetDevicesOutput>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => {
-      const name = row.getValue("name") as string;
-      const description = row.original.description as string | null;
-
       return (
-        <div className="flex flex-col">
-          <span className="font-medium">{name}</span>
-          {description && (
-            <span className="text-sm text-muted-foreground">{description}</span>
-          )}
-        </div>
+        <DeviceNameCell
+          id={row.original.id}
+          name={row.original.name}
+          description={row.original.description}
+        />
       );
     },
   },

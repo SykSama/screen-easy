@@ -11,9 +11,7 @@ export default async function DevicesPage({
 
   return (
     <div className="pt-4">
-      <Suspense fallback={<div>Loading...</div>}>
-        <PageContent orgSlug={orgSlug} />
-      </Suspense>
+      <PageContent orgSlug={orgSlug} />
     </div>
   );
 }
