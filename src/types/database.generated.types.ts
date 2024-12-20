@@ -587,12 +587,25 @@ export type Database = {
       }
     }
     Functions: {
+      create_waiting_device_from_device_information: {
+        Args: {
+          device_info: Json
+        }
+        Returns: Json
+      }
       nanoid: {
         Args: {
           size?: number
           alphabet?: string
         }
         Returns: string
+      }
+      new_device: {
+        Args: {
+          device_id: string
+          name: string
+        }
+        Returns: Json
       }
     }
     Enums: {
