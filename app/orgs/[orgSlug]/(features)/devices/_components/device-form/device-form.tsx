@@ -1,5 +1,6 @@
 "use client";
 
+import { FormSection } from "@/components/form-section";
 import { LoadingButton } from "@/components/loading-button";
 import {
   Form,
@@ -18,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import type { GetDeviceOutput } from "@/queries/devices/get-devices.query";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -65,116 +67,112 @@ export const DeviceForm = ({ initialValue, collections }: DeviceFormProps) => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmitWithAction}
-        className="w-full max-w-2xl space-y-4"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter device name" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is the display name of your device.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={handleSubmitWithAction} className="mx-auto max-w-4xl">
+        <h1 className="text-2xl font-bold">Update Device</h1>
+        <Separator className="my-10 mt-6" />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Enter device description"
-                  {...field}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-              <FormDescription>
-                Optional description for your device.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* <FormField
-          control={form.control}
-          name="device_group_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Device Group</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value ?? undefined}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a device group" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="">None</SelectItem>
-                  {deviceGroups.map((group) => (
-                    <SelectItem key={group.id} value={group.id}>
-                      {group.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>Optional group for your device.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-        <FormField
-          control={form.control}
-          name="collection_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Collection</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value ?? undefined}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a collection" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {collections.map((collection) => (
-                    <SelectItem key={collection.value} value={collection.value}>
-                      {collection.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Optional collection for your device.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <LoadingButton
-          type="submit"
-          isLoading={action.isPending}
-          className="self-end"
+        {/* Information Section */}
+        <FormSection
+          title="Information"
+          description="Add information about the device"
         >
-          Update Device
-        </LoadingButton>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Name</FormLabel>
+                  <FormDescription className="text-muted-foreground">
+                    Give your device a descriptive name
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="mt-10"
+                    placeholder="My awesome device"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Description</FormLabel>
+                  <FormDescription>
+                    Describe what this device is about
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Textarea
+                    placeholder="This device is..."
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        <Separator className="my-10" />
+
+        {/* Collection Section */}
+        <FormSection
+          title="Collection"
+          description="Assign this device to a collection"
+        >
+          <FormField
+            control={form.control}
+            name="collection_id"
+            render={({ field }) => (
+              <FormItem>
+                <div>
+                  <FormLabel>Collection</FormLabel>
+                  <FormDescription>
+                    Choose a collection for this device
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value ?? undefined}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a collection" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {collections.map((collection) => (
+                        <SelectItem
+                          key={collection.value}
+                          value={collection.value}
+                        >
+                          {collection.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        <Separator className="my-10" />
+        <div className="flex justify-end gap-4">
+          <LoadingButton type="submit" isLoading={action.isPending}>
+            Update Device
+          </LoadingButton>
+        </div>
       </form>
     </Form>
   );
