@@ -105,7 +105,7 @@ begin
         organization_id,
         device_information_id
     from public.device_waiting w
-    where w.device_id = device_id;
+    where w.id = device_id;
 
     if organization_id is null then
         raise exception 'Device not found in waiting list';
