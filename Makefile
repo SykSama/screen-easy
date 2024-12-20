@@ -15,3 +15,6 @@ gen:
 
 clean:
 	@pnpm clean
+
+dev:
+	@pnpm dev
