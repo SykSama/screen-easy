@@ -49,21 +49,57 @@ alter table public.collection_media enable row level security;
 
 -- create policies
 create policy "allow organization access to collections"
-    on collections for all
-    using (organization_id in (
-        select organization_id
-        from public.organization_memberships
-        where profile_id = auth.uid()
-    ));
-
-create policy "allow organization access to collection_media"
-    on collection_media for all
-    using (collection_id in (
-        select id
-        from public.collections
-        where organization_id in (
+    on collections 
+    for all
+    to authenticated, service_account
+    using (
+        organization_id in (
             select organization_id
             from public.organization_memberships
             where profile_id = auth.uid()
         )
-    )); 
+    );
+
+create policy "allow organization access to collection_media"
+    on collection_media
+    for all
+    to authenticated, service_account
+    using (
+        collection_id in (
+            select id
+            from public.collections
+            where organization_id in (
+                select organization_id
+                from public.organization_memberships
+                where profile_id = auth.uid()
+            )
+        )
+    );
+
+create policy "allow service account access to collections"
+    on collections
+    for select
+    to service_account, authenticated
+    using (
+        organization_id in (
+            select organization_id
+            from public.service_accounts
+            where id = auth.uid()
+        )
+    );
+
+create policy "allow service account access to collection_media"
+    on collection_media
+    for select
+    to service_account, authenticated
+    using (
+        collection_id in (
+            select id
+            from public.collections
+            where organization_id in (
+                select organization_id
+                from public.service_accounts
+                where id = auth.uid()
+            )
+        )
+    );
