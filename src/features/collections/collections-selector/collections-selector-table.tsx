@@ -30,13 +30,14 @@ export const CollectionsSelectorTable = ({
     initialSelectedCollections,
   );
 
-  const { data: collections, isPending } = useQuery({
+  const { data: collections = [], isLoading } = useQuery({
     queryKey: ["collections", search],
     queryFn: async () =>
       getCollectionsClientQuery({
         orgSlug: orgSlug as string,
         filters: { search },
       }),
+    placeholderData: (previousData) => previousData,
   });
 
   const handleSelectionChange = (collections: Collection[]) => {
@@ -44,9 +45,9 @@ export const CollectionsSelectorTable = ({
     onSelect?.(collections);
   };
 
-  if (isPending) return <div>Loading.....</div>;
+  if (isLoading) return <div>Loading.....</div>;
 
-  const initialRowSelection = collections?.reduce(
+  const initialRowSelection = collections.reduce(
     (acc, collection) => {
       acc[collection.id] = selectedCollections.some(
         (c) => c.id === collection.id,
@@ -60,8 +61,8 @@ export const CollectionsSelectorTable = ({
     <div>
       <SelectableDataTable
         columns={columns}
-        data={collections ?? []}
-        initialRowSelection={initialRowSelection ?? {}}
+        data={collections}
+        initialRowSelection={initialRowSelection}
         getRowId={(row) => row.id}
         onRowSelectionChange={handleSelectionChange}
         renderSelectedItem={(row) => <SelectedItem key={row.id} row={row} />}
