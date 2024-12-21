@@ -24,10 +24,11 @@ import { ScrollArea } from "./scroll-area";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onRowSelectionChange?: (selectedRows: TData[]) => void;
+  onRowSelectionChange: (selectedRows: TData[]) => void;
   initialRowSelection: RowSelectionState;
   getRowId: (originalRow: TData, index: number, parent?: Row<TData>) => string;
   renderSelectedItem: (row: Row<TData>) => React.ReactNode;
+  enableMultiRowSelection: boolean;
 }
 
 export function SelectableDataTable<TData, TValue>({
@@ -37,6 +38,7 @@ export function SelectableDataTable<TData, TValue>({
   onRowSelectionChange,
   initialRowSelection,
   renderSelectedItem,
+  enableMultiRowSelection,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowSelection);
@@ -47,7 +49,7 @@ export function SelectableDataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getRowId: getRowId,
     enableRowSelection: true,
-    enableMultiRowSelection: true,
+    enableMultiRowSelection: enableMultiRowSelection,
     onRowSelectionChange: setRowSelection,
     state: {
       rowSelection,

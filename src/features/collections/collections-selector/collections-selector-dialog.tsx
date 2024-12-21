@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Tables } from "@/types";
 import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import { CollectionsSelectorTable } from "./collections-selector-table";
 
 type Collection = Tables<"collections">;
@@ -25,12 +26,13 @@ export const CollectionsSelectorDialog = ({
   onSelect,
   trigger,
 }: CollectionsSelectorDialogProps) => {
+  // create a debounced search
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
   const [selectedCollections, setSelectedCollections] = useState<Collection[]>(
     [],
   );
-  const [search, setSearch] = useState("");
 
-  // Notify parent component of selection changes
   useEffect(() => {
     onSelect?.(selectedCollections);
   }, [selectedCollections, onSelect]);
@@ -53,7 +55,7 @@ export const CollectionsSelectorDialog = ({
           <ScrollArea className="h-[600px]">
             <CollectionsSelectorTable
               onSelect={setSelectedCollections}
-              search={search}
+              search={debouncedSearch}
               initialSelectedCollections={selectedCollections}
             />
           </ScrollArea>

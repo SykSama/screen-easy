@@ -66,6 +66,7 @@ export const CollectionsSelectorTable = ({
         getRowId={(row) => row.id}
         onRowSelectionChange={handleSelectionChange}
         renderSelectedItem={(row) => <SelectedItem key={row.id} row={row} />}
+        enableMultiRowSelection={false}
       />
     </div>
   );
