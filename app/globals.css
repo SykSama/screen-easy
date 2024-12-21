@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --background: bg-zinc-900*/
 @layer base {
   :root {
-    --background: 240 20% 99.01960784313727%;
+    --background: theme("colors.zinc.900");
     --foreground: 210 12.5% 12.549019607843137%;
     --card: 240 19.999999999999943% 98.0392156862745%;
     --card-foreground: 210 12.5% 12.549019607843137%;
@@ -65,7 +66,7 @@
   }
 
   .dark {
-    --background: 240 5.9% 10%;
+    --background: theme("colors.zinc.900");
     --foreground: 220 9.09090909090906% 93.52941176470588%;
     --card: 240 3.7% 15.9%;
     --card-foreground: 220 9.09090909090906% 93.52941176470588%;
