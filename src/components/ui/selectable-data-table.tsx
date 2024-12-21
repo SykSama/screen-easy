@@ -19,6 +19,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
+import { ScrollArea } from "./scroll-area";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -26,6 +27,7 @@ interface DataTableProps<TData, TValue> {
   onRowSelectionChange?: (selectedRows: TData[]) => void;
   initialRowSelection: RowSelectionState;
   getRowId: (originalRow: TData, index: number, parent?: Row<TData>) => string;
+  renderSelectedItem: (row: Row<TData>) => React.ReactNode;
 }
 
 export function SelectableDataTable<TData, TValue>({
@@ -34,6 +36,7 @@ export function SelectableDataTable<TData, TValue>({
   getRowId,
   onRowSelectionChange,
   initialRowSelection,
+  renderSelectedItem,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowSelection);
@@ -57,54 +60,79 @@ export function SelectableDataTable<TData, TValue>({
     );
   }, [rowSelection]);
 
-  return (
-    <div className="space-y-4">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+  const SelectedItemView = ({ rows }: { rows: Row<TData>[] }) => {
+    return (
+      <div className="w-80 border-l pl-4">
+        <h4 className="mb-4 font-medium">Selected Collections</h4>
+        <ScrollArea className="h-[500px]">
+          <div className="space-y-2">
+            {table.getFilteredSelectedRowModel().rows.map(renderSelectedItem)}
+            {table.getFilteredSelectedRowModel().rows.length === 0 && (
+              <div className="text-sm text-muted-foreground">
+                No collections selected
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       </div>
+    );
+  };
+
+  return (
+    <div className="flex gap-4">
+      <div className="flex-1">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => row.toggleSelected()}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <SelectedItemView rows={table.getFilteredSelectedRowModel().rows} />
     </div>
   );
 }
