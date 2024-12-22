@@ -13,8 +13,10 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
+import { LoadingButton } from "@/components/loading-button";
 import { Icons } from "@/components/ui/icons";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { toast } from "sonner";
 import { SignUpFormScheme } from "./sign-up-form.schema";
 import { signUpAction } from "./sign-up.action";
 
@@ -28,6 +30,13 @@ export default function SignUpForm() {
         values: {
           email: "",
           password: "",
+        },
+      },
+      actionProps: {
+        onError: (error) => {
+          if (error.error.serverError) {
+            toast.error(error.error.serverError);
+          }
         },
       },
     },
@@ -101,9 +110,13 @@ export default function SignUpForm() {
               )}
             />
             <div></div>
-            <Button type="submit" className="w-full">
-              {action.isPending ? "Sign Up..." : "Sign Up"}
-            </Button>
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              isLoading={action.isPending}
+            >
+              Sign Up
+            </LoadingButton>
           </form>
         </Form>
       </div>
