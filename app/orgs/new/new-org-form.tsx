@@ -42,11 +42,9 @@ export const NewOrgForm = ({ userEmail, defaultOrgName }: NewOrgFormProps) => {
       },
       actionProps: {
         onError: (args) => {
-          if (!args.error.serverError) {
-            return;
+          if (args.error.serverError) {
+            toast.error(args.error.serverError);
           }
-
-          toast.error(args.error.serverError, { position: "top-right" });
         },
       },
     },
@@ -91,11 +89,6 @@ export const NewOrgForm = ({ userEmail, defaultOrgName }: NewOrgFormProps) => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.root && (
-                  <div className="text-destructive">
-                    {form.formState.errors.root.message}
-                  </div>
-                )}
                 <LoadingButton
                   type="submit"
                   className="w-full"

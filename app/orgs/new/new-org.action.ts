@@ -6,11 +6,13 @@ import { stripe } from "@/lib/stripe";
 import { createOrganizationMembershipsQuery } from "@/queries/organization-memberships/create-organization-memberships.query";
 import { getOrganizationPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
 
+import { logger } from "@/lib/logger";
 import { createOrganizationQuery } from "@/queries/orgs/create-organizations.query";
 import { supabaseAdmin } from "@/utils/supabase/admin";
 import { redirect } from "next/navigation";
 import { NewOrgFormSchema } from "./new-org-form.schema";
 
+//TODO: [AR] - Optimize this action to be trigger and database trigger
 export const createOrgAction = authAction
   .schema(NewOrgFormSchema)
   .metadata({
@@ -42,19 +44,24 @@ export const createOrgAction = authAction
       role_id: "OWNER",
     });
 
-    //TODO: change this to be a trigger in the database
-    const emailDomain = email.split("@")[1];
-    const emailForServiceAccount = `${org.slug}@${emailDomain}`;
+    try {
+      //TODO: [AR] - change this to be a trigger in the database
+      const emailDomain = email.split("@")[1];
+      const emailForServiceAccount = `${org.slug}@${emailDomain}`;
 
-    const { error } = await supabaseAdmin.auth.admin.createUser({
-      email: emailForServiceAccount,
-      email_confirm: true,
-      role: "service_account",
-      user_metadata: {
-        organization_id: org.id,
-        service_account: true,
-      },
-    });
+      await supabaseAdmin.auth.admin.createUser({
+        email: emailForServiceAccount,
+        email_confirm: true,
+        role: "service_account",
+        user_metadata: {
+          organization_id: org.id,
+          service_account: true,
+        },
+      });
+    } catch (error) {
+      // So we don't fail the action if the service account creation fails
+      logger.error(error);
+    }
 
     return redirect(`/orgs/${org.slug}/dashboard`);
   });
