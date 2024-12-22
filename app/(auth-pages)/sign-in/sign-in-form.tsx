@@ -18,6 +18,8 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 import { SignInFormScheme } from "./sign-in-form.schema";
 import { signInAction } from "./sign-in.action";
 
+//TODO: Add Google sign in
+
 export default function SignInForm() {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     signInAction,
@@ -61,6 +63,7 @@ export default function SignInForm() {
           <form
             onSubmit={handleSubmitWithAction}
             className="flex flex-col gap-4"
+            noValidate
           >
             <FormField
               control={form.control}
