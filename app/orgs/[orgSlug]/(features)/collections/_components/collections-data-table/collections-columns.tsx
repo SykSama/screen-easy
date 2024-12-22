@@ -19,6 +19,7 @@ export const columns: ColumnDef<Tables<"collections">>[] = [
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       const description = row.original.description as string | null;
+
       return (
         <Link href={`collections/${row.original.id}`}>
           <div className="flex flex-col">

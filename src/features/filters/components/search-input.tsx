@@ -22,9 +22,9 @@ export const SearchInput = ({ placeholder }: SearchInputProps) => {
     const params = new URLSearchParams(searchParams);
 
     if (term) {
-      params.set("searchQuery", term);
+      params.set("query", term);
     } else {
-      params.delete("searchQuery");
+      params.delete("query");
     }
 
     startTransition(() => {
@@ -44,12 +44,12 @@ export const SearchInput = ({ placeholder }: SearchInputProps) => {
       >
         <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2" />
         <Input
+          defaultValue={searchParams.get("query")?.toString()}
           placeholder={placeholder ?? "Filter members"}
           className="pl-8"
           onChange={(e) => {
             debouncedSearch(e.target.value);
           }}
-          defaultValue={searchParams.get("searchQuery")?.toString()}
         />
       </div>
       {/* {isPending && <Icons.spinner className="size-5 animate-spin" />} */}

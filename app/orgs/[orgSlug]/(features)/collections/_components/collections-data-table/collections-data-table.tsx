@@ -5,14 +5,19 @@ import { getCollectionsQuery } from "@/queries/collections/get-collections.query
 import { getOrganizationFromSlugQuery } from "@/queries/orgs/get-organization.query";
 import { columns } from "./collections-columns";
 
+type CollectionsDataTableProps = {
+  organizationSlug: string;
+  query?: string;
+};
+
 export const CollectionsDataTable = async ({
   organizationSlug,
-}: {
-  organizationSlug: string;
-}) => {
+  query,
+}: CollectionsDataTableProps) => {
   const organization = await getOrganizationFromSlugQuery(organizationSlug);
   const items = await getCollectionsQuery({
     organization_id: organization.id,
+    query,
   });
 
   return (

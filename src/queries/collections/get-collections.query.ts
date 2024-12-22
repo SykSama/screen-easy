@@ -5,10 +5,13 @@ import { createClient } from "@/utils/supabase/server";
 export type GetCollectionsInput = Pick<
   Tables<"collections">,
   "organization_id"
->;
+> & {
+  query?: string;
+};
 
 export const getCollectionsQuery = async ({
   organization_id,
+  query,
 }: GetCollectionsInput) => {
   const supabase = await createClient();
 
@@ -16,6 +19,7 @@ export const getCollectionsQuery = async ({
     .from("collections")
     .select()
     .eq("organization_id", organization_id)
+    .ilike("name", `%${query}%`)
     .order("created_at", { ascending: false });
 
   if (error) {

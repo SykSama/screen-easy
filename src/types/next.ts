@@ -15,9 +15,12 @@ import type { ReactNode } from "react";
  * }
  * ```
  */
-export type PageParams<T extends Record<string, string | string[]> = {}> = {
+export type PageParams<
+  T extends Record<string, string | string[]>,
+  TSearch extends Record<string, string | string[] | undefined> = {},
+> = {
   params: Promise<T>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Promise<TSearch>;
 };
 
 /**
