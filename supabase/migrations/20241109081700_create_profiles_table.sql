@@ -27,7 +27,7 @@ create policy "Users can insert their own profiles."
   on profiles 
   for insert
   to anon, authenticated
-  with check ( (select auth.uid()) = user_id);
+  with check ( (select auth.uid()) = id);
 
 -- Function for profiles
 create or replace function public.handle_new_user()
@@ -58,19 +58,17 @@ end;
 $$;
 
 -- Profiles trigger
-create trigger on_auth_user_created
+create or replace trigger on_auth_user_created
 after insert on auth.users
 for each row
-when (coalesce((new.raw_user_meta_data ->> 'service_account')::boolean, false) = false)
 execute function public.handle_new_user();
 
-create trigger on_auth_user_updated
+create or replace trigger on_auth_user_updated
 after update on auth.users
 for each row
-when (coalesce((new.raw_user_meta_data ->> 'service_account')::boolean, false) = false)
 execute function public.handle_update_user();
 
-create trigger update_updated_at
+create trigger update_profiles_updated_at
 before update on public.profiles
 for each row
 execute function public.update_updated_at();
