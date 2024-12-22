@@ -30,7 +30,7 @@ export const CollectionsDataTable = async ({
           columns={columns}
           data={items}
           emptyComponent={
-            <div className="flex flex-col items-center justify-center gap-4">
+            <div className="flex flex-col items-center justify-center gap-2">
               <p className="text-base text-muted-foreground">
                 No collections found
               </p>
