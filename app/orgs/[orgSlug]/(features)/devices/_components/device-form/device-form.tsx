@@ -14,10 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import type { CollectionSelector } from "@/features/collections/collections-selector/collection-selector.type";
 import { CollectionsSelectorDialog } from "@/features/collections/collections-selector/collections-selector-dialog";
 import type { GetDeviceOutput } from "@/queries/devices/get-devices.query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { useState } from "react";
 import { toast } from "sonner";
 import { updateDeviceAction } from "./device-form.action";
 import { DeviceFormSchema } from "./device-form.schema";
@@ -27,6 +29,9 @@ export type DeviceFormProps = {
 };
 
 export const DeviceForm = ({ initialValue }: DeviceFormProps) => {
+  const [selectedCollection, setSelectedCollection] =
+    useState<CollectionSelector | null>(initialValue.collections);
+
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     updateDeviceAction,
     zodResolver(DeviceFormSchema),
@@ -37,9 +42,7 @@ export const DeviceForm = ({ initialValue }: DeviceFormProps) => {
           name: initialValue.name,
           description: initialValue.description,
           device_group_id: initialValue.device_group_id,
-          collection: {
-            ...initialValue.collections,
-          },
+          collection_id: selectedCollection?.id ?? null,
         },
       },
       actionProps: {
@@ -118,11 +121,11 @@ export const DeviceForm = ({ initialValue }: DeviceFormProps) => {
         {/* Collection Section */}
         <FormSection
           title="Collection"
-          description="Assign this device to a collection"
+          description="Add a collection to this device"
         >
           <FormField
             control={form.control}
-            name="collection"
+            name="collection_id"
             render={({ field }) => (
               <FormItem>
                 <div>
@@ -135,18 +138,14 @@ export const DeviceForm = ({ initialValue }: DeviceFormProps) => {
                   <CollectionsSelectorDialog
                     enableMultiRowSelection={false}
                     onSelect={(collections) => {
-                      field.onChange(collections[0] ?? null);
+                      setSelectedCollection(collections[0] ?? null);
+                      field.onChange(collections[0]?.id ?? null);
                     }}
                     initialSelectedCollections={
-                      field.value ? [field.value] : []
+                      selectedCollection ? [selectedCollection] : []
                     }
                   />
                 </FormControl>
-                <FormDescription>
-                  {!field.value?.name && "No collection selected"}
-                  {field.value?.name &&
-                    `1 collection selected: ${field.value.name}`}
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

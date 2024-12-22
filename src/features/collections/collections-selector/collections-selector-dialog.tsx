@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -33,15 +34,23 @@ export const CollectionsSelectorDialog = ({
     CollectionSelector[]
   >(initialSelectedCollections ?? []);
 
+  const buttonTriggerTitle =
+    selectedCollections.length > 0
+      ? `Collections (${selectedCollections.length})`
+      : "Select collections";
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Select Collections</Button>
+        <Button variant="outline">{buttonTriggerTitle}</Button>
       </DialogTrigger>
       <DialogContent className="max-w-5xl">
         <DialogHeader>
           <DialogTitle>Select Collections</DialogTitle>
         </DialogHeader>
+        <DialogDescription>
+          Select a collection to add to this device
+        </DialogDescription>
         <div className="space-y-4">
           <Input
             placeholder="Search collections..."
