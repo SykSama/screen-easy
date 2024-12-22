@@ -19,27 +19,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import type { CollectionSelector } from "@/features/collections/collections-selector/collection-selector.type";
+import { CollectionsSelectorDialog } from "@/features/collections/collections-selector/collections-selector-dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { CloudUpload } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import { toast } from "sonner";
 import { createMediaAction } from "./create-media.action";
 import { CreateMediaFormSchema } from "./create-media.schema";
-import { MultiSelect } from "@/components/ui/multi-select";
 
-type Option = {
-  label: string;
-  value: string;
-};
+export const CreateMediaForm = () => {
+  const [selectedCollections, setSelectedCollections] = useState<
+    CollectionSelector[]
+  >([]);
 
-type CreateMediaFormProps = {
-  collectionOptions: Option[];
-};
-
-export const CreateMediaForm = ({
-  collectionOptions,
-}: CreateMediaFormProps) => {
   const { form, action, handleSubmitWithAction } = useHookFormAction(
     createMediaAction,
     zodResolver(CreateMediaFormSchema),
@@ -141,11 +136,13 @@ export const CreateMediaForm = ({
                   </FormDescription>
                 </div>
                 <FormControl>
-                  <MultiSelect
-                    options={collectionOptions}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    placeholder="Select collections"
+                  <CollectionsSelectorDialog
+                    initialSelectedCollections={selectedCollections}
+                    enableMultiRowSelection={true}
+                    onSelect={(collections) => {
+                      setSelectedCollections(collections);
+                      field.onChange(collections.map((c) => c.id));
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
