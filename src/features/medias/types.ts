@@ -14,7 +14,7 @@ export type Media = z.infer<typeof MediaSchema>;
 
 export const MediaInCollectionSchema = z
   .object({
-    duration: z.coerce.number().min(0),
+    duration: z.coerce.number().min(1, "You need to set a duration"),
     display_order: z.number(),
   })
   .and(MediaSchema);

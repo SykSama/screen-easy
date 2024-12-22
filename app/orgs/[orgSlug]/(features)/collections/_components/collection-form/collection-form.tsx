@@ -77,7 +77,7 @@ export const CollectionForm = ({ initialValue }: CollectionFormProps) => {
                 <div>
                   <FormLabel>Name</FormLabel>
                   <FormDescription className="text-muted-foreground">
-                    Give your collection a descriptive name
+                    Give your collection a name
                   </FormDescription>
                 </div>
                 <FormControl>

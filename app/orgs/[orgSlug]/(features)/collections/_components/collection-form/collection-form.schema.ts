@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const CollectionFormSchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "You need to give a name to your collection"),
   description: z.string().optional(),
   medias: z.array(MediaInCollectionSchema).default([]),
 });

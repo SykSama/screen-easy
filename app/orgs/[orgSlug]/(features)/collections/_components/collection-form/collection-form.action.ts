@@ -6,9 +6,11 @@ import { upsertCollectionQuery } from "@/queries/collections/upsert-collection.q
 import { deleteMediasFromCollectionQuery } from "@/queries/media/delete-medias-from-collection.query";
 import { upsertMediasToCollectionQuery } from "@/queries/media/upsert-medias-to-collection.query";
 import { OrganizationMembershipRole } from "@/queries/orgs/organization.type";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { CollectionFormSchema } from "./collection-form.schema";
 
+//TODO: [AR] Put this in rpc function because a lot of db queries are done here
 export const collectionFormAction = orgProfileAction
   .schema(CollectionFormSchema)
   .metadata({
@@ -40,5 +42,6 @@ export const collectionFormAction = orgProfileAction
       mediasToNotDeleteIds: collectionMedias.map((media) => media.media_id),
     });
 
+    revalidatePath(`/orgs/${organization.slug}/collections`);
     redirect(`/orgs/${organization.slug}/collections`);
   });

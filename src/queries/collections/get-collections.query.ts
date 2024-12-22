@@ -15,12 +15,18 @@ export const getCollectionsQuery = async ({
 }: GetCollectionsInput) => {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const sQuery = supabase
     .from("collections")
     .select()
-    .eq("organization_id", organization_id)
-    .ilike("name", `%${query}%`)
-    .order("created_at", { ascending: false });
+    .eq("organization_id", organization_id);
+
+  if (query && query.length > 0) {
+    sQuery.ilike("name", `%${query}%`);
+  }
+
+  sQuery.order("created_at", { ascending: false });
+
+  const { data, error } = await sQuery;
 
   if (error) {
     throw new SupabasePostgrestActionError(error);
