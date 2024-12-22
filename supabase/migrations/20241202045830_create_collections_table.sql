@@ -7,6 +7,7 @@ create table public.collections (
     is_active boolean default true not null,
     created_at timestamp with time zone default now() not null,
     updated_at timestamp with time zone default now() not null,
+
     constraint collections_pkey primary key (id),
     constraint collections_organization_id_fkey foreign key (organization_id) references public.organizations(id) on delete cascade
 );
@@ -20,6 +21,7 @@ create table public.collection_media (
     display_from timestamp with time zone, -- start date for displaying the media (null means no start restriction)
     display_until timestamp with time zone, -- end date for displaying the media (null means no end restriction)
     created_at timestamp with time zone default now() not null,
+
     constraint collection_media_pkey primary key (collection_id, media_id),
     constraint collection_media_collection_id_fkey foreign key (collection_id) references public.collections(id) on delete cascade,
     constraint collection_media_media_id_fkey foreign key (media_id) references public.media(id) on delete cascade,
@@ -33,12 +35,13 @@ create table public.collection_media (
 
 -- create indexes
 create index idx_collections_organization_id on public.collections(organization_id);
+
 create index idx_collection_media_collection_id on public.collection_media(collection_id);
 create index idx_collection_media_media_id on public.collection_media(media_id);
 create index idx_collection_media_display_dates on public.collection_media(display_from, display_until);
 
 -- create updated_at triggers
-create trigger set_collections_updated_at
+create trigger update_collections_updated_at
     before update on public.collections
     for each row
     execute function public.update_updated_at();
@@ -51,27 +54,27 @@ alter table public.collection_media enable row level security;
 create policy "allow organization access to collections"
     on collections 
     for all
-    to authenticated, service_account
+    to authenticated
     using (
         organization_id in (
             select organization_id
             from public.organization_memberships
-            where profile_id = auth.uid()
+            where profile_id = (select auth.uid())
         )
     );
 
 create policy "allow organization access to collection_media"
     on collection_media
     for all
-    to authenticated, service_account
+    to authenticated
     using (
-        collection_id in (
+        organization_id in (
             select id
             from public.collections
             where organization_id in (
                 select organization_id
                 from public.organization_memberships
-                where profile_id = auth.uid()
+                where profile_id = (select auth.uid())
             )
         )
     );
@@ -79,7 +82,7 @@ create policy "allow organization access to collection_media"
 create policy "allow service account access to collections"
     on collections
     for select
-    to service_account, authenticated
+    to service_account
     using (
         organization_id in (
             select organization_id
@@ -91,7 +94,7 @@ create policy "allow service account access to collections"
 create policy "allow service account access to collection_media"
     on collection_media
     for select
-    to service_account, authenticated
+    to service_account
     using (
         collection_id in (
             select id
