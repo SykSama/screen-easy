@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/features/filters/components/search-input";
 import type { PageParams } from "@/types/next";
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CollectionsDataTable } from "./_components/collections-data-table/collections-data-table";
@@ -27,8 +28,11 @@ export default async function CollectionsPage({
         <div className="flex items-center justify-between gap-2">
           <SearchInput placeholder="Find a collection" />
           <div className="flex gap-2">
-            <Button asChild size={"xs"}>
-              <Link href={`/orgs/${orgSlug}/collections/new`}>Add</Link>
+            <Button asChild size="sm" className="pr-3">
+              <Link href={`/orgs/${orgSlug}/collections/new`}>
+                <PlusIcon className="size-4" />
+                Create
+              </Link>
             </Button>
           </div>
         </div>

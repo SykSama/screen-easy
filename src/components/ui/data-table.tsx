@@ -15,15 +15,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ReactNode } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  emptyComponent?: ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  emptyComponent,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -68,7 +71,7 @@ export function DataTable<TData, TValue>({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
+              {emptyComponent ? emptyComponent : "No results."}
             </TableCell>
           </TableRow>
         )}
