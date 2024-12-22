@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -10,37 +11,32 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Tables } from "@/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDebounce } from "use-debounce";
+import type { CollectionSelector } from "./collection-selector.type";
 import { CollectionsSelectorTable } from "./collections-selector-table";
 
-type Collection = Tables<"collections">;
-
 export type CollectionsSelectorDialogProps = {
-  onSelect?: (collections: Collection[]) => void;
-  trigger?: React.ReactNode;
+  onSelect?: (collections: CollectionSelector[]) => void;
+  initialSelectedCollections?: CollectionSelector[];
+  enableMultiRowSelection: boolean;
 };
 
 export const CollectionsSelectorDialog = ({
   onSelect,
-  trigger,
+  initialSelectedCollections,
+  enableMultiRowSelection,
 }: CollectionsSelectorDialogProps) => {
-  // create a debounced search
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
-  const [selectedCollections, setSelectedCollections] = useState<Collection[]>(
-    [],
-  );
-
-  useEffect(() => {
-    onSelect?.(selectedCollections);
-  }, [selectedCollections, onSelect]);
+  const [selectedCollections, setSelectedCollections] = useState<
+    CollectionSelector[]
+  >(initialSelectedCollections ?? []);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {trigger ?? <Button variant="outline">Select Collections</Button>}
+        <Button variant="outline">Select Collections</Button>
       </DialogTrigger>
       <DialogContent className="max-w-5xl">
         <DialogHeader>
@@ -51,15 +47,22 @@ export const CollectionsSelectorDialog = ({
             placeholder="Search collections..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            autoFocus={true}
           />
           <ScrollArea className="h-[600px]">
             <CollectionsSelectorTable
               onSelect={setSelectedCollections}
               search={debouncedSearch}
               initialSelectedCollections={selectedCollections}
+              enableMultiRowSelection={enableMultiRowSelection}
             />
           </ScrollArea>
         </div>
+        <DialogClose asChild>
+          <Button onClick={() => onSelect?.(selectedCollections)}>
+            Valider
+          </Button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );

@@ -39,6 +39,10 @@ export const getDevicesQuery = async ({
 
 export type GetDeviceOutput = Tables<"devices"> & {
   device_information: Tables<"device_information"> | null;
+  collections: Pick<
+    Tables<"collections">,
+    "id" | "name" | "description"
+  > | null;
 };
 
 export const getDeviceQuery = async ({
@@ -50,7 +54,7 @@ export const getDeviceQuery = async ({
 
   const { data, error } = await supabase
     .from("devices")
-    .select("*, device_information(*)")
+    .select("*, device_information(*), collections(id, name, description)")
     .eq("id", deviceId)
     .single();
 

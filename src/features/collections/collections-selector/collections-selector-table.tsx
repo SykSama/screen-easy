@@ -1,6 +1,5 @@
 "use client";
 
-import type { Tables } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
@@ -9,26 +8,27 @@ import type { Row } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import type { CollectionSelector } from "./collection-selector.type";
 import { columns } from "./collections-data-table/collections-columns";
 import { getCollectionsClientQuery } from "./get-collections.client.query";
 
-type Collection = Tables<"collections">;
-
 export type CollectionsSelectorTableProps = {
-  onSelect?: (collections: Collection[]) => void;
-  initialSelectedCollections?: Collection[];
+  onSelect?: (collections: CollectionSelector[]) => void;
+  initialSelectedCollections?: CollectionSelector[];
   search?: string;
+  enableMultiRowSelection: boolean;
 };
 
 export const CollectionsSelectorTable = ({
   onSelect,
   initialSelectedCollections = [],
   search = "",
+  enableMultiRowSelection,
 }: CollectionsSelectorTableProps) => {
   const { orgSlug } = useParams();
-  const [selectedCollections, setSelectedCollections] = useState<Collection[]>(
-    initialSelectedCollections,
-  );
+  const [selectedCollections, setSelectedCollections] = useState<
+    CollectionSelector[]
+  >(initialSelectedCollections);
 
   const { data: collections = [], isLoading } = useQuery({
     queryKey: ["collections", search],
@@ -40,7 +40,7 @@ export const CollectionsSelectorTable = ({
     placeholderData: (previousData) => previousData,
   });
 
-  const handleSelectionChange = (collections: Collection[]) => {
+  const handleSelectionChange = (collections: CollectionSelector[]) => {
     setSelectedCollections(collections);
     onSelect?.(collections);
   };
@@ -66,13 +66,13 @@ export const CollectionsSelectorTable = ({
         getRowId={(row) => row.id}
         onRowSelectionChange={handleSelectionChange}
         renderSelectedItem={(row) => <SelectedItem key={row.id} row={row} />}
-        enableMultiRowSelection={false}
+        enableMultiRowSelection={enableMultiRowSelection}
       />
     </div>
   );
 };
 
-const SelectedItem = ({ row }: { row: Row<Collection> }) => {
+const SelectedItem = ({ row }: { row: Row<CollectionSelector> }) => {
   return (
     <div
       key={row.id}

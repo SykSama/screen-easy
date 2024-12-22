@@ -1,6 +1,4 @@
-import { getCollectionsQuery } from "@/queries/collections/get-collections.query";
 import { getDeviceQuery } from "@/queries/devices/get-devices.query";
-import { getOrganizationFromSlugQuery } from "@/queries/orgs/get-organization.query";
 import type { PageParams } from "@/types/next";
 import { Suspense } from "react";
 import { DeviceForm } from "../_components/device-form/device-form";
@@ -24,18 +22,9 @@ export const UpdateDevicePageContent = async ({
 }: {
   params: Promise<{ orgSlug: string; deviceId: string }>;
 }) => {
-  const { deviceId, orgSlug } = await params;
-
-  const organization = await getOrganizationFromSlugQuery(orgSlug);
-  const collections = await getCollectionsQuery({
-    organization_id: organization.id,
-  });
-
-  const collectionOptions = collections.map((collection) => ({
-    label: collection.name,
-    value: collection.id,
-  }));
+  const { deviceId } = await params;
 
   const device = await getDeviceQuery({ deviceId });
-  return <DeviceForm initialValue={device} collections={collectionOptions} />;
+
+  return <DeviceForm initialValue={device} />;
 };

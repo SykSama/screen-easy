@@ -9,7 +9,7 @@ export default async function TestPage({
   return (
     <div className="p-8">
       <h1 className="mb-8 text-2xl font-bold">Test Collections Selector</h1>
-      <CollectionsSelectorDialog />
+      <CollectionsSelectorDialog enableMultiRowSelection={true} />
     </div>
   );
 }

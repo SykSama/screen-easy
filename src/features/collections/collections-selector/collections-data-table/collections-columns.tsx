@@ -1,10 +1,10 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import type { Tables } from "@/types";
 import type { ColumnDef } from "@tanstack/react-table";
+import type { CollectionSelector } from "../collection-selector.type";
 
-export const columns: ColumnDef<Tables<"collections">>[] = [
+export const columns: ColumnDef<CollectionSelector>[] = [
   {
     id: "select",
     enableSorting: false,

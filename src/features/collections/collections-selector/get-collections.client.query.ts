@@ -1,7 +1,7 @@
 import { SupabasePostgrestActionError } from "@/lib/errors/errors";
 import { getOrganizationFromSlugQuery } from "@/queries/orgs/get-organization.query";
-import type { Tables } from "@/types";
 import { createClient } from "@/utils/supabase/client";
+import type { CollectionSelector } from "./collection-selector.type";
 
 export type getCollectionsClientQueryFilters = {
   search?: string;
@@ -15,14 +15,14 @@ export type GetCollectionsClientQueryProps = {
 export const getCollectionsClientQuery = async ({
   orgSlug,
   filters,
-}: GetCollectionsClientQueryProps): Promise<Tables<"collections">[]> => {
+}: GetCollectionsClientQueryProps): Promise<CollectionSelector[]> => {
   const supabase = createClient();
 
   const organization = await getOrganizationFromSlugQuery(orgSlug);
 
   const query = supabase
     .from("collections")
-    .select("*")
+    .select("id, name, description")
     .eq("organization_id", organization.id);
 
   if (filters.search) {
