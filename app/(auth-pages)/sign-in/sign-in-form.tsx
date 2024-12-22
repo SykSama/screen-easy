@@ -13,8 +13,10 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
+import { LoadingButton } from "@/components/loading-button";
 import { Icons } from "@/components/ui/icons";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { toast } from "sonner";
 import { SignInFormScheme } from "./sign-in-form.schema";
 import { signInAction } from "./sign-in.action";
 
@@ -30,6 +32,13 @@ export default function SignInForm() {
         values: {
           email: "",
           password: "",
+        },
+      },
+      actionProps: {
+        onError: (error) => {
+          if (error.error.serverError) {
+            toast.error(error.error.serverError);
+          }
         },
       },
     },
@@ -69,7 +78,7 @@ export default function SignInForm() {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="grid gap-2">
+                <FormItem className="grid">
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
                     <Input
@@ -88,7 +97,7 @@ export default function SignInForm() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="grid gap-2">
+                <FormItem className="grid">
                   <div className="flex items-center justify-between">
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <Link
@@ -112,9 +121,13 @@ export default function SignInForm() {
               )}
             />
             <div></div>
-            <Button type="submit" className="w-full">
-              {action.isPending ? "Sign In..." : "Sign In"}
-            </Button>
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              isLoading={action.isPending}
+            >
+              Sign in
+            </LoadingButton>
           </form>
         </Form>
       </div>

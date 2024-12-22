@@ -64,7 +64,7 @@ export default function SignUpForm() {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="grid gap-2">
+                <FormItem className="grid">
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
                     <Input
@@ -83,7 +83,7 @@ export default function SignUpForm() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="grid gap-2">
+                <FormItem className="grid">
                   <div className="flex items-center justify-between">
                     <FormLabel htmlFor="password">Password</FormLabel>
                   </div>

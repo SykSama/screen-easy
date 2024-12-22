@@ -1,6 +1,7 @@
 "use server";
 
 import { action } from "@/lib/actions/safe-actions";
+import { ActionError } from "@/lib/errors/errors";
 import { createClient } from "@/utils/supabase/server";
 import { returnValidationErrors } from "next-safe-action";
 import { redirect } from "next/navigation";
@@ -26,7 +27,7 @@ export const signInAction = action
     if (error.code == "email_exists") {
       returnValidationErrors(SignInFormScheme, {
         email: {
-          _errors: ["Email already exists"],
+          _errors: ["This email already exists"],
         },
       });
     }
@@ -34,18 +35,14 @@ export const signInAction = action
     if (error.code == "email_not_confirmed") {
       returnValidationErrors(SignInFormScheme, {
         email: {
-          _errors: ["Email not confirmed"],
+          _errors: ["This email is not confirmed"],
         },
       });
     }
 
     if (error.code == "invalid_credentials") {
-      returnValidationErrors(SignInFormScheme, {
-        _errors: ["Invalid email or password"],
-      });
+      throw new ActionError("Invalid email or password");
     }
 
-    returnValidationErrors(SignInFormScheme, {
-      _errors: ["Unexpected error"],
-    });
+    throw new ActionError("Unexpected error");
   });
