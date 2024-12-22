@@ -99,11 +99,8 @@ export const LandingHeader = () => {
           </NavigationMenu>
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <Button variant="ghost" asChild>
-            <Link href="/sign-in">Sign in</Link>
-          </Button>
           <Button asChild>
-            <Link href="/start">Start your project</Link>
+            <Link href="/sign-in">Sign in</Link>
           </Button>
         </div>
       </div>
