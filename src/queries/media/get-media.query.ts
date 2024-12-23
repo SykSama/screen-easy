@@ -3,7 +3,7 @@ import type { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 export type GetMediaOutput = Tables<"media"> & {
-  collections: Pick<Tables<"collections">, "id" | "name">[];
+  collections: Pick<Tables<"collections">, "id" | "name" | "description">[];
 };
 
 export const getMediaQuery = async (id: string): Promise<GetMediaOutput> => {
@@ -11,7 +11,7 @@ export const getMediaQuery = async (id: string): Promise<GetMediaOutput> => {
 
   const { data, error } = await supabase
     .from("media")
-    .select("*, collections( id, name )")
+    .select("*, collections( id, name, description )")
     .eq("id", id)
     .single();
 
