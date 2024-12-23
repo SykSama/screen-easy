@@ -13,7 +13,6 @@ export const columns: ColumnDef<GetOrganizationMediasOutput>[] = [
   {
     id: "type",
     header: () => <span />,
-
     cell: ({ row }) => {
       const type = row.original.type as "image" | "video";
       return type === "image" ? <ImageIcon /> : <VideoIcon />;

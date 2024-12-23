@@ -6,6 +6,7 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { MediasDataTable } from "./medias-data-table";
+import { MediasDataTableSkeleton } from "./medias-data-table-skeleton";
 
 export default async function MediasPage({
   params,
@@ -29,7 +30,7 @@ export default async function MediasPage({
           </div>
         </div>
 
-        <Suspense fallback={<div>Loading...</div>} key={query}>
+        <Suspense fallback={<MediasDataTableSkeleton />} key={query}>
           <MediasDataTable organizationSlug={orgSlug} query={query} />
         </Suspense>
       </div>
