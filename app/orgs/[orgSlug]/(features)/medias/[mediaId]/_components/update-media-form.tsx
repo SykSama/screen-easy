@@ -92,13 +92,16 @@ export const UpdateMediaForm = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <div>
+                        <FormLabel>Name</FormLabel>
+                        <FormDescription>
+                          This is your public display name.
+                        </FormDescription>
+                      </div>
                       <FormControl>
                         <Input placeholder="My beautiful media" {...field} />
                       </FormControl>
-                      <FormDescription>
-                        This is your public display name.
-                      </FormDescription>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -109,13 +112,15 @@ export const UpdateMediaForm = ({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <div>
+                        <FormLabel>Description</FormLabel>
+                        <FormDescription>
+                          A brief description of your media.
+                        </FormDescription>
+                      </div>
                       <FormControl>
                         <Input placeholder="Add a description" {...field} />
                       </FormControl>
-                      <FormDescription>
-                        A brief description of your media.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
