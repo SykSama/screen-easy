@@ -21,9 +21,11 @@ export const MediaNameCell = ({
       className="block hover:underline"
     >
       <div className="flex flex-col">
-        <span className="font-medium">{name}</span>
+        <span className="line-clamp-1 font-medium">{name}</span>
         {description && (
-          <span className="text-sm text-muted-foreground">{description}</span>
+          <span className=" line-clamp-1 text-sm text-muted-foreground">
+            {description}
+          </span>
         )}
       </div>
     </Link>

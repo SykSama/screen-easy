@@ -43,7 +43,7 @@ export const CreateMediaForm = () => {
         defaultValues: {
           files: [],
           name: "",
-          description: undefined,
+          description: "",
           collectionIds: [],
         },
       },
@@ -160,13 +160,16 @@ export const CreateMediaForm = () => {
             name="files"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Select File</FormLabel>
+                <div>
+                  <FormLabel>Select File</FormLabel>
+                  <FormDescription>Select a file to upload.</FormDescription>
+                </div>
                 <FormControl>
                   <FileUploader
                     value={field.value}
                     onValueChange={field.onChange}
                     dropzoneOptions={{
-                      maxFiles: 5,
+                      maxFiles: 1,
                       maxSize: 1024 * 1024 * 4,
                       multiple: false,
                     }}
@@ -208,7 +211,6 @@ export const CreateMediaForm = () => {
                     </FileUploaderContent>
                   </FileUploader>
                 </FormControl>
-                <FormDescription>Select a file to upload.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

@@ -6,14 +6,17 @@ import { columns } from "./media-columns";
 
 export type MediasDataTableProps = {
   organizationSlug: string;
+  query?: string;
 };
 
 export const MediasDataTable = async ({
   organizationSlug,
+  query,
 }: MediasDataTableProps) => {
   const organization = await getOrganizationFromSlugQuery(organizationSlug);
   const medias = await getOrganizationMediasQuery({
     organization_id: organization.id,
+    query,
   });
 
   return (
