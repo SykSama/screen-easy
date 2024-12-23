@@ -46,7 +46,7 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
       if (!currentIds.includes(media.id)) {
         append({
           ...media,
-          duration: 0,
+          duration: 1,
           display_order: fields.length,
         });
       }
