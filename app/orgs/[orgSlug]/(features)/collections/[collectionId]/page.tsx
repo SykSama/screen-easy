@@ -1,7 +1,7 @@
+import { CollectionForm } from "@/features/collections/collection-form/collection-form";
 import { getCollectionWithMediasQuery } from "@/queries/collections/get-collections.query";
 import type { PageParams } from "@/types/next";
 import { Suspense } from "react";
-import { CollectionForm } from "../_components/collection-form/collection-form";
 
 export default async function UpdateCollectionPage(
   props: PageParams<{ collectionId: string }>,

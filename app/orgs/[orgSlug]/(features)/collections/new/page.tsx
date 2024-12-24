@@ -1,4 +1,4 @@
-import { CollectionForm } from "../_components/collection-form/collection-form";
+import { CollectionForm } from "@/features/collections/collection-form/collection-form";
 
 export default async function CollectionsNewPage() {
   return (

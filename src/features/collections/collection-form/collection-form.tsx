@@ -14,13 +14,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { MediasSelectorDialog } from "@/features/medias/components/medias-selector-v2/medias-selector-dialog";
 import type { Tables } from "@/types/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
 import { collectionFormAction } from "./collection-form.action";
 import { CollectionFormSchema } from "./collection-form.schema";
-import { MediasSelectorField } from "./medias-selector-field";
 
 export type CollectionFormProps = {
   initialValue?: Tables<"collection_with_medias_v">;
@@ -122,7 +122,12 @@ export const CollectionForm = ({ initialValue }: CollectionFormProps) => {
           title="Media"
           description="Add and organize media in your collection"
         >
-          <MediasSelectorField form={form} />
+          <MediasSelectorDialog
+            enableMultiRowSelection={true}
+            onSelect={(medias) => {
+              console.log(medias);
+            }}
+          />
         </FormSection>
 
         <Separator className="my-10" />
