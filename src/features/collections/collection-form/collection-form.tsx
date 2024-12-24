@@ -15,12 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { MediasSelectorDialog } from "@/features/medias/components/medias-selector-v2/medias-selector-dialog";
+import { ResizeModeSchema } from "@/features/medias/types";
 import type { Tables } from "@/types/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { toast } from "sonner";
 import { collectionFormAction } from "./collection-form.action";
 import { CollectionFormSchema } from "./collection-form.schema";
+import { ReorderableCollectionMediaField } from "./collection-media/reorderable-collection-media-field";
 
 export type CollectionFormProps = {
   initialValue?: Tables<"collection_with_medias_v">;
@@ -123,12 +125,32 @@ export const CollectionForm = ({ initialValue }: CollectionFormProps) => {
           description="Add and organize media in your collection"
         >
           <MediasSelectorDialog
+            initialSelectedMedias={initialValue?.medias ?? []}
             enableMultiRowSelection={true}
             onSelect={(medias) => {
-              console.log(medias);
+              const currentMedias = form.getValues("medias");
+              const parsedMedias = medias.map((media) => {
+                const currentMedia = currentMedias.find(
+                  (m) => m.id === media.id,
+                );
+
+                if (currentMedia) {
+                  return currentMedia;
+                }
+
+                return {
+                  ...media,
+                  display_order: 0,
+                  duration: 1,
+                  resize_mode: ResizeModeSchema.Enum.contain,
+                };
+              });
+
+              form.setValue("medias", parsedMedias);
             }}
           />
         </FormSection>
+        <ReorderableCollectionMediaField />
 
         <Separator className="my-10" />
         <div className="flex justify-end gap-4">
