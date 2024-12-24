@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
-import { SelectableDataTable } from "@/components/ui/selectable-data-table";
+
 import type { Row } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -11,6 +11,7 @@ import { useState } from "react";
 import { getMediasClientQuery } from "./get-medias.client.query";
 import { columns } from "./medias-data-table/medias-columns";
 import type { MediasSelector } from "./medias-selector.type";
+import { SelectableDataTableForMedia } from "./selectable-data-table-for-media";
 
 export type MediasSelectorTableProps = {
   onSelect?: (medias: MediasSelector[]) => void;
@@ -57,7 +58,7 @@ export const MediasSelectorTable = ({
 
   return (
     <div>
-      <SelectableDataTable
+      <SelectableDataTableForMedia
         columns={columns}
         data={medias}
         initialRowSelection={initialRowSelection}
