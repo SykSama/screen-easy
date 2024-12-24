@@ -9,6 +9,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Sortable,
   SortableDragHandle,
   SortableItem,
@@ -16,6 +23,7 @@ import {
 import { Typography } from "@/components/ui/typography";
 import { MediasSelector } from "@/features/medias/components/medias-selector";
 import type { Media } from "@/features/medias/types";
+import { ResizeModeSchema } from "@/features/medias/types";
 import { GripVertical, TrashIcon } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
@@ -48,6 +56,7 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
           ...media,
           duration: 1,
           display_order: fields.length,
+          resize_mode: "cover",
         });
       }
     });
@@ -62,9 +71,10 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
         value={fields}
         onMove={({ activeIndex, overIndex }) => move(activeIndex, overIndex)}
         overlay={
-          <div className="grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2">
+          <div className="grid grid-cols-[0.5fr,0.5fr,0.5fr,auto,auto] items-center gap-2">
             <div className="h-8 w-full rounded-sm bg-primary/10" />
-            <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
+            <div className="h-8 w-full rounded-sm bg-primary/10" />
+            <div className="h-8 w-full rounded-sm bg-primary/10" />
             <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
             <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
           </div>
@@ -73,7 +83,7 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
         <div className="flex w-full flex-col gap-2">
           {fields.map((field, index) => (
             <SortableItem key={field.id} value={field.id} asChild>
-              <div className="grid grid-cols-[1fr,0.5fr,auto,auto] items-center gap-2">
+              <div className="grid grid-cols-[1fr,0.5fr,0.5fr,auto,auto] items-center gap-2">
                 <Typography variant="default" className="w-full">
                   {field.name}
                 </Typography>
@@ -102,6 +112,34 @@ export const MediasSelectorField = ({ form }: MediasSelectorFieldProps) => {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name={`medias.${index}.resize_mode`}
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {ResizeModeSchema.options.map((mode) => (
+                            <SelectItem key={mode} value={mode}>
+                              {mode}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <SortableDragHandle
                   variant="outline"
                   size="icon"

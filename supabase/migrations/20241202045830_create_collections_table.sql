@@ -1,3 +1,5 @@
+create type public.resize_mode as enum ('center', 'contain', 'cover', 'repeat', 'stretch');
+
 -- create collections table
 create table public.collections (
     id uuid default extensions.uuid_generate_v4() not null,
@@ -21,6 +23,7 @@ create table public.collection_media (
     display_from timestamp with time zone, -- start date for displaying the media (null means no start restriction)
     display_until timestamp with time zone, -- end date for displaying the media (null means no end restriction)
     created_at timestamp with time zone default now() not null,
+    resize_mode resize_mode default 'cover' not null,
 
     constraint collection_media_pkey primary key (collection_id, media_id),
     constraint collection_media_collection_id_fkey foreign key (collection_id) references public.collections(id) on delete cascade,

@@ -9,10 +9,11 @@ export type Database = MergeDeep<
       Views: {
         collection_with_medias_v: {
           Row: {
-            medias: Tables<"media">[] & {
-              duration: number;
-              display_order: number;
-            };
+            medias: Tables<"media">[] &
+              Pick<
+                Tables<"collection_media">,
+                "duration" | "display_order" | "resize_mode"
+              >;
           };
         };
       };

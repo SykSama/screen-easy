@@ -12,10 +12,21 @@ export const MediaSchema = z.object({
 
 export type Media = z.infer<typeof MediaSchema>;
 
+export const ResizeModeSchema = z.enum([
+  "center",
+  "contain",
+  "cover",
+  "repeat",
+  "stretch",
+]);
+
+export type ResizeMode = z.infer<typeof ResizeModeSchema>;
+
 export const MediaInCollectionSchema = z
   .object({
     duration: z.coerce.number().min(1, "You need to set a duration"),
     display_order: z.number(),
+    resize_mode: ResizeModeSchema.default("cover"),
   })
   .and(MediaSchema);
 

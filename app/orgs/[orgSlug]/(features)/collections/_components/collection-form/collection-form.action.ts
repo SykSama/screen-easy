@@ -33,6 +33,7 @@ export const collectionFormAction = orgProfileAction
         media_id: media.id,
         display_order: index,
         duration: media.duration,
+        resize_mode: media.resize_mode,
       })),
     });
 

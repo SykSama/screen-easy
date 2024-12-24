@@ -24,7 +24,8 @@ SELECT
                 'created_at', m.created_at,
                 'updated_at', m.updated_at,
                 'duration', cm.duration,
-                'display_order', cm.display_order
+                'display_order', cm.display_order,
+                'resize_mode', cm.resize_mode
             )
         END
         ORDER BY cm.display_order

@@ -43,6 +43,7 @@ export type Database = {
           display_until: string | null
           duration: number
           media_id: string
+          resize_mode: Database["public"]["Enums"]["resize_mode"]
         }
         Insert: {
           collection_id: string
@@ -52,6 +53,7 @@ export type Database = {
           display_until?: string | null
           duration?: number
           media_id: string
+          resize_mode?: Database["public"]["Enums"]["resize_mode"]
         }
         Update: {
           collection_id?: string
@@ -61,6 +63,7 @@ export type Database = {
           display_until?: string | null
           duration?: number
           media_id?: string
+          resize_mode?: Database["public"]["Enums"]["resize_mode"]
         }
         Relationships: [
           {
@@ -581,9 +584,18 @@ export type Database = {
           is_active: boolean | null
           medias: Json | null
           name: string | null
+          organization_id: string | null
           updated_at: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "collections_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
@@ -611,6 +623,7 @@ export type Database = {
     Enums: {
       media_status: "processing" | "ready" | "error"
       media_type: "image" | "video"
+      resize_mode: "center" | "contain" | "cover" | "repeat" | "stretch"
     }
     CompositeTypes: {
       [_ in never]: never

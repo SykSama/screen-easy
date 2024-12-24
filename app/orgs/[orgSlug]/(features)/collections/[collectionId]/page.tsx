@@ -7,6 +7,7 @@ export default async function UpdateCollectionPage(
   props: PageParams<{ collectionId: string }>,
 ) {
   const { collectionId } = await props.params;
+
   return (
     <div className="grow p-6 lg:rounded-lg lg:p-10 lg:shadow-sm">
       <div className="mx-auto max-w-6xl">
