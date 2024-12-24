@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { MediasSelectorTable } from "./medias-selector-table";
 import type { MediasSelector } from "./medias-selector.type";
@@ -33,6 +33,10 @@ export const MediasSelectorDialog = ({
   const [selectedMedias, setSelectedMedias] = useState<MediasSelector[]>(
     initialSelectedMedias ?? [],
   );
+
+  useEffect(() => {
+    setSelectedMedias(initialSelectedMedias ?? []);
+  }, [initialSelectedMedias]);
 
   const buttonTriggerTitle =
     selectedMedias.length > 0

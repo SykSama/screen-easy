@@ -125,7 +125,7 @@ export const CollectionForm = ({ initialValue }: CollectionFormProps) => {
           description="Add and organize media in your collection"
         >
           <MediasSelectorDialog
-            initialSelectedMedias={initialValue?.medias ?? []}
+            initialSelectedMedias={form.getValues("medias")}
             enableMultiRowSelection={true}
             onSelect={(medias) => {
               const currentMedias = form.getValues("medias");
