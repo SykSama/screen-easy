@@ -8,7 +8,7 @@ import { toDateTime } from "../utils";
 type Product = Tables<"products">;
 type Price = Tables<"prices">;
 
-const TRIAL_PERIOD_DAYS = 0;
+const TRIAL_PERIOD_DAYS = 7;
 
 export const supabaseAdmin = createClient<Database>(
   env.NEXT_PUBLIC_SUPABASE_URL,
