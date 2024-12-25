@@ -4,7 +4,6 @@ import { authAction } from "@/lib/actions/safe-actions";
 
 import { stripe } from "@/lib/stripe";
 import { createOrganizationMembershipsQuery } from "@/queries/organization-memberships/create-organization-memberships.query";
-import { getOrganizationPlanQuery } from "@/queries/organization-plans/get-organization-plan.query";
 
 import { logger } from "@/lib/logger";
 import { createOrganizationQuery } from "@/queries/orgs/create-organizations.query";
@@ -23,19 +22,10 @@ export const createOrgAction = authAction
       email,
     });
 
-    const plan = await getOrganizationPlanQuery("FREE");
-
-    const stripeSubscription = await stripe.subscriptions.create({
-      customer: stripeCustomer.id,
-      items: [{ price: plan.stripe_monthly_price_id }],
-    });
-
     const org = await createOrganizationQuery({
       name,
       email,
       stripe_customer_id: stripeCustomer.id,
-      stripe_subscription_id: stripeSubscription.id,
-      plan_id: plan.id,
     });
 
     await createOrganizationMembershipsQuery({

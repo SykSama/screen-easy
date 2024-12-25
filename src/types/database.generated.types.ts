@@ -447,46 +447,14 @@ export type Database = {
           },
         ]
       }
-      organization_plans: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          stripe_monthly_price_id: string
-          stripe_product_id: string
-          stripe_yearly_price_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id: string
-          name: string
-          stripe_monthly_price_id: string
-          stripe_product_id: string
-          stripe_yearly_price_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          stripe_monthly_price_id?: string
-          stripe_product_id?: string
-          stripe_yearly_price_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       organizations: {
         Row: {
           created_at: string
           email: string
           id: string
           name: string
-          plan_id: string
           slug: string
           stripe_customer_id: string
-          stripe_subscription_id: string
           updated_at: string
         }
         Insert: {
@@ -494,10 +462,8 @@ export type Database = {
           email: string
           id?: string
           name: string
-          plan_id?: string
           slug?: string
           stripe_customer_id: string
-          stripe_subscription_id: string
           updated_at?: string
         }
         Update: {
@@ -505,21 +471,11 @@ export type Database = {
           email?: string
           id?: string
           name?: string
-          plan_id?: string
           slug?: string
           stripe_customer_id?: string
-          stripe_subscription_id?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "organizations_plan_id_fkey"
-            columns: ["plan_id"]
-            isOneToOne: false
-            referencedRelation: "organization_plans"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       prices: {
         Row: {
