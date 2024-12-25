@@ -1,3 +1,4 @@
+-- Delete
 create table public.organization_plans (
     id text primary key,
     name text not null,
