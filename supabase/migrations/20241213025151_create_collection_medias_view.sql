@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW collection_with_medias_v AS
+CREATE OR REPLACE VIEW collection_with_medias_v with (security_invoker = true) AS
 SELECT
     c.id AS id,
     c.name AS name,
