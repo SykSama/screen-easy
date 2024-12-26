@@ -575,6 +575,41 @@ export type Database = {
         }
         Relationships: []
       }
+      rules: {
+        Row: {
+          collections_allowed: number | null
+          created_at: string
+          medias_per_collection_allowed: number | null
+          product_id: string
+          screens_allowed: number | null
+          updated_at: string
+        }
+        Insert: {
+          collections_allowed?: number | null
+          created_at?: string
+          medias_per_collection_allowed?: number | null
+          product_id: string
+          screens_allowed?: number | null
+          updated_at?: string
+        }
+        Update: {
+          collections_allowed?: number | null
+          created_at?: string
+          medias_per_collection_allowed?: number | null
+          product_id?: string
+          screens_allowed?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rules_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_accounts: {
         Row: {
           created_at: string
