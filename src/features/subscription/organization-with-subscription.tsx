@@ -7,13 +7,13 @@ import {
 import { Progress } from "@radix-ui/react-progress";
 import { ManageSubscriptionButton } from "./manage-subscription-button";
 
-export type OrganizationWIthSubscriptionProps = {
+export type OrganizationWithSubscriptionProps = {
   subscription: SubscriptionWithProduct;
 };
 
-export const OrganizationWIthSubscription = ({
+export const OrganizationWithSubscription = ({
   subscription,
-}: OrganizationWIthSubscriptionProps) => {
+}: OrganizationWithSubscriptionProps) => {
   const subscriptionPrice = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: subscription.prices?.currency ?? "USD",

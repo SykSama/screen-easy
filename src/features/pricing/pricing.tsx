@@ -9,8 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { ScrollAreaViewport } from "@radix-ui/react-scroll-area";
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 
@@ -49,7 +51,7 @@ const PricingHeader = ({
 );
 
 const PricingSwitch = ({ onSwitch }: PricingSwitchProps) => (
-  <Tabs defaultValue="0" className="mx-auto w-40" onValueChange={onSwitch}>
+  <Tabs defaultValue="0" className="m-2 mx-auto w-40" onValueChange={onSwitch}>
     <TabsList className="bg-zinc-950 px-2 py-6">
       <TabsTrigger value="0" className="text-base">
         Monthly
@@ -147,13 +149,21 @@ export const Pricing = ({ plans }: PricingProps) => {
     setIsYearly(parseInt(value) === 1);
 
   return (
-    <div className="">
+    <div className="flex h-[calc(100vh-100px)] flex-col">
       <PricingSwitch onSwitch={togglePricingPeriod} />
-      <section className="mt-8 flex flex-col justify-center gap-8 sm:flex-row sm:flex-wrap">
-        {plans.map((plan) => {
-          return <PricingCard key={plan.title} {...plan} isYearly={isYearly} />;
-        })}
-      </section>
+      <ScrollArea className="flex-1 px-4">
+        <ScrollAreaViewport className="h-full">
+          <div className="flex h-full items-start justify-center">
+            <section className="mt-8 grid w-full max-w-5xl grid-cols-1 justify-items-center gap-8 pb-8 sm:grid-cols-2 lg:grid-cols-3">
+              {plans.map((plan) => {
+                return (
+                  <PricingCard key={plan.title} {...plan} isYearly={isYearly} />
+                );
+              })}
+            </section>
+          </div>
+        </ScrollAreaViewport>
+      </ScrollArea>
     </div>
   );
 };
