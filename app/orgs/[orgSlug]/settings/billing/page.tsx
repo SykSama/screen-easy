@@ -1,9 +1,6 @@
 import { BasePageLayout } from "@/components/layouts/base-page-layout";
 import FormLayout from "@/components/layouts/form-layout";
-import { getSubscription } from "@/features/pricing/queries/queries";
-import { OrganizationWithSubscription } from "@/features/subscription/organization-with-subscription";
-import { OrganizationWithoutSubscription } from "@/features/subscription/organization-without-subscription";
-import { getOrganizationFromSlugQuery } from "@/queries/orgs/get-organization.query";
+import { OrganizationWithoutSubscriptionSheet } from "@/features/subscription/organization-without-subscription";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -41,28 +38,11 @@ export default async function BillingPage({ params }: OrganizationPageParams) {
 }
 
 const BillingPageContent = async ({ orgSlug }: { orgSlug: string }) => {
-  const organization = await getOrganizationFromSlugQuery(orgSlug);
-  const subscription = await getSubscription(organization.id);
+  return <OrganizationWithoutSubscriptionSheet orgSlug={orgSlug} />;
 
-  return subscription ? (
-    <OrganizationWithSubscription subscription={subscription} />
-  ) : (
-    <OrganizationWithoutSubscription />
-  );
+  // return subscription ? (
+  //   <OrganizationWithSubscription subscription={subscription} />
+  // ) : (
+  //   <OrganizationWithoutSubscriptionSheet />
+  // );
 };
-
-// const plans: PricingCardProps[] = products.map((product, index) => {
-//   return {
-//     title: product.name ?? "Invalid title",
-//     description: product.description ?? "No description",
-//     monthlyPrice: (product.prices[0]?.unit_amount ?? 0) / 100,
-//     yearlyPrice: (product.prices[1]?.unit_amount ?? 0) / 100,
-//     exclusive: index === products.length - 1,
-//     features: [
-//       `${product.rules?.collections_allowed} collections`,
-//       `${product.rules?.screens_allowed} screens`,
-//       `${product.rules?.medias_per_collection_allowed} medias per collection`,
-//     ],
-//     actionLabel: "Get Started",
-//   };
-// });

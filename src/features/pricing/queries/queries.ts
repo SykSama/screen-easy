@@ -2,10 +2,10 @@ import type { Tables } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import { cache } from "react";
 
-type Subscription = Tables<"subscriptions">;
-type Product = Tables<"products">;
-type Price = Tables<"prices">;
-type Rules = Tables<"rules">;
+export type Subscription = Tables<"subscriptions">;
+export type Product = Tables<"products">;
+export type Price = Tables<"prices">;
+export type Rules = Tables<"rules">;
 
 export type ProductWithPrices = Product & {
   prices: Price[];

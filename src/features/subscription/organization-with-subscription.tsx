@@ -1,3 +1,4 @@
+import { LoadingButton } from "@/components/loading-button";
 import type { SubscriptionWithProduct } from "@/features/pricing/queries/queries";
 import {
   formatDate,
@@ -5,7 +6,6 @@ import {
   pourcentageOfDaysRemaining,
 } from "@/lib/format-date";
 import { Progress } from "@radix-ui/react-progress";
-import { ManageSubscriptionButton } from "./manage-subscription-button";
 
 export type OrganizationWithSubscriptionProps = {
   subscription: SubscriptionWithProduct;
@@ -26,7 +26,7 @@ export const OrganizationWithSubscription = ({
       <p className="text-2xl font-semibold text-emerald-500">
         {subscription.prices?.products?.name}
       </p>
-      <ManageSubscriptionButton />
+      <LoadingButton>Change subscription plan</LoadingButton>
       <div className="flex w-full flex-col">
         <div className="flex justify-between space-x-8 pb-1 align-baseline">
           <p>

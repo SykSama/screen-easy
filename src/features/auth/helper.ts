@@ -4,6 +4,11 @@ import type { SupabaseClient, User } from "@supabase/supabase-js";
 
 export class AuthError extends Error {}
 
+export const getUser = async () => {
+  const { user } = await auth();
+  return user;
+};
+
 export const auth = async (): Promise<{
   user: User | null;
   supabase: SupabaseClient<Database>;
